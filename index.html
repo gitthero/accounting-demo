@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>교회 회계 장부 시스템 v3.0</title>
+<title>교회 회계 장부 시스템 v3.1.0</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Serif+KR:wght@400;600;700;900&display=swap');
 
@@ -138,7 +138,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
 .main{margin-left:220px;padding-top:56px;min-height:100vh;}
 .page{display:none;padding:24px;}
 .page.active{display:block;animation:fadeUp .25s ease;}
-@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
 /* ══ PAGE HEADER ══ */
 .ph{display:flex;align-items:flex-start;justify-content:space-between;
@@ -274,7 +274,7 @@ tr:hover td{background:#fafaf7;}
 .step-done .circle{background:var(--green-light);border-color:var(--green);}
 .step-done .name{color:var(--green);}
 .step-active .circle{background:var(--gold-light);border-color:var(--gold);animation:pulse .8s infinite;}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(181,134,13,.4)}50%{box-shadow:0 0 0 6px rgba(181,134,13,0)}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(181,134,13,.4)}50%{box-shadow:0 0 0 6px rgba(181,134,13,0)}}
 .step-active .name{color:var(--gold);}
 .step-wait .circle{background:#f5f3ee;border-color:var(--border2);}
 
@@ -342,7 +342,7 @@ tr:hover td{background:#fafaf7;}
   border-radius:var(--radius);padding:14px 20px;min-width:280px;z-index:3000;
   display:none;box-shadow:var(--shadow2);font-size:13px;}
 .notif.show{display:block;animation:slideUp .3s ease;}
-@keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}
+@keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
 .nt{font-weight:800;margin-bottom:3px;font-size:14px;}
 
 /* ══ AUDIT PERIOD BANNER ══ */
@@ -449,7 +449,7 @@ tr:hover td{background:#fafaf7;}
       <span class="cross">✝️</span>
       <h1>교회 회계 장부 시스템</h1>
       <p>Church Financial Management System</p>
-      <span class="ver">v3.0</span>
+      <span class="ver">v3.1.0</span>
     </div>
     <div class="ig"><label>통합 아이디</label>
       <input type="text" id="s1id" placeholder="아이디 입력" value="church2025">
@@ -515,7 +515,7 @@ tr:hover td{background:#fafaf7;}
 <div id="app">
   <div class="topbar">
     <button class="menu-btn" onclick="toggleSidebar()">☰</button>
-    <div class="topbar-title">✝️ 교회 회계 장부 v3.0</div>
+    <div class="topbar-title">✝️ 교회 회계 장부 v3.1.0</div>
     <div class="topbar-user">
       <strong id="tbName">-</strong>
       <span id="tbComm">-</span>
@@ -1233,7 +1233,7 @@ tr:hover td{background:#fafaf7;}
 
 <script>
 // ══════════════════════════════════════════
-// 전체 데이터 구조 v3.0
+// 전체 데이터 구조 v3.1.0
 // ══════════════════════════════════════════
 
 // 예배위원회 SVG: 성경책+음표+기도손 합성
@@ -2148,6 +2148,11 @@ const COMM_ACCOUNTS = {
   "친교위원회":[{"id": "fel_chair", "label": "친교위원장", "role": "chair", "pw": "fel1234"}, {"id": "fel_sports_acc", "label": "체육부 회계", "role": "acc", "pw": "fel1234"}, {"id": "fel_sports_chief", "label": "체육부 부장", "role": "chief", "pw": "fel1234"}, {"id": "fel_fellow_acc", "label": "친교부 회계", "role": "acc", "pw": "fel1234"}, {"id": "fel_fellow_chief", "label": "친교부 부장", "role": "chief", "pw": "fel1234"}, {"id": "fel_ceremony_acc", "label": "경조부 회계", "role": "acc", "pw": "fel1234"}, {"id": "fel_ceremony_chief", "label": "경조부 부장", "role": "chief", "pw": "fel1234"}],
   "평생교육위원회":[{"id": "life_chair", "label": "평생교육위원장", "role": "chair", "pw": "life1234"}, {"id": "life_exec_acc", "label": "실행위원회 회계", "role": "acc", "pw": "life1234"}, {"id": "life_exec_chief", "label": "실행위원회 부장", "role": "chief", "pw": "life1234"}, {"id": "life_baby_acc", "label": "아기학교 회계", "role": "acc", "pw": "life1234"}, {"id": "life_baby_chief", "label": "아기학교 부장", "role": "chief", "pw": "life1234"}, {"id": "life_joy_acc", "label": "조이맘 회계", "role": "acc", "pw": "life1234"}, {"id": "life_joy_chief", "label": "조이맘 부장", "role": "chief", "pw": "life1234"}, {"id": "life_train_acc", "label": "영은훈련원 회계", "role": "acc", "pw": "life1234"}, {"id": "life_train_chief", "label": "영은훈련원 부장", "role": "chief", "pw": "life1234"}, {"id": "life_qt_acc", "label": "QT소그룹 회계", "role": "acc", "pw": "life1234"}, {"id": "life_qt_chief", "label": "QT소그룹 부장", "role": "chief", "pw": "life1234"}],
   "홍보위원회":[{"id": "pr_chair", "label": "홍보위원장", "role": "chair", "pw": "pr1234"}, {"id": "pr_pr_acc", "label": "홍보부 회계", "role": "acc", "pw": "pr1234"}, {"id": "pr_pr_chief", "label": "홍보부 부장", "role": "chief", "pw": "pr1234"}, {"id": "pr_pub_acc", "label": "문서출판부 회계", "role": "acc", "pw": "pr1234"}, {"id": "pr_pub_chief", "label": "문서출판부 부장", "role": "chief", "pw": "pr1234"}],
+  "50주년기념위원회": [
+    {"id": "ann50chair", "label": "50주년 위원장", "role": "chair", "pw": "위원장a1234"},
+    {"id": "ann50chief", "label": "50주년 부장",   "role": "chief", "pw": "부장a4321"},
+    {"id": "ann50acc",   "label": "50주년 회계",   "role": "acc",   "pw": "회계a5678"}
+  ]
 };
 
 // 장부 샘플 데이터
@@ -2452,9 +2457,7 @@ function onCommChange(){
   depts.forEach(d=>{
     const o=document.createElement('option');
     o.value=d;
-    // 예산 금액도 표시
-    const bdg=getBudgetTotal(comm,d);
-    o.textContent=d+(bdg?` (${bdg.toLocaleString()}원)`:'');
+    o.textContent=d;
     if(d===CU.dept||depts.length===1)o.selected=true;
     sel.appendChild(o);
   });
@@ -2503,7 +2506,7 @@ function onDeptChange(){
     }
   }
 
-  document.getElementById('ledgerSub').textContent=`${comm} > ${dept} 지출장부`;
+  const lsEl=document.getElementById('ledgerSub'); if(lsEl)lsEl.textContent=`${comm} > ${dept} 지출장부`;
   document.getElementById('ledgerTableTitle').textContent=`📋 ${dept} 지출내역`;
   // 상단 부서 정보 표시 (위원회옆)
   const ph=document.querySelector('#page-ledger .ph-left');
