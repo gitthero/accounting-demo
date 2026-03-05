@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>교회 회계 장부 시스템 v3.1.2</title>
+<title>교회 회계 장부 시스템 v3.1.4</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Serif+KR:wght@400;600;700;900&display=swap');
 
@@ -222,7 +222,7 @@ tr:hover td{background:#fafaf7;}
 .fch{padding:14px 18px;background:linear-gradient(135deg,var(--navy),var(--blue));
   color:white;font-size:14px;font-weight:800;}
 .fb2{padding:20px;}
-.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:14px;}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;}
 .fg{margin-bottom:0;}
 .fg.full{grid-column:1/-1;}
 .fg.w2{grid-column:span 2;}
@@ -451,7 +451,7 @@ tr:hover td{background:#fafaf7;}
       <span class="cross">✝️</span>
       <h1>교회 회계 장부 시스템</h1>
       <p>Church Financial Management System</p>
-      <span class="ver">v3.1.2</span>
+      <span class="ver">v3.1.4</span>
     </div>
     <div class="ig"><label>통합 아이디</label>
       <input type="text" id="s1id" placeholder="아이디 입력" value="church2025">
@@ -517,7 +517,7 @@ tr:hover td{background:#fafaf7;}
 <div id="app">
   <div class="topbar">
     <button class="menu-btn" onclick="toggleSidebar()">☰</button>
-    <div class="topbar-title">✝️ 교회 회계 장부 v3.1.2</div>
+    <div class="topbar-title">✝️ 교회 회계 장부 v3.1.4</div>
     <div class="topbar-user">
       <strong id="tbName">-</strong>
       <span id="tbComm">-</span>
@@ -681,7 +681,7 @@ tr:hover td{background:#fafaf7;}
           <thead><tr>
             <th>날짜</th><th>항목</th><th>세부항목</th><th>적요</th>
             <th>영수증</th><th>수입</th><th>지출</th><th>잔액</th>
-            <th class="no-print">수정</th><th>특기사항</th><th>감사확인</th>
+            <th>감사확인</th><th class="no-print">수정</th>
           </tr></thead>
           <tbody id="ledgerBody"></tbody>
         </table></div>
@@ -949,14 +949,14 @@ tr:hover td{background:#fafaf7;}
         </div>
         <div class="faction">
           <button class="btn bp" onclick="submitSpec()">💾 저장</button>
-          <button class="btn bo" onclick="toggleSpecForm()">취소</button>
+          <button class="btn bo" onclick="cancelSpecForm()">취소</button>
         </div>
       </div>
 
       <div class="tw">
         <div class="th"><h3 id="specTableTitle">특별활동 지출내역</h3></div>
         <div class="ts"><table>
-          <thead><tr><th>날짜</th><th>항목</th><th>적요</th><th>영수증</th><th>지출액</th><th>누계잔액</th><th>특기사항</th></tr></thead>
+          <thead><tr><th>날짜</th><th>항목</th><th>적요</th><th>영수증</th><th>지출액</th><th>누계잔액</th><th>감사확인</th><th class="no-print">수정</th></tr></thead>
           <tbody id="specBody"></tbody>
         </table></div>
       </div>
@@ -1233,7 +1233,7 @@ tr:hover td{background:#fafaf7;}
 
 <script>
 // ══════════════════════════════════════════
-// 전체 데이터 구조 v3.1.2
+// 전체 데이터 구조 v3.1.4
 // ══════════════════════════════════════════
 
 // 예배위원회 SVG: 성경책+음표+기도손 합성
@@ -2559,13 +2559,6 @@ function renderLedger(){
   data.forEach((row,i)=>{
     bal+=row.income-row.expense;
     totInc+=row.income;totExp+=row.expense;
-    // 특기사항 셀 (회계/부장/마스터 편집 가능, 그 외 읽기전용)
-    const canEditNote = ['acc','chief','fin_acc','fin_chief','master','sub_master'].includes(CU.role);
-    const noteVal = row.note||'';
-    const noteCell = canEditNote
-      ? `<input type="text" value="${noteVal.replace(/"/g,'&quot;')}" placeholder="특기사항" style="width:100%;padding:2px 6px;border:1px solid var(--border);border-radius:4px;font-size:11px;font-family:inherit;" onchange="LEDGER[${i}].note=this.value">`
-      : `<span style="font-size:11px;color:var(--text2)">${noteVal||'—'}</span>`;
-
     // 감사확인 셀 (감사/마스터만 체크 가능)
     const isAuditEnabled = auditActive && (CU.role==='auditor' || ['master','sub_master'].includes(CU.role));
     const auditCell = isAuditEnabled
@@ -2595,18 +2588,17 @@ function renderLedger(){
       <td class="tnum">${row.income?row.income.toLocaleString():'-'}</td>
       <td class="tnum">${row.expense?'<span style="color:var(--red)">-'+row.expense.toLocaleString()+'</span>':'-'}</td>
       <td class="tnum" style="color:${bal<0?'var(--red)':'var(--green);font-weight:700'}">${bal.toLocaleString()}</td>
-      <td class="tc">${noteCell}</td>
-      <td class="tc no-print">${auditCell}</td>
+      <td class="tc">${auditCell}</td>
     `;
-    tr.insertBefore(editTd, tr.firstChild);
+    tr.appendChild(editTd);
     tbody.appendChild(tr);
   });
 
   const sub=document.createElement('tr');sub.className='tsub';
-  sub.innerHTML=`<td class="tc no-print"></td><td colspan="5" class="tc">${mon==='전체'?'합':'월'} 소 계</td><td class="tnum">${totInc.toLocaleString()}</td><td class="tnum" style="color:var(--red)">${totExp.toLocaleString()}</td><td class="tnum">${(totInc-totExp).toLocaleString()}</td><td></td><td></td>`;
+  sub.innerHTML=`<td colspan="5" class="tc">${mon==='전체'?'합':'월'} 소 계</td><td class="tnum">${totInc.toLocaleString()}</td><td class="tnum" style="color:var(--red)">${totExp.toLocaleString()}</td><td class="tnum">${(totInc-totExp).toLocaleString()}</td><td></td><td class="no-print"></td>`;
   tbody.appendChild(sub);
   const tot=document.createElement('tr');tot.className='ttot';
-  tot.innerHTML=`<td class="tc no-print"></td><td colspan="5" class="tc">누 계 (이월금 포함)</td><td class="tnum">${totInc.toLocaleString()}</td><td class="tnum">${totExp.toLocaleString()}</td><td class="tnum" style="color:${bal<0?'var(--red)':'var(--green)'};font-weight:900">${bal.toLocaleString()}</td><td></td><td></td>`;
+  tot.innerHTML=`<td colspan="5" class="tc">누 계 (이월금 포함)</td><td class="tnum">${totInc.toLocaleString()}</td><td class="tnum">${totExp.toLocaleString()}</td><td class="tnum" style="color:${bal<0?'var(--red)':'var(--green)'};font-weight:900">${bal.toLocaleString()}</td><td></td><td></td>`;
   tbody.appendChild(tot);
 
   // 회계 특기사항 행 (회계/부장/마스터만 편집)
@@ -2617,7 +2609,7 @@ function renderLedger(){
   accNoteRow.style.cssText = 'background:#fffbe8;';
   const accNoteVal = (window._accNote && window._accNote[noteComm+'_'+noteDept+'_'+mon]) || '';
   accNoteRow.innerHTML = `
-    <td class="no-print"></td><td colspan="3" style="font-size:11px;font-weight:800;color:var(--gold);padding:6px 12px;">📝 회계 특기사항</td>
+    <td colspan="3" style="font-size:11px;font-weight:800;color:var(--gold);padding:6px 12px;">📝 회계 특기사항</td>
     <td colspan="7" style="padding:4px 8px;">
       ${canEditAccNote
         ? `<input type="text" id="accNoteInput" value="${accNoteVal.replace(/"/g,'&quot;')}" placeholder="회계 특기사항을 입력하세요" style="width:100%;padding:4px 8px;border:1px solid var(--gold);border-radius:4px;font-size:12px;font-family:inherit;background:#fffbe8;" onchange="saveAccNote('${noteComm}','${noteDept}','${mon}',this.value)">`
@@ -2632,7 +2624,7 @@ function renderLedger(){
   audNoteRow.style.cssText = 'background:#f0ebf8;';
   const audNoteVal = (window._audNote && window._audNote[noteComm+'_'+noteDept+'_'+mon]) || '';
   audNoteRow.innerHTML = `
-    <td class="no-print"></td><td colspan="3" style="font-size:11px;font-weight:800;color:var(--purple);padding:6px 12px;">🔍 감사 의견</td>
+    <td colspan="3" style="font-size:11px;font-weight:800;color:var(--purple);padding:6px 12px;">🔍 감사 의견</td>
     <td colspan="7" style="padding:4px 8px;">
       ${canEditAudNote
         ? `<input type="text" id="audNoteInput" value="${audNoteVal.replace(/"/g,'&quot;')}" placeholder="감사 의견을 입력하세요" style="width:100%;padding:4px 8px;border:1px solid var(--purple);border-radius:4px;font-size:12px;font-family:inherit;background:#f0ebf8;" onchange="saveAudNote('${noteComm}','${noteDept}','${mon}',this.value)">`
@@ -2670,24 +2662,43 @@ function loadExpForm(idx){
     dateVal=yr+'-'+p[0].padStart(2,'0')+'-'+p[1].padStart(2,'0');
   }
   document.getElementById('fDate').value=dateVal;
-  // 항목 선택 → onCatChange로 세부항목 목록 채우기
+  // 항목 선택 - fCat 목록 직접 DB에서 채우기 (위원회/부서 기준)
+  const loadComm=document.getElementById('selComm').value;
+  const loadDept=document.getElementById('selDept').value;
   const catSel=document.getElementById('fCat');
-  catSel.value=row.cat;
-  onCatChange();
-  // 세부항목: setTimeout으로 목록 채워진 후 선택
-  // 목록에 없으면 직접 option 추가
-  setTimeout(()=>{
-    const detSel=document.getElementById('fDetail');
-    // 기존 옵션에 있는지 확인
-    let found=false;
-    for(let o of detSel.options){if(o.value===row.detail){found=true;break;}}
-    if(!found && row.detail && row.detail!=='-'){
+  // fCat 옵션 채우기
+  catSel.innerHTML='<option value="">-- 항목 선택 --</option>';
+  if(DB[loadComm]&&DB[loadComm][loadDept]){
+    Object.keys(DB[loadComm][loadDept]).forEach(cat=>{
       const o=document.createElement('option');
-      o.value=row.detail; o.textContent=row.detail;
+      o.value=cat; o.textContent=cat;
+      catSel.appendChild(o);
+    });
+  }
+  catSel.value=row.cat;
+  // 세부항목 직접 채우기
+  const detSel=document.getElementById('fDetail');
+  detSel.innerHTML='<option value="">-- 세부항목 선택 --</option>';
+  if(DB[loadComm]&&DB[loadComm][loadDept]&&DB[loadComm][loadDept][row.cat]){
+    DB[loadComm][loadDept][row.cat].forEach(d=>{
+      const o=document.createElement('option');
+      o.value=d; o.textContent=d;
       detSel.appendChild(o);
-    }
-    detSel.value=row.detail||'';
-  },150);
+    });
+  }
+  // 직접입력 옵션 추가
+  const odLoad=document.createElement('option');
+  odLoad.value='직접입력'; odLoad.textContent='✏️ 직접입력';
+  detSel.appendChild(odLoad);
+  // 목록에 없는 값이면 직접 추가
+  let foundDet=false;
+  for(let o of detSel.options){if(o.value===row.detail){foundDet=true;break;}}
+  if(!foundDet&&row.detail&&row.detail!=='-'){
+    const o=document.createElement('option');
+    o.value=row.detail; o.textContent=row.detail;
+    detSel.insertBefore(o, detSel.lastChild);
+  }
+  detSel.value=row.detail||'';
   document.getElementById('fMemo').value=row.memo||'';
   document.getElementById('fInc').value=row.income||'';
   document.getElementById('fExp').value=row.expense||'';
@@ -3053,40 +3064,57 @@ function onSpDeptChange(){
   buildSpecial();
 }
 
+// 특별장부 전역 데이터
+if(!window.SPEC_LEDGER){
+  window.SPEC_LEDGER=[
+    {date:"02/16",cat:"음향",memo:"음향간사 사례비",rno:"18",expense:100000,audited:false},
+    {date:"02/18",cat:"소모품",memo:"일회용 마스크/장갑",rno:"19",expense:45000,audited:false},
+    {date:"02/22",cat:"식재료",memo:"점심식사재료",rno:"20",expense:45000,audited:false},
+    {date:"02/22",cat:"식재료",memo:"조별 요리대결",rno:"30",expense:50000,audited:false},
+    {date:"02/22",cat:"소모품",memo:"텐트나눔 준비물",rno:"29",expense:35000,audited:false},
+    {date:"02/23",cat:"행사",memo:"오리엔테이션",rno:"37",expense:80000,audited:false},
+    {date:"02/24",cat:"레크",memo:"레크레이션(1)",rno:"39",expense:150000,audited:false},
+    {date:"02/24",cat:"레크",memo:"레크레이션(2)",rno:"40",expense:120000,audited:false},
+  ];
+}
+let _editSpecIdx=-1;
 function buildSpecial(){
   const dept=document.getElementById('selSpDept')?document.getElementById('selSpDept').value:'중등부';
   const event=document.getElementById('selEvent')?document.getElementById('selEvent').value:'겨울 수련회';
   document.getElementById('specTableTitle').textContent=`${dept} ${event} 지출내역`;
-
-  const data=[
-    {date:"02/16",cat:"음향",memo:"음향간사 사례비",rno:"18",expense:100000,status:"approved"},
-    {date:"02/18",cat:"소모품",memo:"일회용 마스크/장갑",rno:"19",expense:45000,status:"approved"},
-    {date:"02/22",cat:"식재료",memo:"점심식사재료",rno:"20",expense:45000,status:"pending"},
-    {date:"02/22",cat:"식재료",memo:"조별 요리대결",rno:"30",expense:50000,status:"approved"},
-    {date:"02/22",cat:"소모품",memo:"텐트나눔 준비물",rno:"29",expense:35000,status:"approved"},
-    {date:"02/23",cat:"행사",memo:"오리엔테이션",rno:"37",expense:80000,status:"pending"},
-    {date:"02/24",cat:"레크",memo:"레크레이션(1)",rno:"39",expense:150000,status:"approved"},
-    {date:"02/24",cat:"레크",memo:"레크레이션(2)",rno:"40",expense:120000,status:"approved"},
-  ];
   const tbody=document.getElementById('specBody');tbody.innerHTML='';
   let bal=5000000;
-  const smap={approved:'<span class="sb sb-ok">✓ 승인</span>',pending:'<span class="sb sb-wait">⏳ 대기</span>'};
   const isAuditEnabled=auditActive&&(CU?CU.role==='auditor'||['master','sub_master'].includes(CU.role):false);
-  data.forEach((row,i)=>{
+  SPEC_LEDGER.forEach((row,i)=>{
     bal-=row.expense;
-    const auditCell=isAuditEnabled?
-      `<input type="radio" name="saudit_${i}" title="감사">`:
-      `<span style="font-size:10px;color:var(--text3)">—</span>`;
+    // 감사확인 셀
+    const auditCell=isAuditEnabled
+      ? `<div class="audit-check"><input type="radio" name="saudit_${i}" id="saud_${i}" ${row.audited?'checked':''} onchange="SPEC_LEDGER[${i}].audited=true;buildSpecial()"><label for="saud_${i}">${row.audited?'✅확인':'체크'}</label></div>`
+      : `<span style="font-size:11px;color:var(--text3)">${row.audited?'✅확인':'—'}</span>`;
+    // 수정 라디오 버튼
     const tr=document.createElement('tr');
-    tr.innerHTML=`<td class="tc">${row.date}</td><td>${row.cat}</td><td>${row.memo}</td>
-      <td class="tc"><span class="sb sb-draft" style="cursor:pointer" onclick="showRec('R-${row.rno.padStart(4,'0')}','${row.date}','${row.cat}','${row.memo}','${row.expense}')">🧾 #${row.rno}</span></td>
+    if(row.audited)tr.className='audited';
+    tr.innerHTML=`
+      <td class="tc">${row.date}</td>
+      <td>${row.cat}</td>
+      <td>${row.memo}</td>
+      <td class="tc">${row.rno&&row.rno!=='-'?`<span class="sb sb-draft" style="cursor:pointer" onclick="showRec('R-${String(row.rno).padStart(4,'0')}','${row.date}','${row.cat}','${row.memo}','${row.expense}')">🧾 #${row.rno}</span>`:'-'}</td>
       <td class="tnum" style="color:var(--red)">-${row.expense.toLocaleString()}</td>
       <td class="tnum" style="color:${bal<0?'var(--red)':'var(--green)'}">${bal.toLocaleString()}</td>
-      <td class="tc">${smap[row.status]}</td>
-      <td class="tc no-print">${auditCell}</td>`;
+      <td class="tc">${auditCell}</td>`;
+    // 수정 라디오 버튼 td
+    const editTd=document.createElement('td');
+    editTd.className='tc no-print';
+    const radio=document.createElement('input');
+    radio.type='radio'; radio.name='specEditRow';
+    radio.title='클릭하면 수정 폼에 불러옵니다';
+    radio.style.cssText='cursor:pointer;width:16px;height:16px;accent-color:var(--blue);';
+    (function(ri){radio.onchange=function(){if(this.checked)loadSpecForm(ri);};})(i);
+    editTd.appendChild(radio);
+    tr.appendChild(editTd);
     tbody.appendChild(tr);
   });
-  const total=data.reduce((a,r)=>a+r.expense,0);
+  const total=SPEC_LEDGER.reduce((a,r)=>a+r.expense,0);
   const sub=document.createElement('tr');sub.className='tsub';
   sub.innerHTML=`<td colspan="4" class="tc">소 계</td><td class="tnum" style="color:var(--red)">${total.toLocaleString()}</td><td class="tnum">${(5000000-total).toLocaleString()}</td><td></td><td class="no-print"></td>`;
   tbody.appendChild(sub);
@@ -3209,6 +3237,11 @@ function cancelExpForm(){
 function toggleSpecForm(){
   const f=document.getElementById('specForm');
   f.style.display=f.style.display==='none'?'block':'none';
+  if(f.style.display==='block'){
+    const today=new Date().toISOString().split('T')[0];
+    document.getElementById('sfDate').value=today;
+    _editSpecIdx=-1;
+  }
 }
 function onReceiptChg(){
   const f=document.getElementById('fReceipt');
@@ -3281,7 +3314,50 @@ function clearExpForm(){
 let _editIdx = -1;
 
 function saveDraft(){cancelExpForm();}
-function submitSpec(){toggleSpecForm();showNotif('특별활동 지출 등록 완료 ✅','');}
+function submitSpec(){
+  const date=document.getElementById('sfDate').value;
+  const cat=document.getElementById('sfCat').value;
+  const memo=document.getElementById('sfMemo').value;
+  const exp=parseInt(document.getElementById('sfExp').value)||0;
+  if(!cat||!memo||!exp){alert('항목, 적요, 지출액을 입력해주세요');return;}
+  let fmtDate=date;
+  if(date&&date.includes('-')){const p=date.split('-');fmtDate=p[1]+'/'+p[2];}
+  if(_editSpecIdx>=0){
+    SPEC_LEDGER[_editSpecIdx]={...SPEC_LEDGER[_editSpecIdx],date:fmtDate||SPEC_LEDGER[_editSpecIdx].date,cat:cat,memo:memo,expense:exp};
+    _editSpecIdx=-1;
+    showNotif('수정 완료 ✅','특별장부가 수정되었습니다');
+  } else {
+    SPEC_LEDGER.push({date:fmtDate||'--',cat:cat,memo:memo,rno:String(SPEC_LEDGER.length+1),expense:exp,audited:false});
+    showNotif('저장 완료 ✅','특별활동 지출이 등록되었습니다');
+  }
+  clearSpecForm();
+  const sf=document.getElementById('specForm');if(sf)sf.style.display='none';
+  buildSpecial();
+}
+function clearSpecForm(){
+  document.getElementById('sfDate').value='';
+  document.getElementById('sfCat').value=document.getElementById('sfCat').options[0].value;
+  document.getElementById('sfMemo').value='';
+  document.getElementById('sfExp').value='';
+}
+function cancelSpecForm(){
+  const f=document.getElementById('specForm');if(f)f.style.display='none';
+  _editSpecIdx=-1;
+}
+function loadSpecForm(idx){
+  const row=SPEC_LEDGER[idx];if(!row)return;
+  _editSpecIdx=idx;
+  const yr='2025';let dateVal='';
+  if(row.date&&row.date.includes('/')){const p=row.date.split('/');dateVal=yr+'-'+p[0].padStart(2,'0')+'-'+p[1].padStart(2,'0');}
+  document.getElementById('sfDate').value=dateVal;
+  document.getElementById('sfCat').value=row.cat;
+  document.getElementById('sfMemo').value=row.memo||'';
+  document.getElementById('sfExp').value=row.expense||'';
+  const form=document.getElementById('specForm');
+  if(form&&form.style.display==='none')form.style.display='block';
+  setTimeout(()=>{if(form)form.scrollIntoView({behavior:'smooth',block:'start'});},50);
+  showNotif('수정 모드 ✏️','내용 수정 후 [💾 저장] 버튼을 눌러주세요');
+}
 function excelImport(i){if(i.files.length>0)showNotif('엑셀 불러오기 완료 📂','예산 데이터 자동 입력완료');}
 
 // ══ NOTIFICATION ══
