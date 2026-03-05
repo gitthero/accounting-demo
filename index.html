@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>교회 회계 장부 시스템 v3.1.6</title>
+<title>교회 회계 장부 시스템 v3.1.7</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Serif+KR:wght@400;600;700;900&display=swap');
 
@@ -451,7 +451,7 @@ tr:hover td{background:#fafaf7;}
       <span class="cross">✝️</span>
       <h1>교회 회계 장부 시스템</h1>
       <p>Church Financial Management System</p>
-      <span class="ver">v3.1.6</span>
+      <span class="ver">v3.1.7</span>
     </div>
     <div class="ig"><label>통합 아이디</label>
       <input type="text" id="s1id" placeholder="아이디 입력" value="church2025">
@@ -517,7 +517,7 @@ tr:hover td{background:#fafaf7;}
 <div id="app">
   <div class="topbar">
     <button class="menu-btn" onclick="toggleSidebar()">☰</button>
-    <div class="topbar-title">✝️ 교회 회계 장부 v3.1.6</div>
+    <div class="topbar-title">✝️ 교회 회계 장부 v3.1.7</div>
     <div class="topbar-user">
       <strong id="tbName">-</strong>
       <span id="tbComm">-</span>
@@ -873,7 +873,7 @@ tr:hover td{background:#fafaf7;}
       <div class="tw">
         <div class="th"><h3>📋 결의서 목록</h3></div>
         <div class="ts"><table>
-          <thead><tr><th>날짜</th><th>위원회</th><th>부서</th><th>예산항목</th><th>청구금액</th><th>현재단계</th><th>상태</th><th>전결</th><th>관리</th></tr></thead>
+          <thead><tr><th>날짜</th><th>위원회</th><th>부서</th><th>예산항목</th><th>청구금액</th><th>현재단계</th><th>상태</th><th>전결</th><th class="no-print">수정</th><th>관리</th></tr></thead>
           <tbody id="voucherList"></tbody>
         </table></div>
       </div>
@@ -1186,6 +1186,43 @@ tr:hover td{background:#fafaf7;}
 </div><!-- /app -->
 
 <!-- 인쇄 미리보기 모달 -->
+<div class="modal-bg" id="voucherModal" style="display:none;align-items:flex-start;overflow-y:auto;padding:16px 8px;" onclick="if(event.target===this)closeVoucherModal()">
+  <div class="modal" style="max-width:680px;width:95%;" onclick="event.stopPropagation()">
+    <div class="modal-head" style="position:sticky;top:0;z-index:10;">
+      <h3>📋 지출결의서 수정</h3>
+      <button class="modal-close" onclick="closeVoucherModal()">×</button>
+    </div>
+    <div class="modal-body" style="padding:16px;">
+      <div style="background:var(--bg);border-radius:8px;padding:12px;margin-bottom:12px;">
+        <p style="font-size:13px;font-weight:700">위원회: <span id="vpComm">-</span> &nbsp;|&nbsp; 부서: <span id="vpDept">-</span></p>
+        <p style="font-size:12px;color:var(--text3);margin-top:4px" id="vpItem">-</p>
+      </div>
+      <table class="voucher-table" style="margin-bottom:12px;width:100%">
+        <tr><th colspan="2">청&nbsp;구&nbsp;내&nbsp;역</th><th>금&nbsp;액</th><th>비&nbsp;고</th></tr>
+        <tr>
+          <td colspan="2"><input type="text" id="vpi1" placeholder="내역 입력" style="border:none;width:100%;font-size:12px;outline:none;border-bottom:1px solid var(--border);padding:4px;"></td>
+          <td><input type="number" id="vpa1" placeholder="0" style="border:none;width:90px;font-size:12px;text-align:right;outline:none;border-bottom:1px solid var(--border);padding:4px;" oninput="calcVpTotal()"></td>
+          <td><input type="text" id="vpn1" placeholder="비고" style="border:none;width:100%;font-size:12px;outline:none;border-bottom:1px solid var(--border);padding:4px;"></td>
+        </tr>
+        <tr>
+          <td colspan="2"><input type="text" id="vpi2" placeholder="내역 입력" style="border:none;width:100%;font-size:12px;outline:none;border-bottom:1px solid var(--border);padding:4px;"></td>
+          <td><input type="number" id="vpa2" placeholder="0" style="border:none;width:90px;font-size:12px;text-align:right;outline:none;border-bottom:1px solid var(--border);padding:4px;" oninput="calcVpTotal()"></td>
+          <td><input type="text" id="vpn2" placeholder="비고" style="border:none;width:100%;font-size:12px;outline:none;border-bottom:1px solid var(--border);padding:4px;"></td>
+        </tr>
+        <tr style="background:var(--bg2)">
+          <td colspan="2" style="font-weight:800;text-align:center;padding:6px;">합&nbsp;&nbsp;계</td>
+          <td id="vpTotal" style="font-weight:800;text-align:right;color:var(--red);padding:6px;">0</td>
+          <td></td>
+        </tr>
+      </table>
+    </div>
+    <div style="padding:12px 16px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end;">
+      <button class="btn bp" onclick="saveVoucherEdit()">💾 저장</button>
+      <button class="btn bo" onclick="closeVoucherModal()">취소</button>
+    </div>
+  </div>
+</div>
+
 <div class="modal-bg" id="printModal" onclick="closePrintModal()">
   <div class="modal" onclick="event.stopPropagation()">
     <div class="modal-head">
@@ -1247,7 +1284,7 @@ tr:hover td{background:#fafaf7;}
 
 <script>
 // ══════════════════════════════════════════
-// 전체 데이터 구조 v3.1.6
+// 전체 데이터 구조 v3.1.7
 // ══════════════════════════════════════════
 
 // 예배위원회 SVG: 성경책+음표+기도손 합성
@@ -2722,6 +2759,8 @@ function loadExpForm(idx){
       catSel.appendChild(o);
     });
   }
+  const oi2=document.createElement('option');
+  oi2.value='수입'; oi2.textContent='💰 수입(예산청구)'; catSel.appendChild(oi2);
   catSel.value=row.cat;
   // 세부항목 직접 채우기
   const detSel=document.getElementById('fDetail');
@@ -2876,18 +2915,45 @@ function buildApprovalFlow(){
   });
 }
 
+// 결의서 전역 데이터
+if(!window.VOUCHER_LIST){
+  window.VOUCHER_LIST=[
+    {date:"02/22",comm:"교육위원회",dept:"중등부",item:"수련회 - 여름 수련회",amt:175000,step:"3.재정부 접수",status:"pending",proxy:false,
+     detail:{vi1:"여름수련회 레크비",va1:100000,vi2:"간식비",va2:75000,note:""}},
+    {date:"02/18",comm:"예배위원회",dept:"예배부",item:"절기행사비 - 행사준비",amt:45000,step:"✓ 위원장승인",status:"done",proxy:false,
+     detail:{vi1:"행사준비 소모품",va1:45000,vi2:"",va2:0,note:""}},
+  ];
+}
 function buildVoucherList(){
   const tbody=document.getElementById('voucherList');
-  tbody.innerHTML=`
-    <tr><td class="tc">02/22</td><td>교육위원회</td><td>중등부</td><td>수련회 - 여름 수련회</td><td class="tnum">175,000</td>
-      <td class="tc"><span class="sb sb-blue">3.재정부 접수</span></td><td class="tc"><span class="sb sb-wait">⏳ 진행중</span></td>
-      <td class="tc">-</td>
-      <td class="tc"><button class="btn bo btn-sm" onclick="showVoucherDetail()">상세</button></td></tr>
-    <tr><td class="tc">02/18</td><td>예배위원회</td><td>예배부</td><td>절기행사비 - 행사준비</td><td class="tnum">45,000</td>
-      <td class="tc"><span class="sb sb-ok">✓ 위원장승인</span></td><td class="tc"><span class="sb sb-ok">✅ 완료</span></td>
-      <td class="tc">-</td>
-      <td class="tc"><button class="btn bo btn-sm">상세</button></td></tr>
-  `;
+  tbody.innerHTML='';
+  // 본인 결의서만 표시 (master/sub_master는 전체)
+  const myList=VOUCHER_LIST.filter(v=>{
+    if(['master','sub_master'].includes(CU.role)) return true;
+    return v.comm===CU.committee;
+  });
+  myList.forEach((v,i)=>{
+    const stepCls=v.status==='done'?'sb-ok':v.status==='pending'?'sb-blue':'sb-wait';
+    const statCls=v.status==='done'?'sb-ok':'sb-wait';
+    const statTxt=v.status==='done'?'✅ 완료':'⏳ 진행중';
+    const canEdit=['acc','chief','master','sub_master'].includes(CU.role)&&v.status!=='done';
+    const tr=document.createElement('tr');
+    tr.innerHTML=`
+      <td class="tc" style="white-space:nowrap">${v.date}</td>
+      <td style="font-size:12px">${v.comm}</td>
+      <td style="font-size:12px">${v.dept}</td>
+      <td style="font-size:12px">${v.item}</td>
+      <td class="tnum">${v.amt.toLocaleString()}</td>
+      <td class="tc"><span class="sb ${stepCls}" style="font-size:11px">${v.step}</span></td>
+      <td class="tc"><span class="sb ${statCls}">${statTxt}</span></td>
+      <td class="tc">${v.proxy?'<span class="sb sb-purple">전결</span>':'-'}</td>
+      <td class="tc no-print">${canEdit?`<input type="radio" name="voucherEdit" style="cursor:pointer;width:16px;height:16px;accent-color:var(--blue);" title="클릭하면 결의서 팝업" onchange="showVoucherPopup(${i})">`:'—'}</td>
+      <td class="tc"><button class="btn bo btn-sm" onclick="showVoucherDetail(${i})">상세</button></td>`;
+    tbody.appendChild(tr);
+  });
+  if(myList.length===0){
+    tbody.innerHTML='<tr><td colspan="10" class="tc" style="color:var(--text3)">결의서 목록이 없습니다</td></tr>';
+  }
 }
 
 function toggleVoucher(){
@@ -3324,8 +3390,49 @@ function doPrint(){
 }
 
 // ══ VOUCHER DETAIL ══
-function showVoucherDetail(){
-  showNotif('지출결의서 상세보기','상세 팝업은 완성 버전에서 지원됩니다');
+function showVoucherPopup(idx){
+  const v=VOUCHER_LIST[idx];if(!v)return;
+  const vpComm=document.getElementById('vpComm');if(vpComm)vpComm.textContent=v.comm;
+  const vpDept=document.getElementById('vpDept');if(vpDept)vpDept.textContent=v.dept;
+  const vpItem=document.getElementById('vpItem');if(vpItem)vpItem.textContent=v.item;
+  if(v.detail){
+    const vpi1=document.getElementById('vpi1');if(vpi1)vpi1.value=v.detail.vi1||'';
+    const vpa1=document.getElementById('vpa1');if(vpa1)vpa1.value=v.detail.va1||'';
+    const vpi2=document.getElementById('vpi2');if(vpi2)vpi2.value=v.detail.vi2||'';
+    const vpa2=document.getElementById('vpa2');if(vpa2)vpa2.value=v.detail.va2||'';
+  }
+  calcVpTotal();
+  const modal=document.getElementById('voucherModal');
+  if(modal){modal.dataset.editIdx=idx;modal.style.display='flex';}
+  showNotif('결의서 수정 모드 ✏️','내용 수정 후 [💾 저장] 버튼을 눌러주세요');
+}
+function showVoucherDetail(idx){
+  if(idx===undefined){showNotif('결의서 상세','준비 중입니다');return;}
+  showVoucherPopup(idx);
+}
+function calcVpTotal(){
+  const a1=parseInt(document.getElementById('vpa1')?document.getElementById('vpa1').value:0)||0;
+  const a2=parseInt(document.getElementById('vpa2')?document.getElementById('vpa2').value:0)||0;
+  const tot=document.getElementById('vpTotal');
+  if(tot)tot.textContent=(a1+a2).toLocaleString();
+}
+function saveVoucherEdit(){
+  const modal=document.getElementById('voucherModal');
+  const idx=modal?parseInt(modal.dataset.editIdx):-1;
+  if(idx<0||!VOUCHER_LIST[idx])return;
+  const v=VOUCHER_LIST[idx];
+  v.detail.vi1=document.getElementById('vpi1')?document.getElementById('vpi1').value:'';
+  v.detail.va1=parseInt(document.getElementById('vpa1')?document.getElementById('vpa1').value:0)||0;
+  v.detail.vi2=document.getElementById('vpi2')?document.getElementById('vpi2').value:'';
+  v.detail.va2=parseInt(document.getElementById('vpa2')?document.getElementById('vpa2').value:0)||0;
+  v.amt=(v.detail.va1||0)+(v.detail.va2||0);
+  closeVoucherModal();
+  buildVoucherList();
+  showNotif('수정 완료 ✅','결의서가 수정되었습니다');
+}
+function closeVoucherModal(){
+  const modal=document.getElementById('voucherModal');
+  if(modal)modal.style.display='none';
 }
 
 // ══ FORM TOGGLES ══
