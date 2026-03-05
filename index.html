@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>교회 회계 장부 시스템 v3.1.4</title>
+<title>교회 회계 장부 시스템 v3.1.5</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Serif+KR:wght@400;600;700;900&display=swap');
 
@@ -451,7 +451,7 @@ tr:hover td{background:#fafaf7;}
       <span class="cross">✝️</span>
       <h1>교회 회계 장부 시스템</h1>
       <p>Church Financial Management System</p>
-      <span class="ver">v3.1.4</span>
+      <span class="ver">v3.1.5</span>
     </div>
     <div class="ig"><label>통합 아이디</label>
       <input type="text" id="s1id" placeholder="아이디 입력" value="church2025">
@@ -517,7 +517,7 @@ tr:hover td{background:#fafaf7;}
 <div id="app">
   <div class="topbar">
     <button class="menu-btn" onclick="toggleSidebar()">☰</button>
-    <div class="topbar-title">✝️ 교회 회계 장부 v3.1.4</div>
+    <div class="topbar-title">✝️ 교회 회계 장부 v3.1.5</div>
     <div class="topbar-user">
       <strong id="tbName">-</strong>
       <span id="tbComm">-</span>
@@ -546,7 +546,7 @@ tr:hover td{background:#fafaf7;}
     <div class="ndiv"></div>
     <div class="ns" id="nav-pastor" style="display:none">
       <div class="nsl">당회장</div>
-      <button class="nb" onclick="sp('pastor',this)"><span class="ico">👑</span>결의서 사후승인<span class="badge" id="pbadge">5</span></button>
+      <button class="nb" onclick="sp('pastor',this)"><span class="ico">⛪</span>결의서 사후승인<span class="badge" id="pbadge">5</span></button>
     </div>
     <div class="ndiv" id="ndiv-pastor" style="display:none"></div>
     <div class="ns" id="nav-audit" style="display:none">
@@ -655,6 +655,10 @@ tr:hover td{background:#fafaf7;}
               <select id="fDetail"><option value="">-- 세부항목 선택 --</option></select>
             </div>
             <div class="fg full"><label>적요 (상세내용) *</label>
+              <select id="fMemoSel" onchange="onMemoSelChange()" style="margin-bottom:6px;">
+                <option value="">-- 이전 적요 선택 또는 직접입력 --</option>
+                <option value="__direct__">✏️ 직접입력</option>
+              </select>
               <input type="text" id="fMemo" placeholder="예) 찬양팀 간식비, 임원 MT 교통비">
             </div>
             <div class="fg"><label>수입 (원)</label><input type="number" id="fInc" placeholder="0"></div>
@@ -939,7 +943,13 @@ tr:hover td{background:#fafaf7;}
                 <option>인쇄물</option><option>소모품</option><option>강사사례비</option><option>기타</option>
               </select>
             </div>
-            <div class="fg full"><label>적요 *</label><input type="text" id="sfMemo" placeholder="예) 조별 요리대결 식재료"></div>
+            <div class="fg full"><label>적요 *</label>
+              <select id="sfMemoSel" onchange="onSfMemoSelChange()" style="margin-bottom:6px;">
+                <option value="">-- 이전 적요 선택 또는 직접입력 --</option>
+                <option value="__direct__">✏️ 직접입력</option>
+              </select>
+              <input type="text" id="sfMemo" placeholder="예) 조별 요리대결 식재료">
+            </div>
             <div class="fg"><label>지출액 (원) *</label><input type="number" id="sfExp" placeholder="0"></div>
             <div class="fg"><label>영수증</label>
               <input type="file" id="sfReceipt" accept="image/*" capture="environment" style="display:none">
@@ -965,7 +975,7 @@ tr:hover td{background:#fafaf7;}
     <!-- 👑 당회장 -->
     <div class="page" id="page-pastor">
       <div class="ph">
-        <div class="ph-left"><h2>👑 결의서 사후승인</h2><p>재정부회계 승인요청 결의서 목록</p></div>
+        <div class="ph-left"><h2>⛪ 결의서 사후승인</h2><p>재정부회계 승인요청 결의서 목록</p></div>
         <div class="ph-right no-print">
           <button class="btn bp" onclick="batchApprove()">📋 일괄 승인</button>
         </div>
@@ -1233,7 +1243,7 @@ tr:hover td{background:#fafaf7;}
 
 <script>
 // ══════════════════════════════════════════
-// 전체 데이터 구조 v3.1.4
+// 전체 데이터 구조 v3.1.5
 // ══════════════════════════════════════════
 
 // 예배위원회 SVG: 성경책+음표+기도손 합성
@@ -2546,6 +2556,39 @@ function onCatChange(){
   const od=document.createElement('option');od.value='직접입력';od.textContent='✏️ 직접입력';detSel.appendChild(od);
 }
 
+// ══ 적요 선택 핸들러 ══
+function onMemoSelChange(){
+  const sel=document.getElementById('fMemoSel');
+  const inp=document.getElementById('fMemo');
+  if(!sel||!inp)return;
+  if(sel.value==='__direct__'||sel.value===''){
+    inp.value='';
+    inp.style.display='block';
+    inp.focus();
+  } else {
+    inp.value=sel.value;
+    inp.style.display='block';
+  }
+}
+function buildMemoList(){
+  // LEDGER에서 사용된 적요 목록 수집
+  const sel=document.getElementById('fMemoSel');
+  if(!sel)return;
+  const existing=sel.value;
+  sel.innerHTML='<option value="">-- 이전 적요 선택 또는 직접입력 --</option>';
+  const memos=[...new Set(LEDGER.filter(r=>r.memo).map(r=>r.memo))].slice(0,20);
+  memos.forEach(m=>{
+    const o=document.createElement('option');
+    o.value=m; o.textContent=m;
+    sel.appendChild(o);
+  });
+  const od=document.createElement('option');
+  od.value='__direct__'; od.textContent='✏️ 직접입력';
+  sel.appendChild(od);
+  // 값 복원
+  if(existing)sel.value=existing;
+}
+
 // ══ LEDGER ══
 function renderLedger(){
   const mon=document.getElementById('selMon').value;
@@ -2699,6 +2742,14 @@ function loadExpForm(idx){
     detSel.insertBefore(o, detSel.lastChild);
   }
   detSel.value=row.detail||'';
+  // 적요 select 갱신 후 값 설정
+  buildMemoList();
+  const memoSel=document.getElementById('fMemoSel');
+  if(memoSel){
+    let found=false;
+    for(let o of memoSel.options){if(o.value===row.memo){found=true;break;}}
+    memoSel.value=found?row.memo:'';
+  }
   document.getElementById('fMemo').value=row.memo||'';
   document.getElementById('fInc').value=row.income||'';
   document.getElementById('fExp').value=row.expense||'';
@@ -2806,7 +2857,7 @@ function buildApprovalFlow(){
     {name:"재정부장",sub:"검토승인",ico:"👔"},
     {name:"재정위원장",sub:"최종승인",ico:"🏛️"},
     {name:"재정부회계",sub:"은행이체→알림",ico:"🏦"},
-    {name:"당회장",sub:"사후승인",ico:"👑"},
+    {name:"당회장",sub:"사후승인",ico:"⛪"},
   ];
   const flow=document.getElementById('approvalFlow');
   flow.innerHTML='';
@@ -2911,6 +2962,7 @@ function buildApprovalPending(){
           <button class="btn bs btn-sm" onclick="doApprove(this,'승인')">✓ 승인</button>
           <button class="btn bd btn-sm" onclick="doApprove(this,'반려')">✗ 반려</button>
           <button class="btn bo btn-sm" onclick="doProxy(this)">전결</button>
+          ${['acc','chief'].includes(CU.role)?`<button class="btn bp btn-sm" onclick="doEditApproval(this,${i})">✏️ 수정</button>`:''}
         </div></td>`;
       tbody.appendChild(tr);
     });
@@ -2925,6 +2977,10 @@ function buildApprovalPending(){
   `;
 }
 
+function doEditApproval(btn,idx){
+  if(!['acc','chief'].includes(CU.role)){alert('수정 권한이 없습니다');return;}
+  showNotif('수정 모드 ✏️','결의서 수정 기능은 추후 지원 예정입니다');
+}
 function doApprove(btn,action){
   const row=btn.closest('tr');
   const who=row.cells[0].textContent;
@@ -3227,6 +3283,7 @@ function toggleExpForm(){
     const today=new Date().toISOString().split('T')[0];
     document.getElementById('fDate').value=today;
     _editIdx=-1;
+    buildMemoList();
   }
 }
 function cancelExpForm(){
@@ -3241,6 +3298,7 @@ function toggleSpecForm(){
     const today=new Date().toISOString().split('T')[0];
     document.getElementById('sfDate').value=today;
     _editSpecIdx=-1;
+    buildSfMemoList();
   }
 }
 function onReceiptChg(){
@@ -3304,6 +3362,7 @@ function clearExpForm(){
   document.getElementById('fDate').value='';
   document.getElementById('fCat').value='';
   document.getElementById('fDetail').innerHTML='<option value="">-- 세부항목 선택 --</option>';
+  const ms=document.getElementById('fMemoSel');if(ms)ms.value='';
   document.getElementById('fMemo').value='';
   document.getElementById('fInc').value='';
   document.getElementById('fExp').value='';
@@ -3337,8 +3396,33 @@ function submitSpec(){
 function clearSpecForm(){
   document.getElementById('sfDate').value='';
   document.getElementById('sfCat').value=document.getElementById('sfCat').options[0].value;
+  const sms=document.getElementById('sfMemoSel');if(sms)sms.value='';
   document.getElementById('sfMemo').value='';
   document.getElementById('sfExp').value='';
+}
+function onSfMemoSelChange(){
+  const sel=document.getElementById('sfMemoSel');
+  const inp=document.getElementById('sfMemo');
+  if(!sel||!inp)return;
+  if(sel.value==='__direct__'||sel.value===''){
+    inp.value=''; inp.focus();
+  } else {
+    inp.value=sel.value;
+  }
+}
+function buildSfMemoList(){
+  const sel=document.getElementById('sfMemoSel');
+  if(!sel)return;
+  const existing=sel.value;
+  sel.innerHTML='<option value="">-- 이전 적요 선택 또는 직접입력 --</option>';
+  const memos=[...new Set(SPEC_LEDGER.filter(r=>r.memo).map(r=>r.memo))].slice(0,20);
+  memos.forEach(m=>{
+    const o=document.createElement('option');
+    o.value=m; o.textContent=m; sel.appendChild(o);
+  });
+  const od=document.createElement('option');
+  od.value='__direct__'; od.textContent='✏️ 직접입력'; sel.appendChild(od);
+  if(existing)sel.value=existing;
 }
 function cancelSpecForm(){
   const f=document.getElementById('specForm');if(f)f.style.display='none';
@@ -3351,6 +3435,13 @@ function loadSpecForm(idx){
   if(row.date&&row.date.includes('/')){const p=row.date.split('/');dateVal=yr+'-'+p[0].padStart(2,'0')+'-'+p[1].padStart(2,'0');}
   document.getElementById('sfDate').value=dateVal;
   document.getElementById('sfCat').value=row.cat;
+  buildSfMemoList();
+  const sfMemoSel=document.getElementById('sfMemoSel');
+  if(sfMemoSel){
+    let found=false;
+    for(let o of sfMemoSel.options){if(o.value===row.memo){found=true;break;}}
+    sfMemoSel.value=found?row.memo:'';
+  }
   document.getElementById('sfMemo').value=row.memo||'';
   document.getElementById('sfExp').value=row.expense||'';
   const form=document.getElementById('specForm');
