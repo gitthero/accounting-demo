@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>교회 회계 장부 시스템 v3.1.5</title>
+<title>교회 회계 장부 시스템 v3.1.6</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Serif+KR:wght@400;600;700;900&display=swap');
 
@@ -451,7 +451,7 @@ tr:hover td{background:#fafaf7;}
       <span class="cross">✝️</span>
       <h1>교회 회계 장부 시스템</h1>
       <p>Church Financial Management System</p>
-      <span class="ver">v3.1.5</span>
+      <span class="ver">v3.1.6</span>
     </div>
     <div class="ig"><label>통합 아이디</label>
       <input type="text" id="s1id" placeholder="아이디 입력" value="church2025">
@@ -517,7 +517,7 @@ tr:hover td{background:#fafaf7;}
 <div id="app">
   <div class="topbar">
     <button class="menu-btn" onclick="toggleSidebar()">☰</button>
-    <div class="topbar-title">✝️ 교회 회계 장부 v3.1.5</div>
+    <div class="topbar-title">✝️ 교회 회계 장부 v3.1.6</div>
     <div class="topbar-user">
       <strong id="tbName">-</strong>
       <span id="tbComm">-</span>
@@ -892,7 +892,7 @@ tr:hover td{background:#fafaf7;}
       <div class="tw">
         <div class="th"><h3>✅ 처리 완료</h3></div>
         <div class="ts"><table>
-          <thead><tr><th>신청자</th><th>항목</th><th>금액</th><th>결과</th><th>처리일시</th></tr></thead>
+          <thead><tr><th>신청자</th><th>항목</th><th>금액</th><th>결과</th><th>특기사항</th><th>처리일시</th></tr></thead>
           <tbody id="approvalDone"></tbody>
         </table></div>
       </div>
@@ -910,10 +910,11 @@ tr:hover td{background:#fafaf7;}
       <div class="fb no-print">
         <label>부서</label>
         <select id="selSpDept" onchange="onSpDeptChange()">
-          <option>중등부</option><option>고등부</option><option>청년부</option>
+          <option>유아부</option><option>유치부</option>
           <option>유년1부</option><option>유년2부</option>
           <option>소년1부</option><option>소년2부</option>
-          <option>유치부</option><option>유아부</option>
+          <option>중등부</option><option>고등부</option><option>청년부</option>
+          <option>50주년기념부</option>
         </select>
         <label>행사</label>
         <select id="selEvent">
@@ -937,10 +938,13 @@ tr:hover td{background:#fafaf7;}
           <div class="fgrid">
             <div class="fg"><label>날짜 *</label><input type="date" id="sfDate"></div>
             <div class="fg"><label>항목 *</label>
-              <select id="sfCat">
-                <option>음향/영상</option><option>간식/사례비</option><option>식사재료</option>
-                <option>숙박비</option><option>교통비</option><option>레크레이션</option>
-                <option>인쇄물</option><option>소모품</option><option>강사사례비</option><option>기타</option>
+              <select id="sfCat" onchange="onSpCatChange()">
+                <option value="">-- 항목 선택 --</option>
+              </select>
+            </div>
+            <div class="fg full"><label>세부항목 *</label>
+              <select id="sfDetail">
+                <option value="">-- 세부항목 선택 --</option>
               </select>
             </div>
             <div class="fg full"><label>적요 *</label>
@@ -966,7 +970,7 @@ tr:hover td{background:#fafaf7;}
       <div class="tw">
         <div class="th"><h3 id="specTableTitle">특별활동 지출내역</h3></div>
         <div class="ts"><table>
-          <thead><tr><th>날짜</th><th>항목</th><th>적요</th><th>영수증</th><th>지출액</th><th>누계잔액</th><th>감사확인</th><th class="no-print">수정</th></tr></thead>
+          <thead><tr><th>날짜</th><th>항목</th><th>세부항목</th><th>적요</th><th>영수증</th><th>지출액</th><th>누계잔액</th><th>감사확인</th><th class="no-print">수정</th></tr></thead>
           <tbody id="specBody"></tbody>
         </table></div>
       </div>
@@ -1243,7 +1247,7 @@ tr:hover td{background:#fafaf7;}
 
 <script>
 // ══════════════════════════════════════════
-// 전체 데이터 구조 v3.1.5
+// 전체 데이터 구조 v3.1.6
 // ══════════════════════════════════════════
 
 // 예배위원회 SVG: 성경책+음표+기도손 합성
@@ -2971,9 +2975,13 @@ function buildApprovalPending(){
   }
 
   const doneBody=document.getElementById('approvalDone');
+  const canNote=['chair','chief','fin_chief','fin_chair','fin_acc','master','sub_master'].includes(role);
+  const noteInput=(key)=>canNote
+    ?`<input type="text" placeholder="특기사항 입력..." style="width:100%;padding:3px 6px;border:1px solid var(--border);border-radius:4px;font-size:11px;font-family:inherit;" onchange="window._doneNote=window._doneNote||{};window._doneNote['${key}']=this.value">`
+    :`<span style="font-size:11px;color:var(--text3)">—</span>`;
   doneBody.innerHTML=`
-    <tr><td>중등부회계</td><td>예배비 - 졸업예배</td><td class="tnum">18,000</td><td><span class="sb sb-ok">✓ 승인</span></td><td class="tc">02/09 14:32</td></tr>
-    <tr><td>중등부회계</td><td>교육비 - 신입생 환영</td><td class="tnum">51,500</td><td><span class="sb sb-ok">✓ 승인</span></td><td class="tc">02/09 14:35</td></tr>
+    <tr><td>중등부회계</td><td>예배비 - 졸업예배</td><td class="tnum">18,000</td><td><span class="sb sb-ok">✓ 승인</span></td><td>${noteInput('done_0')}</td><td class="tc">02/09 14:32</td></tr>
+    <tr><td>중등부회계</td><td>교육비 - 신입생 환영</td><td class="tnum">51,500</td><td><span class="sb sb-ok">✓ 승인</span></td><td>${noteInput('done_1')}</td><td class="tc">02/09 14:35</td></tr>
   `;
 }
 
@@ -3104,6 +3112,13 @@ function endAudit(){
 
 // ══ SPECIAL ══
 const SPECIAL_BIBLE=['유아부','유치부'];
+function getSpComm(dept){
+  // 부서에 따라 위원회 자동 판별
+  const eduDepts=['유아부','유치부','유년1부','유년2부','소년1부','소년2부','중등부','고등부','청년부'];
+  if(eduDepts.includes(dept)) return '교육위원회';
+  if(dept==='50주년기념부') return '50주년기념위원회';
+  return '교육위원회';
+}
 function onSpDeptChange(){
   const dept=document.getElementById('selSpDept').value;
   const evSel=document.getElementById('selEvent');
@@ -3117,7 +3132,44 @@ function onSpDeptChange(){
       const o=document.createElement('option');o.value=e;o.textContent=e;evSel.appendChild(o);
     });
   }
+  // sfCat 항목 채우기
+  const comm=getSpComm(dept);
+  const catSel=document.getElementById('sfCat');
+  if(catSel){
+    catSel.innerHTML='<option value="">-- 항목 선택 --</option>';
+    if(DB[comm]&&DB[comm][dept]){
+      Object.keys(DB[comm][dept]).forEach(cat=>{
+        const o=document.createElement('option');
+        o.value=cat; o.textContent=cat; catSel.appendChild(o);
+      });
+    }
+    const od=document.createElement('option');
+    od.value='직접입력'; od.textContent='✏️ 직접입력'; catSel.appendChild(od);
+  }
+  // 세부항목 초기화
+  const detSel=document.getElementById('sfDetail');
+  if(detSel) detSel.innerHTML='<option value="">-- 세부항목 선택 --</option>';
   buildSpecial();
+}
+function onSpCatChange(){
+  const dept=document.getElementById('selSpDept').value;
+  const comm=getSpComm(dept);
+  const cat=document.getElementById('sfCat').value;
+  const detSel=document.getElementById('sfDetail');
+  detSel.innerHTML='<option value="">-- 세부항목 선택 --</option>';
+  if(cat==='직접입력'){
+    const od=document.createElement('option');
+    od.value='직접입력'; od.textContent='✏️ 직접입력'; detSel.appendChild(od);
+    return;
+  }
+  if(DB[comm]&&DB[comm][dept]&&DB[comm][dept][cat]){
+    DB[comm][dept][cat].forEach(d=>{
+      const o=document.createElement('option');
+      o.value=d; o.textContent=d; detSel.appendChild(o);
+    });
+  }
+  const od=document.createElement('option');
+  od.value='직접입력'; od.textContent='✏️ 직접입력'; detSel.appendChild(od);
 }
 
 // 특별장부 전역 데이터
@@ -3153,6 +3205,7 @@ function buildSpecial(){
     tr.innerHTML=`
       <td class="tc">${row.date}</td>
       <td>${row.cat}</td>
+      <td style="font-size:11px">${row.detail||'-'}</td>
       <td>${row.memo}</td>
       <td class="tc">${row.rno&&row.rno!=='-'?`<span class="sb sb-draft" style="cursor:pointer" onclick="showRec('R-${String(row.rno).padStart(4,'0')}','${row.date}','${row.cat}','${row.memo}','${row.expense}')">🧾 #${row.rno}</span>`:'-'}</td>
       <td class="tnum" style="color:var(--red)">-${row.expense.toLocaleString()}</td>
@@ -3172,7 +3225,7 @@ function buildSpecial(){
   });
   const total=SPEC_LEDGER.reduce((a,r)=>a+r.expense,0);
   const sub=document.createElement('tr');sub.className='tsub';
-  sub.innerHTML=`<td colspan="4" class="tc">소 계</td><td class="tnum" style="color:var(--red)">${total.toLocaleString()}</td><td class="tnum">${(5000000-total).toLocaleString()}</td><td></td><td class="no-print"></td>`;
+  sub.innerHTML=`<td colspan="5" class="tc">소 계</td><td class="tnum" style="color:var(--red)">${total.toLocaleString()}</td><td class="tnum">${(5000000-total).toLocaleString()}</td><td></td><td class="no-print"></td>`;
   tbody.appendChild(sub);
 }
 
@@ -3283,6 +3336,19 @@ function toggleExpForm(){
     const today=new Date().toISOString().split('T')[0];
     document.getElementById('fDate').value=today;
     _editIdx=-1;
+    // fCat 항목 채우기 (DB 기반)
+    const comm=document.getElementById('selComm').value;
+    const dept=document.getElementById('selDept').value;
+    const catSel=document.getElementById('fCat');
+    if(catSel&&comm&&dept&&DB[comm]&&DB[comm][dept]){
+      catSel.innerHTML='<option value="">-- 항목 선택 --</option>';
+      Object.keys(DB[comm][dept]).forEach(cat=>{
+        const o=document.createElement('option');
+        o.value=cat; o.textContent=cat; catSel.appendChild(o);
+      });
+      const oi=document.createElement('option');
+      oi.value='수입'; oi.textContent='💰 수입(예산청구)'; catSel.appendChild(oi);
+    }
     buildMemoList();
   }
 }
@@ -3376,17 +3442,18 @@ function saveDraft(){cancelExpForm();}
 function submitSpec(){
   const date=document.getElementById('sfDate').value;
   const cat=document.getElementById('sfCat').value;
+  const detail=document.getElementById('sfDetail').value;
   const memo=document.getElementById('sfMemo').value;
   const exp=parseInt(document.getElementById('sfExp').value)||0;
   if(!cat||!memo||!exp){alert('항목, 적요, 지출액을 입력해주세요');return;}
   let fmtDate=date;
   if(date&&date.includes('-')){const p=date.split('-');fmtDate=p[1]+'/'+p[2];}
   if(_editSpecIdx>=0){
-    SPEC_LEDGER[_editSpecIdx]={...SPEC_LEDGER[_editSpecIdx],date:fmtDate||SPEC_LEDGER[_editSpecIdx].date,cat:cat,memo:memo,expense:exp};
+    SPEC_LEDGER[_editSpecIdx]={...SPEC_LEDGER[_editSpecIdx],date:fmtDate||SPEC_LEDGER[_editSpecIdx].date,cat:cat,detail:detail||'-',memo:memo,expense:exp};
     _editSpecIdx=-1;
     showNotif('수정 완료 ✅','특별장부가 수정되었습니다');
   } else {
-    SPEC_LEDGER.push({date:fmtDate||'--',cat:cat,memo:memo,rno:String(SPEC_LEDGER.length+1),expense:exp,audited:false});
+    SPEC_LEDGER.push({date:fmtDate||'--',cat:cat,detail:detail||'-',memo:memo,rno:String(SPEC_LEDGER.length+1),expense:exp,audited:false});
     showNotif('저장 완료 ✅','특별활동 지출이 등록되었습니다');
   }
   clearSpecForm();
@@ -3396,6 +3463,7 @@ function submitSpec(){
 function clearSpecForm(){
   document.getElementById('sfDate').value='';
   document.getElementById('sfCat').value=document.getElementById('sfCat').options[0].value;
+  const sfd=document.getElementById('sfDetail');if(sfd)sfd.innerHTML='<option value="">-- 세부항목 선택 --</option>';
   const sms=document.getElementById('sfMemoSel');if(sms)sms.value='';
   document.getElementById('sfMemo').value='';
   document.getElementById('sfExp').value='';
@@ -3435,6 +3503,19 @@ function loadSpecForm(idx){
   if(row.date&&row.date.includes('/')){const p=row.date.split('/');dateVal=yr+'-'+p[0].padStart(2,'0')+'-'+p[1].padStart(2,'0');}
   document.getElementById('sfDate').value=dateVal;
   document.getElementById('sfCat').value=row.cat;
+  onSpCatChange();
+  setTimeout(()=>{
+    const sfd=document.getElementById('sfDetail');
+    if(sfd&&row.detail){
+      let found=false;
+      for(let o of sfd.options){if(o.value===row.detail){found=true;break;}}
+      if(!found&&row.detail!=='-'){
+        const o=document.createElement('option');
+        o.value=row.detail;o.textContent=row.detail;sfd.insertBefore(o,sfd.lastChild);
+      }
+      sfd.value=row.detail||'';
+    }
+  },150);
   buildSfMemoList();
   const sfMemoSel=document.getElementById('sfMemoSel');
   if(sfMemoSel){
