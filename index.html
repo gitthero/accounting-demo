@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>교회 회계 장부 시스템 v3.1.1</title>
+<title>교회 회계 장부 시스템 v3.1.2</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Serif+KR:wght@400;600;700;900&display=swap');
 
@@ -451,7 +451,7 @@ tr:hover td{background:#fafaf7;}
       <span class="cross">✝️</span>
       <h1>교회 회계 장부 시스템</h1>
       <p>Church Financial Management System</p>
-      <span class="ver">v3.1.1</span>
+      <span class="ver">v3.1.2</span>
     </div>
     <div class="ig"><label>통합 아이디</label>
       <input type="text" id="s1id" placeholder="아이디 입력" value="church2025">
@@ -517,7 +517,7 @@ tr:hover td{background:#fafaf7;}
 <div id="app">
   <div class="topbar">
     <button class="menu-btn" onclick="toggleSidebar()">☰</button>
-    <div class="topbar-title">✝️ 교회 회계 장부 v3.1.1</div>
+    <div class="topbar-title">✝️ 교회 회계 장부 v3.1.2</div>
     <div class="topbar-user">
       <strong id="tbName">-</strong>
       <span id="tbComm">-</span>
@@ -669,7 +669,6 @@ tr:hover td{background:#fafaf7;}
         </div>
         <div class="faction">
           <button class="btn bp" onclick="submitExp()">💾 저장</button>
-          <button class="btn bs" onclick="updateExp()">✏️ 수정</button>
           <button class="btn bo" onclick="cancelExpForm()">취소</button>
         </div>
       </div>
@@ -682,7 +681,7 @@ tr:hover td{background:#fafaf7;}
           <thead><tr>
             <th>날짜</th><th>항목</th><th>세부항목</th><th>적요</th>
             <th>영수증</th><th>수입</th><th>지출</th><th>잔액</th>
-            <th>특기사항</th><th>감사확인</th>
+            <th class="no-print">수정</th><th>특기사항</th><th>감사확인</th>
           </tr></thead>
           <tbody id="ledgerBody"></tbody>
         </table></div>
@@ -1234,7 +1233,7 @@ tr:hover td{background:#fafaf7;}
 
 <script>
 // ══════════════════════════════════════════
-// 전체 데이터 구조 v3.1.1
+// 전체 데이터 구조 v3.1.2
 // ══════════════════════════════════════════
 
 // 예배위원회 SVG: 성경책+음표+기도손 합성
@@ -2575,17 +2574,18 @@ function renderLedger(){
 
     const tr=document.createElement('tr');
     if(row.audited)tr.className='audited';
-    tr.style.cursor='pointer';
-    tr.title='클릭하면 수정 폼에 불러옵니다';
-    tr.onclick=(()=>{
-      const ri=i;
-      return function(e){
-        // 감사확인, 영수증, input 클릭 시 수정폼 열리지 않도록 차단
-        if(e.target.tagName==='INPUT'||e.target.tagName==='LABEL'||
-           e.target.closest('.audit-check')||e.target.closest('.sb'))return;
-        loadExpForm(ri);
-      };
-    })();
+
+    // 수정 라디오 버튼 셀
+    const editTd=document.createElement('td');
+    editTd.className='tc no-print';
+    const radio=document.createElement('input');
+    radio.type='radio';
+    radio.name='editRow';
+    radio.title='클릭하면 수정 폼에 불러옵니다';
+    radio.style.cssText='cursor:pointer;width:16px;height:16px;accent-color:var(--blue);';
+    (function(ri){radio.onchange=function(){if(this.checked)loadExpForm(ri);};})(i);
+    editTd.appendChild(radio);
+
     tr.innerHTML=`
       <td class="tc">${row.date}</td>
       <td>${row.cat}</td>
@@ -2598,14 +2598,15 @@ function renderLedger(){
       <td class="tc">${noteCell}</td>
       <td class="tc no-print">${auditCell}</td>
     `;
+    tr.insertBefore(editTd, tr.firstChild);
     tbody.appendChild(tr);
   });
 
   const sub=document.createElement('tr');sub.className='tsub';
-  sub.innerHTML=`<td colspan="5" class="tc">${mon==='전체'?'합':'월'} 소 계</td><td class="tnum">${totInc.toLocaleString()}</td><td class="tnum" style="color:var(--red)">${totExp.toLocaleString()}</td><td class="tnum">${(totInc-totExp).toLocaleString()}</td><td></td><td></td>`;
+  sub.innerHTML=`<td class="tc no-print"></td><td colspan="5" class="tc">${mon==='전체'?'합':'월'} 소 계</td><td class="tnum">${totInc.toLocaleString()}</td><td class="tnum" style="color:var(--red)">${totExp.toLocaleString()}</td><td class="tnum">${(totInc-totExp).toLocaleString()}</td><td></td><td></td>`;
   tbody.appendChild(sub);
   const tot=document.createElement('tr');tot.className='ttot';
-  tot.innerHTML=`<td colspan="5" class="tc">누 계 (이월금 포함)</td><td class="tnum">${totInc.toLocaleString()}</td><td class="tnum">${totExp.toLocaleString()}</td><td class="tnum" style="color:${bal<0?'var(--red)':'var(--green)'};font-weight:900">${bal.toLocaleString()}</td><td></td><td></td>`;
+  tot.innerHTML=`<td class="tc no-print"></td><td colspan="5" class="tc">누 계 (이월금 포함)</td><td class="tnum">${totInc.toLocaleString()}</td><td class="tnum">${totExp.toLocaleString()}</td><td class="tnum" style="color:${bal<0?'var(--red)':'var(--green)'};font-weight:900">${bal.toLocaleString()}</td><td></td><td></td>`;
   tbody.appendChild(tot);
 
   // 회계 특기사항 행 (회계/부장/마스터만 편집)
@@ -2616,7 +2617,7 @@ function renderLedger(){
   accNoteRow.style.cssText = 'background:#fffbe8;';
   const accNoteVal = (window._accNote && window._accNote[noteComm+'_'+noteDept+'_'+mon]) || '';
   accNoteRow.innerHTML = `
-    <td colspan="3" style="font-size:11px;font-weight:800;color:var(--gold);padding:6px 12px;">📝 회계 특기사항</td>
+    <td class="no-print"></td><td colspan="3" style="font-size:11px;font-weight:800;color:var(--gold);padding:6px 12px;">📝 회계 특기사항</td>
     <td colspan="7" style="padding:4px 8px;">
       ${canEditAccNote
         ? `<input type="text" id="accNoteInput" value="${accNoteVal.replace(/"/g,'&quot;')}" placeholder="회계 특기사항을 입력하세요" style="width:100%;padding:4px 8px;border:1px solid var(--gold);border-radius:4px;font-size:12px;font-family:inherit;background:#fffbe8;" onchange="saveAccNote('${noteComm}','${noteDept}','${mon}',this.value)">`
@@ -2631,7 +2632,7 @@ function renderLedger(){
   audNoteRow.style.cssText = 'background:#f0ebf8;';
   const audNoteVal = (window._audNote && window._audNote[noteComm+'_'+noteDept+'_'+mon]) || '';
   audNoteRow.innerHTML = `
-    <td colspan="3" style="font-size:11px;font-weight:800;color:var(--purple);padding:6px 12px;">🔍 감사 의견</td>
+    <td class="no-print"></td><td colspan="3" style="font-size:11px;font-weight:800;color:var(--purple);padding:6px 12px;">🔍 감사 의견</td>
     <td colspan="7" style="padding:4px 8px;">
       ${canEditAudNote
         ? `<input type="text" id="audNoteInput" value="${audNoteVal.replace(/"/g,'&quot;')}" placeholder="감사 의견을 입력하세요" style="width:100%;padding:4px 8px;border:1px solid var(--purple);border-radius:4px;font-size:12px;font-family:inherit;background:#f0ebf8;" onchange="saveAudNote('${noteComm}','${noteDept}','${mon}',this.value)">`
@@ -2669,28 +2670,33 @@ function loadExpForm(idx){
     dateVal=yr+'-'+p[0].padStart(2,'0')+'-'+p[1].padStart(2,'0');
   }
   document.getElementById('fDate').value=dateVal;
-  // 항목 선택
+  // 항목 선택 → onCatChange로 세부항목 목록 채우기
   const catSel=document.getElementById('fCat');
   catSel.value=row.cat;
   onCatChange();
+  // 세부항목: setTimeout으로 목록 채워진 후 선택
+  // 목록에 없으면 직접 option 추가
   setTimeout(()=>{
     const detSel=document.getElementById('fDetail');
-    detSel.value=row.detail;
-  },100);
+    // 기존 옵션에 있는지 확인
+    let found=false;
+    for(let o of detSel.options){if(o.value===row.detail){found=true;break;}}
+    if(!found && row.detail && row.detail!=='-'){
+      const o=document.createElement('option');
+      o.value=row.detail; o.textContent=row.detail;
+      detSel.appendChild(o);
+    }
+    detSel.value=row.detail||'';
+  },150);
   document.getElementById('fMemo').value=row.memo||'';
   document.getElementById('fInc').value=row.income||'';
   document.getElementById('fExp').value=row.expense||'';
   document.getElementById('fRno').value=row.rno!=='-'?row.rno:'';
-  // 폼 열기 - 이미 열려있지 않으면 열기
+  // 폼 열기
   const form=document.getElementById('expForm');
-  if(form&&form.style.display==='none'){
-    form.style.display='block';
-  }
-  // 스크롤은 폼이 완전히 열린 후
-  setTimeout(()=>{
-    if(form)form.scrollIntoView({behavior:'smooth',block:'start'});
-  },50);
-  showNotif('수정 모드 ✏️','내용 수정 후 [✏️ 수정] 버튼을 눌러주세요');
+  if(form&&form.style.display==='none') form.style.display='block';
+  setTimeout(()=>{if(form)form.scrollIntoView({behavior:'smooth',block:'start'});},50);
+  showNotif('수정 모드 ✏️','내용 수정 후 [💾 저장] 버튼을 눌러주세요');
 }
 
 // ══ 특기사항 저장 함수 ══
@@ -3227,17 +3233,41 @@ function submitExp(){
     const p=date.split('-');
     fmtDate=p[1]+'/'+p[2];
   }
-  // 월 추출
   const mon=document.getElementById('selMon').value||'전체';
-  const row={
-    date:fmtDate||'--',
-    mon: mon==='전체'?(date?date.split('-')[1]+'월':'--'):mon,
-    cat:cat, detail:detail||'-', memo:memo,
-    rno:rno, income:inc, expense:exp,
-    status:'draft', audited:false, note:''
-  };
-  LEDGER.push(row);
-  // 폼 초기화
+  const rowMon=mon==='전체'?(date?date.split('-')[1]+'월':'--'):mon;
+  if(_editIdx>=0){
+    // 수정 모드 - 기존 행 덮어쓰기
+    LEDGER[_editIdx]={
+      ...LEDGER[_editIdx],
+      date:fmtDate||LEDGER[_editIdx].date,
+      mon:rowMon,
+      cat:cat, detail:detail||'-', memo:memo,
+      rno:rno, income:inc, expense:exp
+    };
+    _editIdx=-1;
+    clearExpForm();
+    const sf=document.getElementById('expForm');
+    if(sf)sf.style.display='none';
+    renderLedger();
+    showNotif('수정 완료 ✅','지출내역이 수정되었습니다');
+  } else {
+    // 신규 저장
+    const row={
+      date:fmtDate||'--', mon:rowMon,
+      cat:cat, detail:detail||'-', memo:memo,
+      rno:rno, income:inc, expense:exp,
+      status:'draft', audited:false, note:''
+    };
+    LEDGER.push(row);
+    clearExpForm();
+    const sf=document.getElementById('expForm');
+    if(sf)sf.style.display='none';
+    _editIdx=-1;
+    renderLedger();
+    showNotif('저장 완료 ✅','지출내역에 반영되었습니다');
+  }
+}
+function clearExpForm(){
   document.getElementById('fDate').value='';
   document.getElementById('fCat').value='';
   document.getElementById('fDetail').innerHTML='<option value="">-- 세부항목 선택 --</option>';
@@ -3245,42 +3275,11 @@ function submitExp(){
   document.getElementById('fInc').value='';
   document.getElementById('fExp').value='';
   document.getElementById('fRno').value='';
-  const sf=document.getElementById('expForm');
-  if(sf)sf.style.display='none';
-  _editIdx=-1;
-  renderLedger();
-  showNotif('저장 완료 ✅','지출내역에 반영되었습니다');
 }
 
 // ══ 수정: 선택한 행 수정 모드 ══
 let _editIdx = -1;
-function updateExp(){
-  // 현재 tbody에서 선택된 행 인덱스 확인
-  if(_editIdx < 0){alert('수정할 항목을 먼저 클릭해서 선택해주세요');return;}
-  const date=document.getElementById('fDate').value;
-  const cat=document.getElementById('fCat').value;
-  const detail=document.getElementById('fDetail').value;
-  const memo=document.getElementById('fMemo').value;
-  const inc=parseInt(document.getElementById('fInc').value)||0;
-  const exp=parseInt(document.getElementById('fExp').value)||0;
-  const rno=document.getElementById('fRno').value||'-';
-  if(!cat||!memo){alert('항목과 적요를 입력해주세요');return;}
-  let fmtDate=date;
-  if(date&&date.includes('-')){const p=date.split('-');fmtDate=p[1]+'/'+p[2];}
-  const mon=document.getElementById('selMon').value||'전체';
-  LEDGER[_editIdx]={
-    ...LEDGER[_editIdx],
-    date:fmtDate||LEDGER[_editIdx].date,
-    mon: mon==='전체'?LEDGER[_editIdx].mon:mon,
-    cat:cat, detail:detail||'-', memo:memo,
-    rno:rno, income:inc, expense:exp
-  };
-  _editIdx=-1;
-  const uf=document.getElementById('expForm');
-  if(uf)uf.style.display='none';
-  renderLedger();
-  showNotif('수정 완료 ✅','지출내역이 수정되었습니다');
-}
+
 function saveDraft(){cancelExpForm();}
 function submitSpec(){toggleSpecForm();showNotif('특별활동 지출 등록 완료 ✅','');}
 function excelImport(i){if(i.files.length>0)showNotif('엑셀 불러오기 완료 📂','예산 데이터 자동 입력완료');}
