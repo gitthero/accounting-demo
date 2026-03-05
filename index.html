@@ -591,7 +591,6 @@ tr:hover td{background:#fafaf7;}
       <div class="fb no-print">
         <select id="selComm" onchange="onCommChange()"></select>
         <select id="selDept" onchange="onDeptChange()" style="max-width:260px"></select>
-        <span id="deptBudgetBadge" style="background:var(--blue-light);color:var(--blue);padding:5px 10px;border-radius:8px;font-size:12px;font-weight:800;display:none"></span>
         <select id="selMon" onchange="renderLedger()">
           <option>전체</option>
           <option selected>2월</option>
@@ -608,36 +607,36 @@ tr:hover td{background:#fafaf7;}
       </div>
 
       <div class="sc" style="grid-template-columns:repeat(6,1fr);gap:8px;">
-        <div class="scard cb" style="padding:8px 12px;">
-          <div class="lbl" style="font-size:10px;margin-bottom:3px;">📌 연간예산</div>
-          <div class="val vb" id="cBudget" style="font-size:14px;font-weight:900;">-</div>
-          <div class="sub" style="font-size:10px;">원</div>
+        <div class="scard cb" style="padding:4px 8px;">
+          <div class="lbl" style="font-size:9px;margin-bottom:1px;">📌 연간예산</div>
+          <div class="val vb" id="cBudget" style="font-size:11px;font-weight:900;">-</div>
+          <div class="sub" style="font-size:9px;">원</div>
         </div>
-        <div class="scard co" style="padding:8px 12px;">
-          <div class="lbl" style="font-size:10px;margin-bottom:3px;">↩️ 이월금</div>
-          <div class="val vo" id="cCarry" style="font-size:14px;font-weight:900;">0</div>
-          <div class="sub" style="font-size:10px;">원</div>
+        <div class="scard co" style="padding:4px 8px;">
+          <div class="lbl" style="font-size:9px;margin-bottom:1px;">↩️ 이월금</div>
+          <div class="val vo" id="cCarry" style="font-size:11px;font-weight:900;">0</div>
+          <div class="sub" style="font-size:9px;">원</div>
         </div>
-        <div class="scard cg" style="padding:8px 12px;">
-          <div class="lbl" style="font-size:10px;margin-bottom:3px;">💰 총수입</div>
-          <div class="val vg" id="cInc" style="font-size:14px;font-weight:900;">-</div>
-          <div class="sub" style="font-size:10px;">원</div>
+        <div class="scard cg" style="padding:4px 8px;">
+          <div class="lbl" style="font-size:9px;margin-bottom:1px;">💰 총수입</div>
+          <div class="val vg" id="cInc" style="font-size:11px;font-weight:900;">-</div>
+          <div class="sub" style="font-size:9px;">원</div>
         </div>
-        <div class="scard cr" style="padding:8px 12px;">
-          <div class="lbl" style="font-size:10px;margin-bottom:3px;">💸 총지출</div>
-          <div class="val vr" id="cExp" style="font-size:14px;font-weight:900;">-</div>
-          <div class="sub" style="font-size:10px;">원</div>
+        <div class="scard cr" style="padding:4px 8px;">
+          <div class="lbl" style="font-size:9px;margin-bottom:1px;">💸 총지출</div>
+          <div class="val vr" id="cExp" style="font-size:11px;font-weight:900;">-</div>
+          <div class="sub" style="font-size:9px;">원</div>
           <div class="prog" style="margin-top:4px;"><div class="pf pfr" id="cProg" style="width:0%"></div></div>
         </div>
-        <div class="scard cp" style="padding:8px 12px;">
-          <div class="lbl" style="font-size:10px;margin-bottom:3px;">📊 누계</div>
-          <div class="val vp" id="cCumul" style="font-size:14px;font-weight:900;">-</div>
-          <div class="sub" style="font-size:10px;">원</div>
+        <div class="scard cp" style="padding:4px 8px;">
+          <div class="lbl" style="font-size:9px;margin-bottom:1px;">📊 누계</div>
+          <div class="val vp" id="cCumul" style="font-size:11px;font-weight:900;">-</div>
+          <div class="sub" style="font-size:9px;">원</div>
         </div>
-        <div class="scard cg" style="padding:8px 12px;">
-          <div class="lbl" style="font-size:10px;margin-bottom:3px;">🏦 잔액</div>
-          <div class="val vg" id="cBal" style="font-size:14px;font-weight:900;">-</div>
-          <div class="sub" style="font-size:10px;">원</div>
+        <div class="scard cg" style="padding:4px 8px;">
+          <div class="lbl" style="font-size:9px;margin-bottom:1px;">🏦 잔액</div>
+          <div class="val vg" id="cBal" style="font-size:11px;font-weight:900;">-</div>
+          <div class="sub" style="font-size:9px;">원</div>
         </div>
       </div>
 
@@ -681,7 +680,7 @@ tr:hover td{background:#fafaf7;}
           <thead><tr>
             <th>날짜</th><th>항목</th><th>세부항목</th><th>적요</th>
             <th>영수증</th><th>수입</th><th>지출</th><th>잔액</th>
-            <th>결재</th><th class="no-print">감사확인</th>
+            <th>특기사항</th><th>감사확인</th>
           </tr></thead>
           <tbody id="ledgerBody"></tbody>
         </table></div>
@@ -956,7 +955,7 @@ tr:hover td{background:#fafaf7;}
       <div class="tw">
         <div class="th"><h3 id="specTableTitle">특별활동 지출내역</h3></div>
         <div class="ts"><table>
-          <thead><tr><th>날짜</th><th>항목</th><th>적요</th><th>영수증</th><th>지출액</th><th>누계잔액</th><th>결재</th><th class="no-print">감사확인</th></tr></thead>
+          <thead><tr><th>날짜</th><th>항목</th><th>적요</th><th>영수증</th><th>지출액</th><th>누계잔액</th><th>특기사항</th></tr></thead>
           <tbody id="specBody"></tbody>
         </table></div>
       </div>
@@ -2448,12 +2447,9 @@ function onCommChange(){
 
   const isFull=['master','sub_master','pastor'].includes(CU.role);
   const isChair=CU.role==='chair';
-  // 회계/부장: 본인 부서만! (엄격 제한)
-  if(['acc','chief'].includes(CU.role)){
-    depts=depts.filter(d=>d===CU.dept);
-  }
-  // 위원장: 해당 위원회 전체 부서
-  // 마스터/당회장: 전체
+  // 위원장/회계/부장: 해당 위원회 전체 부서 표시 (다른 위원회는 buildCommSelect에서 이미 필터됨)
+  // 마스터/당회장: 전체 위원회 전체 부서
+  // → acc/chief도 이제 본인 위원회 전체 부서 접근 가능
   depts.forEach(d=>{
     const o=document.createElement('option');
     o.value=d;
@@ -2526,13 +2522,6 @@ function onDeptChange(){
   const at=document.getElementById('annualTableTitle');
   if(at)at.textContent=`${dept} 연간 예산집행현황 (단위: 원)`;
   // 예산 배지
-  const bb=document.getElementById('deptBudgetBadge');
-  if(bb){
-    const bdg=getBudgetTotal(comm,dept);
-    if(bdg){bb.textContent=`💰 연간예산 ${bdg.toLocaleString()}원`;bb.style.display='inline';}
-    else{bb.style.display='none';}
-  }
-
   renderLedger();
   buildAnnual(comm,dept);
   buildMonthly();
@@ -2570,13 +2559,18 @@ function renderLedger(){
   data.forEach((row,i)=>{
     bal+=row.income-row.expense;
     totInc+=row.income;totExp+=row.expense;
-    const isAuditEnabled=auditActive&&(CU.role==='auditor'||['master','sub_master'].includes(CU.role));
-    const auditCell=isAuditEnabled?
-      `<div class="audit-check">
-        <input type="radio" name="audit_${i}" id="aud_${i}" ${row.audited?'checked':''} onchange="markAudit(${i},this)">
-        <label for="aud_${i}">${row.audited?'✅확인':'체크'}</label>
-      </div>`:
-      `<span style="font-size:11px;color:var(--text3)">${row.audited?'✅확인':'—'}</span>`;
+    // 특기사항 셀 (회계/부장/마스터 편집 가능, 그 외 읽기전용)
+    const canEditNote = ['acc','chief','fin_acc','fin_chief','master','sub_master'].includes(CU.role);
+    const noteVal = row.note||'';
+    const noteCell = canEditNote
+      ? `<input type="text" value="${noteVal.replace(/"/g,'&quot;')}" placeholder="특기사항" style="width:100%;padding:2px 6px;border:1px solid var(--border);border-radius:4px;font-size:11px;font-family:inherit;" onchange="LEDGER[${i}].note=this.value">`
+      : `<span style="font-size:11px;color:var(--text2)">${noteVal||'—'}</span>`;
+
+    // 감사확인 셀 (감사/마스터만 체크 가능)
+    const isAuditEnabled = auditActive && (CU.role==='auditor' || ['master','sub_master'].includes(CU.role));
+    const auditCell = isAuditEnabled
+      ? `<div class="audit-check"><input type="radio" name="audit_${i}" id="aud_${i}" ${row.audited?'checked':''} onchange="markAudit(${i},this)"><label for="aud_${i}">${row.audited?'✅확인':'체크'}</label></div>`
+      : `<span style="font-size:11px;color:var(--text3)">${row.audited?'✅확인':'—'}</span>`;
 
     const tr=document.createElement('tr');
     if(row.audited)tr.className='audited';
@@ -2589,18 +2583,50 @@ function renderLedger(){
       <td class="tnum">${row.income?row.income.toLocaleString():'-'}</td>
       <td class="tnum">${row.expense?'<span style="color:var(--red)">-'+row.expense.toLocaleString()+'</span>':'-'}</td>
       <td class="tnum" style="color:${bal<0?'var(--red)':'var(--green);font-weight:700'}">${bal.toLocaleString()}</td>
-      <td class="tc">${smap[row.status]||''}</td>
+      <td class="tc">${noteCell}</td>
       <td class="tc no-print">${auditCell}</td>
     `;
     tbody.appendChild(tr);
   });
 
   const sub=document.createElement('tr');sub.className='tsub';
-  sub.innerHTML=`<td colspan="5" class="tc">${mon==='전체'?'합':'월'} 소 계</td><td class="tnum">${totInc.toLocaleString()}</td><td class="tnum" style="color:var(--red)">${totExp.toLocaleString()}</td><td class="tnum">${(totInc-totExp).toLocaleString()}</td><td></td><td class="no-print"></td>`;
+  sub.innerHTML=`<td colspan="5" class="tc">${mon==='전체'?'합':'월'} 소 계</td><td class="tnum">${totInc.toLocaleString()}</td><td class="tnum" style="color:var(--red)">${totExp.toLocaleString()}</td><td class="tnum">${(totInc-totExp).toLocaleString()}</td><td></td><td></td>`;
   tbody.appendChild(sub);
   const tot=document.createElement('tr');tot.className='ttot';
-  tot.innerHTML=`<td colspan="5" class="tc">누 계 (이월금 포함)</td><td class="tnum">${totInc.toLocaleString()}</td><td class="tnum">${totExp.toLocaleString()}</td><td class="tnum" style="color:${bal<0?'var(--red)':'var(--green)'};font-weight:900">${bal.toLocaleString()}</td><td></td><td class="no-print"></td>`;
+  tot.innerHTML=`<td colspan="5" class="tc">누 계 (이월금 포함)</td><td class="tnum">${totInc.toLocaleString()}</td><td class="tnum">${totExp.toLocaleString()}</td><td class="tnum" style="color:${bal<0?'var(--red)':'var(--green)'};font-weight:900">${bal.toLocaleString()}</td><td></td><td></td>`;
   tbody.appendChild(tot);
+
+  // 회계 특기사항 행 (회계/부장/마스터만 편집)
+  const noteComm = document.getElementById('selComm').value;
+  const noteDept = document.getElementById('selDept').value;
+  const canEditAccNote = ['acc','chief','fin_acc','fin_chief','master','sub_master'].includes(CU.role);
+  const accNoteRow = document.createElement('tr');
+  accNoteRow.style.cssText = 'background:#fffbe8;';
+  const accNoteVal = (window._accNote && window._accNote[noteComm+'_'+noteDept+'_'+mon]) || '';
+  accNoteRow.innerHTML = `
+    <td colspan="3" style="font-size:11px;font-weight:800;color:var(--gold);padding:6px 12px;">📝 회계 특기사항</td>
+    <td colspan="7" style="padding:4px 8px;">
+      ${canEditAccNote
+        ? `<input type="text" id="accNoteInput" value="${accNoteVal.replace(/"/g,'&quot;')}" placeholder="회계 특기사항을 입력하세요" style="width:100%;padding:4px 8px;border:1px solid var(--gold);border-radius:4px;font-size:12px;font-family:inherit;background:#fffbe8;" onchange="saveAccNote('${noteComm}','${noteDept}','${mon}',this.value)">`
+        : `<span style="font-size:12px;color:var(--text2)">${accNoteVal||'—'}</span>`
+      }
+    </td>`;
+  tbody.appendChild(accNoteRow);
+
+  // 감사 의견 행 (감사/마스터만 편집)
+  const canEditAudNote = ['auditor','master','sub_master'].includes(CU.role);
+  const audNoteRow = document.createElement('tr');
+  audNoteRow.style.cssText = 'background:#f0ebf8;';
+  const audNoteVal = (window._audNote && window._audNote[noteComm+'_'+noteDept+'_'+mon]) || '';
+  audNoteRow.innerHTML = `
+    <td colspan="3" style="font-size:11px;font-weight:800;color:var(--purple);padding:6px 12px;">🔍 감사 의견</td>
+    <td colspan="7" style="padding:4px 8px;">
+      ${canEditAudNote
+        ? `<input type="text" id="audNoteInput" value="${audNoteVal.replace(/"/g,'&quot;')}" placeholder="감사 의견을 입력하세요" style="width:100%;padding:4px 8px;border:1px solid var(--purple);border-radius:4px;font-size:12px;font-family:inherit;background:#f0ebf8;" onchange="saveAudNote('${noteComm}','${noteDept}','${mon}',this.value)">`
+        : `<span style="font-size:12px;color:var(--text2)">${audNoteVal||'—'}</span>`
+      }
+    </td>`;
+  tbody.appendChild(audNoteRow);
 
   const budget=3000000;
   const comm2=document.getElementById('selComm').value;
@@ -2616,6 +2642,16 @@ function renderLedger(){
   if(cProg)cProg.style.width=Math.min(100,realBdg?Math.round(totExp/realBdg*100):0)+'%';
   document.getElementById('cProg').style.width=Math.min(100,Math.round(totExp/(realBdg+carry||1)*100))+'%';
   document.getElementById('ledgerTableTitle').textContent=`📋 ${mon} 지출내역`;
+}
+
+// ══ 특기사항 저장 함수 ══
+function saveAccNote(comm, dept, mon, val){
+  if(!window._accNote) window._accNote = {};
+  window._accNote[comm+'_'+dept+'_'+mon] = val;
+}
+function saveAudNote(comm, dept, mon, val){
+  if(!window._audNote) window._audNote = {};
+  window._audNote[comm+'_'+dept+'_'+mon] = val;
 }
 
 function markAudit(i,el){
@@ -2984,7 +3020,7 @@ function buildSpecial(){
   data.forEach((row,i)=>{
     bal-=row.expense;
     const auditCell=isAuditEnabled?
-      `<input type="radio" name="saudit_${i}" title="감사확인">`:
+      `<input type="radio" name="saudit_${i}" title="감사">`:
       `<span style="font-size:10px;color:var(--text3)">—</span>`;
     const tr=document.createElement('tr');
     tr.innerHTML=`<td class="tc">${row.date}</td><td>${row.cat}</td><td>${row.memo}</td>
