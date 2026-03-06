@@ -1,0 +1,2725 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>스마트웹회계시스템 v4.1.0</title>
+<style>
+/* ══════════════════════════════════════════════════════
+   스마트웹회계시스템 v4.1.0 — 전체 스타일
+══════════════════════════════════════════════════════ */
+:root {
+  --bg:#f0ede8; --white:#fff; --surface:#faf8f5; --border:#ddd8cf; --border2:#c8c0b4;
+  --navy:#1a3a5c; --navy2:#0f2540; --blue:#2c5f8a; --blue-light:#e8f0f7;
+  --green:#2d7a4f; --green-light:#e8f5ee; --red:#c0392b; --red-light:#fdf0ee;
+  --gold:#b5860d; --gold-light:#fdf8e8; --purple:#6b4c9a; --purple-light:#f0ebf8;
+  --orange:#d4650a; --orange-light:#fdf2e8;
+  --text:#1a1a1a; --text2:#4a4a4a; --text3:#888;
+  --shadow:0 2px 16px rgba(0,0,0,.08); --shadow2:0 8px 32px rgba(0,0,0,.15);
+  --radius:12px; --radius2:8px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:-apple-system,'Apple SD Gothic Neo','Malgun Gothic','맑은 고딕',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+
+/* ══ STEP 1 LOGIN ══ */
+#step1{min-height:100vh;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#0f2540 0%,#1a3a5c 40%,#2c5f8a 100%);position:relative;overflow:hidden;}
+#step1::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 30% 50%,rgba(44,95,138,.3) 0%,transparent 60%),
+             radial-gradient(ellipse at 70% 20%,rgba(181,134,13,.15) 0%,transparent 50%);}
+.s1-box{background:var(--white);border-radius:20px;padding:48px 44px;width:100%;max-width:460px;
+  position:relative;box-shadow:0 24px 64px rgba(0,0,0,.35);}
+.s1-logo{text-align:center;margin-bottom:32px;padding-bottom:24px;border-bottom:2px solid var(--border);}
+.s1-logo .cross{font-size:40px;display:block;margin-bottom:10px;}
+.s1-logo h1{font-family:'Apple SD Gothic Neo','Malgun Gothic','맑은 고딕',Georgia,serif;font-size:21px;font-weight:900;color:var(--navy2);letter-spacing:-0.5px;}
+.s1-logo p{font-size:12px;color:var(--text3);margin-top:5px;}
+.s1-logo .ver{display:inline-block;background:var(--navy);color:white;font-size:10px;padding:2px 8px;border-radius:10px;margin-top:6px;font-weight:700;}
+.ig{margin-bottom:14px;}
+.ig label{font-size:12px;color:var(--text2);display:block;margin-bottom:5px;font-weight:700;}
+.ig input{width:100%;padding:12px 14px;border:2px solid var(--border);border-radius:var(--radius2);
+  font-size:14px;font-family:inherit;color:var(--text);outline:none;transition:border-color .2s;}
+.ig input:focus{border-color:var(--blue);}
+.btn-login{width:100%;padding:14px;background:linear-gradient(135deg,var(--navy),var(--blue));
+  border:none;border-radius:var(--radius2);color:white;font-size:15px;font-weight:800;
+  cursor:pointer;font-family:inherit;transition:all .2s;letter-spacing:.5px;
+  box-shadow:0 4px 16px rgba(26,58,92,.3);}
+.btn-login:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(26,58,92,.4);}
+.hint{text-align:center;font-size:11px;color:var(--text3);margin-top:14px;}
+
+/* ══ STEP 2 위원회 선택 ══ */
+#step2{min-height:100vh;display:none;background:var(--bg);}
+.s2-header{background:linear-gradient(135deg,var(--navy2),var(--navy));padding:28px 24px;text-align:center;}
+.s2-header h2{font-family:'Apple SD Gothic Neo','Malgun Gothic','맑은 고딕',Georgia,serif;color:white;font-size:22px;font-weight:900;}
+.s2-header p{color:rgba(255,255,255,.7);font-size:13px;margin-top:6px;}
+.s2-body{padding:28px 20px;max-width:900px;margin:0 auto;}
+.s2-section{margin-bottom:28px;}
+.s2-section-title{font-size:11px;color:var(--text3);font-weight:800;letter-spacing:1px;
+  text-transform:uppercase;margin-bottom:12px;padding-left:4px;}
+.comm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;}
+.comm-tile{background:var(--white);border:2px solid var(--border);border-radius:var(--radius);
+  padding:18px 14px;text-align:center;cursor:pointer;transition:all .2s;box-shadow:var(--shadow);}
+.comm-tile:hover{border-color:var(--blue);transform:translateY(-3px);box-shadow:var(--shadow2);}
+.comm-tile .ico{font-size:28px;display:block;margin-bottom:8px;}
+.comm-tile .name{font-size:12px;font-weight:700;color:var(--navy);line-height:1.4;}
+.comm-tile .sub{font-size:10px;color:var(--text3);margin-top:3px;}
+.special-tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;}
+.special-tile{background:linear-gradient(135deg,var(--navy),var(--blue));border-radius:var(--radius);
+  padding:18px 20px;cursor:pointer;transition:all .2s;box-shadow:var(--shadow);
+  display:flex;align-items:center;gap:14px;}
+.special-tile:hover{transform:translateY(-3px);box-shadow:var(--shadow2);}
+.special-tile .ico{font-size:28px;}
+.special-tile .info .name{font-size:14px;font-weight:800;color:white;}
+.special-tile .info .sub{font-size:11px;color:rgba(255,255,255,.7);margin-top:2px;}
+
+/* ══ STEP 3 ══ */
+#step3{min-height:100vh;display:none;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#0f2540,#1a3a5c,#2c5f8a);}
+.s3-box{background:var(--white);border-radius:20px;padding:40px;width:100%;max-width:420px;
+  box-shadow:0 24px 64px rgba(0,0,0,.35);}
+.s3-back{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text3);
+  cursor:pointer;margin-bottom:24px;border:none;background:none;font-family:inherit;}
+.s3-back:hover{color:var(--blue);}
+.s3-comm-badge{display:flex;align-items:center;gap:12px;background:var(--blue-light);
+  border-radius:var(--radius);padding:14px 16px;margin-bottom:24px;}
+.s3-comm-badge .ico{font-size:28px;}
+.s3-comm-badge h3{font-size:15px;font-weight:800;color:var(--navy);}
+.s3-comm-badge p{font-size:11px;color:var(--text3);margin-top:2px;}
+.role-hint{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius2);
+  padding:12px 14px;margin-bottom:18px;}
+.role-hint p{font-size:11px;color:var(--text3);margin-bottom:6px;font-weight:700;}
+.role-list{display:flex;flex-wrap:wrap;gap:5px;}
+.rbadge{font-size:10px;padding:3px 8px;border-radius:10px;font-weight:700;}
+.rm{background:#fdf0ee;color:var(--red);}
+.rc{background:#fdf8e8;color:var(--gold);}
+.rch{background:var(--blue-light);color:var(--blue);}
+.ra{background:var(--green-light);color:var(--green);}
+.rau{background:var(--purple-light);color:var(--purple);}
+.rp{background:var(--orange-light);color:var(--orange);}
+
+/* ══ APP SHELL ══ */
+#app{display:none;}
+.topbar{position:fixed;top:0;left:0;right:0;height:56px;
+  background:linear-gradient(135deg,var(--navy2),var(--navy));
+  display:flex;align-items:center;padding:0 18px;gap:12px;z-index:200;
+  box-shadow:0 2px 12px rgba(0,0,0,.25);}
+.topbar-title{font-family:'Apple SD Gothic Neo','Malgun Gothic','맑은 고딕',Georgia,serif;color:white;font-size:15px;font-weight:700;flex:1;}
+.topbar-user{color:rgba(255,255,255,.8);font-size:11px;text-align:right;line-height:1.4;}
+.topbar-user strong{color:white;display:block;font-size:13px;}
+.menu-btn{background:transparent;border:none;color:white;font-size:20px;cursor:pointer;padding:4px;}
+
+/* ══ SIDEBAR ══ */
+.sidebar{position:fixed;left:0;top:56px;bottom:0;width:220px;
+  background:var(--white);border-right:1px solid var(--border);
+  overflow-y:auto;z-index:100;transition:transform .3s;}
+.ns{padding:10px 8px 2px;}
+.nsl{font-size:10px;color:var(--text3);font-weight:800;letter-spacing:.8px;
+  text-transform:uppercase;padding:0 8px 5px;}
+.nb{display:flex;align-items:center;gap:8px;width:100%;padding:9px 12px;
+  border-radius:var(--radius2);border:none;background:transparent;
+  color:var(--text2);font-size:13px;cursor:pointer;font-family:inherit;
+  transition:all .15s;margin-bottom:1px;text-align:left;}
+.nb:hover{background:var(--blue-light);color:var(--blue);}
+.nb.active{background:var(--navy);color:white;font-weight:700;}
+.nb .ico{width:18px;text-align:center;font-size:14px;}
+.nb .badge{margin-left:auto;background:var(--red);color:white;
+  border-radius:10px;padding:1px 6px;font-size:10px;font-weight:700;}
+.ndiv{height:1px;background:var(--border);margin:5px 8px;}
+
+/* ══ MAIN ══ */
+.main{margin-left:220px;padding-top:56px;min-height:100vh;}
+.page{display:none;padding:24px;}
+.page.active{display:block;animation:fadeUp .25s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ══ PAGE HEADER ══ */
+.ph{display:flex;align-items:flex-start;justify-content:space-between;
+  margin-bottom:20px;flex-wrap:wrap;gap:10px;}
+.ph-left h2{font-family:'Apple SD Gothic Neo','Malgun Gothic','맑은 고딕',Georgia,serif;font-size:22px;font-weight:900;color:var(--navy2);}
+.ph-left p{font-size:12px;color:var(--text3);margin-top:3px;}
+.ph-right{display:flex;gap:7px;flex-wrap:wrap;}
+
+/* ══ BUTTONS ══ */
+.btn{padding:8px 15px;border-radius:var(--radius2);border:none;cursor:pointer;
+  font-size:13px;font-weight:700;font-family:inherit;transition:all .15s;
+  display:inline-flex;align-items:center;gap:5px;}
+.bp{background:var(--navy);color:white;}.bp:hover{background:var(--navy2);}
+.bs{background:var(--green);color:white;}
+.bd{background:var(--red);color:white;}
+.bg{background:var(--gold);color:white;}
+.bo{background:white;border:2px solid var(--border2);color:var(--text2);}
+.bo:hover{border-color:var(--blue);color:var(--blue);}
+.bpr{background:var(--gold-light);border:2px solid var(--gold);color:var(--gold);}
+.bpr:hover{background:var(--gold);color:white;}
+.btn-sm{padding:5px 9px;font-size:11px;}
+.btn-approve{background:var(--green-light);border:2px solid var(--green);color:var(--green);}
+.btn-approve:hover{background:var(--green);color:white;}
+.btn-reject{background:var(--red-light);border:2px solid var(--red);color:var(--red);}
+.btn-reject:hover{background:var(--red);color:white;}
+
+/* ══ SUMMARY CARDS ══ */
+.sc{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:14px;margin-bottom:20px;}
+.scard{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);
+  padding:16px 18px;box-shadow:var(--shadow);}
+.scard .lbl{font-size:11px;color:var(--text3);font-weight:700;margin-bottom:6px;}
+.scard .val{font-size:20px;font-weight:900;letter-spacing:-.5px;}
+.scard .sub{font-size:11px;color:var(--text3);margin-top:3px;}
+.cb{border-top:3px solid var(--blue);}.cg{border-top:3px solid var(--green);}
+.cr{border-top:3px solid var(--red);}.co{border-top:3px solid var(--gold);}
+.cp{border-top:3px solid var(--purple);}
+.vb{color:var(--blue);}.vg{color:var(--green);}.vr{color:var(--red);}
+.vo{color:var(--gold);}.vp{color:var(--purple);}
+.prog{height:5px;background:var(--border);border-radius:3px;margin-top:8px;overflow:hidden;}
+.pf{height:100%;border-radius:3px;}
+.pfb{background:var(--blue);}.pfg{background:var(--green);}.pfr{background:var(--red);}
+
+/* ══ CHART CONTAINER ══ */
+.chart-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin-bottom:20px;}
+.chart-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);
+  padding:20px;box-shadow:var(--shadow);}
+.chart-card h3{font-size:13px;font-weight:800;color:var(--navy2);margin-bottom:14px;}
+.chart-wrap{position:relative;height:200px;}
+
+/* ══ FILTER BAR ══ */
+.fb{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);
+  padding:14px 18px;margin-bottom:16px;display:flex;align-items:center;
+  gap:10px;flex-wrap:wrap;box-shadow:var(--shadow);}
+.fb label{font-size:12px;color:var(--text2);font-weight:700;white-space:nowrap;}
+.fb select,.fb input[type=text],.fb input[type=date]{
+  padding:7px 10px;border:2px solid var(--border);border-radius:var(--radius2);
+  font-size:13px;font-family:inherit;color:var(--text);background:var(--white);outline:none;transition:border-color .2s;}
+.fb select:focus,.fb input:focus{border-color:var(--blue);}
+
+/* ══ CARRY BAR ══ */
+.carry-bar{background:var(--gold-light);border:1px solid var(--gold);border-radius:var(--radius2);
+  padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.carry-bar label{font-size:12px;font-weight:800;color:var(--gold);}
+.carry-bar input{padding:6px 10px;border:1px solid var(--gold);border-radius:6px;
+  font-size:13px;font-family:inherit;width:160px;outline:none;}
+.carry-bar span{font-size:11px;color:var(--gold);}
+
+/* ══ TABLE ══ */
+.tw{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);
+  overflow:hidden;box-shadow:var(--shadow);margin-bottom:18px;}
+.th{padding:14px 18px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;background:var(--surface);}
+.th h3{font-size:14px;font-weight:800;color:var(--navy2);}
+.ts{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+thead tr{background:#ece9e2;}
+th{padding:10px 12px;text-align:center;font-size:11px;color:var(--text2);
+  font-weight:800;border-bottom:2px solid var(--border2);white-space:nowrap;}
+td{padding:9px 12px;border-bottom:1px solid #f0ede8;vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:#fafaf7;}
+.tc{text-align:center;}.tr2{text-align:right;}
+.tnum{font-family:monospace;text-align:right;}
+.tsub td{background:#f0ede8;font-weight:800;border-top:2px solid var(--border2);}
+.ttot td{background:var(--blue-light);font-weight:900;color:var(--navy2);border-top:2px solid var(--blue);}
+
+/* ══ STATUS BADGE ══ */
+.sb{display:inline-flex;align-items:center;gap:3px;padding:3px 8px;
+  border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap;}
+.sb-ok{background:var(--green-light);color:var(--green);}
+.sb-wait{background:var(--gold-light);color:var(--gold);}
+.sb-no{background:var(--red-light);color:var(--red);}
+.sb-draft{background:#f0ede8;color:var(--text3);}
+.sb-purple{background:var(--purple-light);color:var(--purple);}
+.sb-blue{background:var(--blue-light);color:var(--blue);}
+
+/* ══ AUDIT BANNER ══ */
+.audit-banner{background:linear-gradient(135deg,var(--purple-light),#e8f0fb);
+  border:2px solid var(--purple);border-radius:var(--radius);
+  padding:14px 18px;margin-bottom:16px;display:flex;align-items:center;gap:12px;}
+.audit-banner .ico{font-size:24px;}
+.audit-banner h4{font-size:13px;font-weight:800;color:var(--purple);}
+.audit-banner p{font-size:11px;color:var(--text2);margin-top:2px;}
+
+/* ══ FORM CARD ══ */
+.fc{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);
+  overflow:hidden;box-shadow:var(--shadow);margin-bottom:18px;}
+.fch{padding:14px 18px;background:linear-gradient(135deg,var(--navy),var(--blue));
+  color:white;font-size:14px;font-weight:800;}
+.fb2{padding:20px;}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:14px;}
+.fg{margin-bottom:0;}
+.fg.full{grid-column:1/-1;}
+.fg label{font-size:11px;color:var(--text2);font-weight:800;display:block;margin-bottom:5px;}
+.fg input,.fg select,.fg textarea{width:100%;padding:9px 12px;border:2px solid var(--border);
+  border-radius:var(--radius2);font-size:13px;font-family:inherit;color:var(--text);
+  background:var(--white);outline:none;transition:border-color .2s;}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--blue);}
+.fg textarea{resize:vertical;min-height:60px;}
+.faction{padding:14px 18px;border-top:1px solid var(--border);
+  display:flex;gap:8px;background:var(--surface);flex-wrap:wrap;}
+
+/* ══ AUDIT CHECKBOX ══ */
+.audit-check{display:flex;align-items:center;justify-content:center;gap:4px;}
+.audit-check input[type=radio]{width:16px;height:16px;cursor:pointer;accent-color:var(--green);}
+.audit-check label{font-size:10px;color:var(--text3);cursor:pointer;}
+.audited{background:var(--green-light)!important;}
+.audited td{color:var(--green);}
+
+/* ══ VOUCHER ══ */
+.voucher{background:var(--white);border:2px solid var(--navy);border-radius:var(--radius);padding:28px;max-width:700px;margin:0 auto;}
+.voucher-title{text-align:center;margin-bottom:20px;}
+.voucher-title h2{font-family:'Apple SD Gothic Neo','Malgun Gothic','맑은 고딕',Georgia,serif;font-size:26px;font-weight:900;
+  letter-spacing:4px;border-bottom:3px solid var(--navy);padding-bottom:10px;display:inline-block;}
+.voucher-info{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;}
+.voucher-approval{border:2px solid var(--navy);}
+.voucher-approval table{margin:0;}
+.voucher-approval th{background:#f0ede8;font-size:11px;padding:6px 14px;border:1px solid var(--navy);}
+.voucher-approval td{font-size:11px;padding:20px 14px;border:1px solid var(--navy);text-align:center;}
+.voucher-table{width:100%;border-collapse:collapse;margin-bottom:14px;}
+.voucher-table th{border:2px solid var(--navy);padding:8px 10px;font-size:12px;background:#f0ede8;text-align:center;}
+.voucher-table td{border:1px solid var(--navy);padding:8px 10px;font-size:12px;}
+.voucher-bottom{text-align:center;margin:16px 0;}
+.voucher-sign{display:flex;justify-content:flex-end;margin-top:16px;}
+.sign-table{border-collapse:collapse;}
+.sign-table th{border:2px solid var(--navy);padding:6px 16px;font-size:11px;background:#f0ede8;}
+.sign-table td{border:1px solid var(--navy);padding:20px 16px;font-size:11px;text-align:center;}
+
+/* ══ APPROVAL FLOW ══ */
+.flow{display:flex;align-items:center;gap:0;overflow-x:auto;padding:14px 0;margin-bottom:18px;}
+.flow-step{text-align:center;min-width:90px;}
+.flow-step .circle{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:18px;margin:0 auto 6px;border:3px solid var(--border);}
+.flow-step .name{font-size:10px;font-weight:700;color:var(--text3);}
+.flow-step .status{font-size:9px;margin-top:2px;}
+.flow-arrow{font-size:18px;color:var(--border2);margin:0 4px;padding-bottom:20px;}
+.step-done .circle{background:var(--green-light);border-color:var(--green);}
+.step-done .name{color:var(--green);}
+.step-done .status{color:var(--green);}
+.step-active .circle{background:var(--gold-light);border-color:var(--gold);animation:pulse .8s infinite;}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(181,134,13,.4)}50%{box-shadow:0 0 0 6px rgba(181,134,13,0)}}
+.step-active .name{color:var(--gold);}
+.step-wait .circle{background:#f5f3ee;border-color:var(--border2);}
+
+/* ══ APPROVAL ACTION CARD ══ */
+.appr-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);
+  padding:16px;margin-bottom:10px;box-shadow:var(--shadow);transition:all .2s;}
+.appr-card:hover{box-shadow:var(--shadow2);transform:translateY(-1px);}
+.appr-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.appr-card-info{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-bottom:10px;}
+.appr-card-info-item label{font-size:10px;color:var(--text3);font-weight:700;display:block;}
+.appr-card-info-item span{font-size:13px;font-weight:700;color:var(--text);}
+.appr-card-actions{display:flex;gap:6px;flex-wrap:wrap;}
+
+/* ══ PRINT ══ */
+@media print {
+  #step1,#step2,#step3{display:none!important;}
+  .topbar,.sidebar,.ph-right,.fb,.no-print,#tab-bar{display:none!important;}
+  .main{margin-left:0!important;padding-top:0!important;}
+  .page{padding:8px!important;}
+  .print-header{display:block!important;}
+  @page{size:B5 landscape;margin:10mm;}
+  table{font-size:9px;}
+  th,td{padding:4px 5px!important;}
+  .tw{box-shadow:none!important;border:1px solid #999!important;}
+}
+.print-header{display:none;text-align:center;margin-bottom:14px;}
+.print-header h2{font-family:'Apple SD Gothic Neo','Malgun Gothic','맑은 고딕',Georgia,serif;font-size:17px;font-weight:900;}
+.print-header p{font-size:11px;color:#666;margin-top:3px;}
+
+/* ══ MODALS ══ */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:2000;
+  display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
+.modal-bg.show{display:flex;animation:fadeUp .2s ease;}
+.modal{background:var(--white);border-radius:20px;width:90%;max-width:480px;
+  overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.35);}
+.modal-head{background:linear-gradient(135deg,var(--navy),var(--blue));color:white;
+  padding:16px 20px;display:flex;align-items:center;justify-content:space-between;}
+.modal-head h3{font-size:15px;font-weight:800;}
+.modal-close{background:none;border:none;color:white;font-size:22px;cursor:pointer;}
+.modal-body{padding:24px;}
+.modal-foot{padding:14px 24px;border-top:1px solid var(--border);
+  display:flex;gap:8px;justify-content:flex-end;background:var(--surface);}
+.print-opt{margin-bottom:18px;}
+.print-opt label{font-size:12px;font-weight:800;color:var(--text2);display:block;margin-bottom:10px;}
+.print-btns{display:flex;gap:8px;}
+.popt-btn{flex:1;padding:12px 8px;border:2px solid var(--border2);border-radius:var(--radius2);
+  background:var(--white);cursor:pointer;font-family:inherit;font-size:12px;font-weight:700;
+  color:var(--text2);transition:all .2s;text-align:center;}
+.popt-btn:hover,.popt-btn.selected{border-color:var(--navy);background:var(--navy);color:white;}
+.preview-box{background:var(--bg);border:2px dashed var(--border2);border-radius:var(--radius);
+  height:140px;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--text3);}
+
+/* ══ NOTIFICATION ══ */
+.notif{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:var(--navy2);color:white;border-radius:var(--radius);
+  padding:12px 20px;z-index:9999;opacity:0;transition:all .3s;pointer-events:none;
+  min-width:240px;text-align:center;box-shadow:var(--shadow2);}
+.notif.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.nt{font-weight:800;font-size:13px;}
+#notifM{font-size:11px;opacity:.8;margin-top:3px;}
+
+/* ══ BOTTOM TAB BAR ══ */
+#tab-bar{display:none;position:fixed;bottom:0;left:0;right:0;
+  background:var(--white);border-top:1px solid var(--border);
+  padding:6px 0;z-index:150;box-shadow:0 -2px 12px rgba(0,0,0,.1);}
+#tab-bar{display:flex;justify-content:space-around;}
+#tab-bar button{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;
+  border:none;background:none;padding:6px 4px;cursor:pointer;font-family:inherit;
+  font-size:10px;color:var(--text3);font-weight:600;transition:color .15s;}
+#tab-bar button.on{color:var(--navy);}
+#tab-bar button .tico{font-size:18px;}
+
+/* ══ DASHBOARD ══ */
+.dash-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:20px;}
+.dash-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);
+  padding:20px;box-shadow:var(--shadow);}
+.dash-card h3{font-size:13px;font-weight:800;color:var(--navy2);margin-bottom:14px;
+  display:flex;align-items:center;gap:6px;}
+
+/* ══ ACTIVITY FEED ══ */
+.activity-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;
+  border-bottom:1px solid var(--border);}
+.activity-item:last-child{border-bottom:none;}
+.act-ico{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:14px;flex-shrink:0;}
+.act-body{flex:1;}
+.act-body strong{font-size:12px;font-weight:700;color:var(--text);display:block;}
+.act-body span{font-size:11px;color:var(--text3);}
+.act-amt{font-size:12px;font-weight:800;color:var(--red);}
+
+/* ══ RESPONSIVE ══ */
+@media (max-width:768px){
+  .sidebar{transform:translateX(-100%);z-index:199;}
+  .sidebar.open{transform:translateX(0);box-shadow:var(--shadow2);}
+  .main{margin-left:0;}
+  .page{padding:16px 12px 80px;}
+  #tab-bar{display:flex;}
+  .sc{grid-template-columns:repeat(2,1fr);gap:10px;}
+  .scard .val{font-size:17px;}
+  .chart-grid{grid-template-columns:1fr;}
+  .ph{flex-direction:column;}
+  .ph-right{width:100%;}
+  .ph-right .btn{flex:1;justify-content:center;}
+  .fgrid{grid-template-columns:1fr 1fr;}
+  .fg.full{grid-column:1/-1;}
+  .s1-box{padding:32px 24px;}
+  .voucher{padding:16px;}
+}
+@media (max-width:480px){
+  .sc{grid-template-columns:1fr 1fr;}
+  .comm-grid{grid-template-columns:repeat(3,1fr);}
+  .special-tiles{grid-template-columns:1fr;}
+  .fgrid{grid-template-columns:1fr;}
+  .chart-wrap{height:160px;}
+  table{font-size:12px;}
+  th,td{padding:7px 8px;}
+  .topbar-title{font-size:13px;}
+}
+/* 모바일 오버레이 */
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:198;}
+.sidebar-overlay.show{display:block;}
+</style>
+</head>
+<body>
+
+<!-- ══ STEP 1: 통합 로그인 ══ -->
+<div id="step1">
+  <div class="s1-box">
+    <div class="s1-logo">
+      <span class="cross">✝️</span>
+      <h1>스마트웹 회계 시스템</h1>
+      <p>Smart Web Accounting System</p>
+      <span class="ver">v4.1.0</span>
+    </div>
+    <div class="ig">
+      <label>통합 아이디</label>
+      <input type="text" id="s1id" placeholder="church2025" autocomplete="off">
+    </div>
+    <div class="ig">
+      <label>비밀번호</label>
+      <input type="password" id="s1pw" placeholder="••••">
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:8px;">
+      <button id="s1autofill" style="flex:1;padding:10px;background:#e8f5ee;border:2px solid #2d7a4f;border-radius:8px;color:#2d7a4f;font-weight:700;cursor:pointer;font-size:13px;">✅ 자동입력</button>
+    </div>
+    <button id="s1btn" class="btn-login">로그인</button>
+    <p class="hint" style="background:#fff3cd;padding:8px;border-radius:6px;color:#856404;font-weight:700;">🔑 ID: <strong>church2025</strong> &nbsp;/&nbsp; PW: <strong>1234</strong></p>
+  </div>
+</div>
+
+<!-- ══ STEP 2: 위원회 선택 ══ -->
+<div id="step2">
+  <div class="s2-header">
+    <h2>✝️ 위원회를 선택하세요</h2>
+    <p>소속 위원회를 선택한 후 개인 계정으로 로그인합니다</p>
+  </div>
+  <div class="s2-body">
+    <div class="s2-section">
+      <div class="s2-section-title">특별 계정</div>
+      <div class="special-tiles" id="specialTiles"></div>
+    </div>
+    <div class="s2-section">
+      <div class="s2-section-title">위원회 선택</div>
+      <div class="comm-grid" id="commGrid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ STEP 3: 위원회 로그인 ══ -->
+<div id="step3">
+  <div class="s3-box" id="s3box">
+    <button id="s3back" class="s3-back">← 위원회 다시 선택</button>
+    <div class="s3-comm-badge">
+      <span class="ico" id="s3ico">🎵</span>
+      <div>
+        <h3 id="s3name">위원회</h3>
+        <p id="s3sub">아이디와 비밀번호를 입력하세요</p>
+      </div>
+    </div>
+    <div class="role-hint">
+      <p>이 위원회 계정</p>
+      <div class="role-list" id="roleList"></div>
+    </div>
+    <div class="ig">
+      <label>아이디</label>
+      <input type="text" id="s3id" autocomplete="off">
+    </div>
+    <div class="ig">
+      <label>비밀번호</label>
+      <input type="password" id="s3pw">
+    </div>
+    <button id="s3btn" class="btn-login">로그인</button>
+  </div>
+</div>
+
+<!-- ══ APP ══ -->
+<div id="app">
+  <div class="topbar">
+    <button class="menu-btn">☰</button>
+    <div class="topbar-title">✝️ 스마트웹회계 v4.1.0</div>
+    <div class="topbar-user">
+      <strong id="tbName">-</strong>
+      <span id="tbComm">-</span>
+    </div>
+  </div>
+
+  <!-- 사이드바 오버레이 (모바일) -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <div class="sidebar" id="sidebar">
+    <div class="ns">
+      <div class="nsl">대시보드</div>
+      <button class="nb active" data-page="dashboard"><span class="ico">📊</span>대시보드</button>
+    </div>
+    <div class="ndiv"></div>
+    <div class="ns">
+      <div class="nsl">장부관리</div>
+      <button class="nb" data-page="ledger"><span class="ico">📒</span>지출 입력장부</button>
+      <button class="nb" data-page="monthly"><span class="ico">📅</span>월간 현황</button>
+      <button class="nb" data-page="annual"><span class="ico">📆</span>연간 현황</button>
+      <button class="nb" id="nav-integrated" data-page="integrated"><span class="ico">📈</span>통합 현황</button>
+    </div>
+    <div class="ndiv"></div>
+    <div class="ns">
+      <div class="nsl">결의서/결재</div>
+      <button class="nb" data-page="voucher"><span class="ico">📋</span>지출결의서</button>
+      <button class="nb" data-page="approval"><span class="ico">✅</span>전자결재함<span class="badge" id="abadge" style="display:none">0</span></button>
+    </div>
+    <div class="ndiv"></div>
+    <div class="ns">
+      <div class="nsl">특별활동</div>
+      <button class="nb" data-page="special"><span class="ico">🎯</span>특별활동 장부</button>
+    </div>
+    <div class="ndiv" id="ndiv-pastor" style="display:none"></div>
+    <div class="ns" id="nav-pastor" style="display:none">
+      <div class="nsl">당회장</div>
+      <button class="nb" data-page="pastor"><span class="ico">👑</span>결의서 사후승인<span class="badge" id="pbadge">5</span></button>
+    </div>
+    <div class="ndiv" id="ndiv-audit" style="display:none"></div>
+    <div class="ns" id="nav-audit" style="display:none">
+      <div class="nsl">감사</div>
+      <button class="nb" data-page="audit"><span class="ico">🔍</span>감사 확인</button>
+    </div>
+    <div class="ndiv" id="ndiv-admin" style="display:none"></div>
+    <div class="ns" id="nav-admin" style="display:none">
+      <div class="nsl">관리자</div>
+      <button class="nb" data-page="budget"><span class="ico">💰</span>예산 관리</button>
+      <button class="nb" data-page="users"><span class="ico">👥</span>사용자/권한</button>
+      <button class="nb" data-page="audit-period"><span class="ico">📆</span>감사기간 설정</button>
+      <button class="nb" data-page="settings"><span class="ico">⚙️</span>시스템 설정</button>
+    </div>
+    <div class="ndiv"></div>
+    <div class="ns">
+      <button id="logoutBtn" class="nb" style="color:var(--red)"><span class="ico">🚪</span>로그아웃</button>
+    </div>
+  </div>
+
+  <div class="main">
+
+    <!-- 📊 대시보드 -->
+    <div class="page active" id="page-dashboard">
+      <div class="ph">
+        <div class="ph-left"><h2>📊 대시보드</h2><p id="dashSub">2025년도 재정 현황 한눈에 보기</p></div>
+        <div class="ph-right no-print">
+          <button id="btnPrintDash" class="btn bpr">🖨️ 인쇄</button>
+        </div>
+      </div>
+      <div class="sc" id="dashCards">
+        <div class="scard cb"><div class="lbl">📌 연간 예산</div><div class="val vb" id="dBudget">-</div><div class="sub">원</div></div>
+        <div class="scard cr"><div class="lbl">💸 총 지출</div><div class="val vr" id="dExp">-</div><div class="sub">원</div><div class="prog"><div class="pf pfr" id="dProg" style="width:0%"></div></div></div>
+        <div class="scard cg"><div class="lbl">💰 잔액</div><div class="val vg" id="dBal">-</div><div class="sub">원</div></div>
+        <div class="scard co"><div class="lbl">⏳ 결재대기</div><div class="val vo" id="dPend">-</div><div class="sub">건</div></div>
+      </div>
+      <div class="chart-grid">
+        <div class="chart-card">
+          <h3>📅 월별 수입 / 지출</h3>
+          <div class="chart-wrap"><canvas id="chartMonthly"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <h3>📌 예산 항목별 집행률</h3>
+          <div class="chart-wrap"><canvas id="chartBudget"></canvas></div>
+        </div>
+      </div>
+      <div class="dash-grid">
+        <div class="dash-card">
+          <h3>🔔 최근 활동</h3>
+          <div id="activityFeed"></div>
+        </div>
+        <div class="dash-card">
+          <h3>⏳ 결재 대기 현황</h3>
+          <div id="dashPendingList"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 📒 지출 입력장부 -->
+    <div class="page" id="page-ledger">
+      <div class="print-header"><h2 id="printTitle">2025년도 예산집행현황</h2><p>(단위: 원) B5</p></div>
+      <div class="ph">
+        <div class="ph-left"><h2>📒 지출 입력장부</h2><p id="ledgerSub">위원회/부서를 선택하세요</p></div>
+        <div class="ph-right no-print">
+          <button id="btnAddExp" class="btn bp">＋ 지출 입력</button>
+          <button id="btnPrintLedger" class="btn bpr">🖨️ 인쇄</button>
+        </div>
+      </div>
+
+      <div class="audit-banner no-print" id="auditBanner" style="display:none">
+        <span class="ico">🔍</span>
+        <div class="txt">
+          <h4>감사 진행 중</h4>
+          <p id="auditBannerMsg">감사위원회 정기감사가 진행 중입니다</p>
+        </div>
+      </div>
+
+      <div class="fb no-print">
+        <label>위원회</label>
+        <select id="selComm"></select>
+        <label>부서</label>
+        <select id="selDept"></select>
+        <label>월</label>
+        <select id="selMon">
+          <option>전체</option>
+          <option selected>2월</option>
+          <option>3월</option><option>4월</option><option>5월</option>
+          <option>6월</option><option>7월</option><option>8월</option>
+          <option>9월</option><option>10월</option><option>11월</option><option>12월</option>
+        </select>
+      </div>
+
+      <div class="carry-bar no-print">
+        <label>📌 이월금 (수기입력)</label>
+        <input type="number" id="carryAmt" placeholder="전년도 이월금액 (원)">
+        <span>※ 이월금은 수기기록 → 잔액 자동반영</span>
+      </div>
+
+      <div class="sc">
+        <div class="scard cb"><div class="lbl">📌 연간 예산</div><div class="val vb" id="cBudget">-</div><div class="sub">원</div></div>
+        <div class="scard co"><div class="lbl">📌 이월금</div><div class="val vo" id="cCarry">0</div><div class="sub">원</div></div>
+        <div class="scard cr"><div class="lbl">💸 총 지출</div><div class="val vr" id="cExp">-</div><div class="sub">원</div><div class="prog"><div class="pf pfr" id="cProg" style="width:0%"></div></div></div>
+        <div class="scard cg"><div class="lbl">💰 잔액</div><div class="val vg" id="cBal">-</div><div class="sub">원</div></div>
+      </div>
+
+      <!-- 지출 입력 폼 -->
+      <div class="fc no-print" id="expForm" style="display:none">
+        <div class="fch">✏️ 지출 입력</div>
+        <div class="fb2">
+          <div class="fgrid">
+            <div class="fg"><label>날짜 *</label><input type="date" id="fDate"></div>
+            <div class="fg"><label>항목 *</label>
+              <select id="fCat"><option value="">-- 항목 선택 --</option></select>
+            </div>
+            <div class="fg full"><label>세부항목 *</label>
+              <select id="fDetail"><option value="">-- 세부항목 선택 --</option></select>
+            </div>
+            <div class="fg full"><label>적요 (상세내용) *</label>
+              <input type="text" id="fMemo" placeholder="예) 찬양팀 간식비, 임원 MT 교통비">
+            </div>
+            <div class="fg"><label>수입 (원)</label><input type="number" id="fInc" placeholder="0"></div>
+            <div class="fg"><label>지출 (원)</label><input type="number" id="fExp" placeholder="0"></div>
+            <div class="fg"><label>영수증 번호</label><input type="text" id="fRno" placeholder="자동생성"></div>
+            <div class="fg"><label>📷 영수증 첨부</label>
+              <input type="file" id="fReceipt" accept="image/*" capture="environment" style="display:none">
+              <button type="button" class="btn bo" style="width:100%">📷 카메라 / 파일</button>
+              <div id="rcvPreview" style="font-size:11px;color:var(--green);margin-top:4px;display:none"></div>
+            </div>
+          </div>
+        </div>
+        <div class="faction">
+          <button class="btn bp" id="btnSubmitExp">💾 저장 및 결재신청</button>
+          <button class="btn bo" id="btnSaveDraft">📝 임시저장</button>
+          <button id="btnCancelExp" class="btn bo">취소</button>
+        </div>
+      </div>
+
+      <div class="tw">
+        <div class="th"><h3 id="ledgerTableTitle">📋 지출내역</h3>
+          <span style="font-size:11px;color:var(--text3)" class="no-print">영수증 클릭→상세 | 감사체크→서명</span>
+        </div>
+        <div class="ts"><table>
+          <thead><tr>
+            <th>날짜</th><th>항목</th><th>세부항목</th><th>적요</th>
+            <th>영수증</th><th>수입</th><th>지출</th><th>잔액</th>
+            <th>결재</th><th class="no-print">감사확인</th>
+          </tr></thead>
+          <tbody id="ledgerBody"></tbody>
+        </table></div>
+      </div>
+    </div>
+
+    <!-- 📅 월간현황 -->
+    <div class="page" id="page-monthly">
+      <div class="print-header"><h2 id="monthlyPrintTitle">2025년 월간 현황</h2><p>(단위: 원)</p></div>
+      <div class="ph">
+        <div class="ph-left"><h2>📅 월간 현황</h2><p id="monthlySub">항목별 지출 현황</p></div>
+        <div class="ph-right no-print">
+          <button id="btnPrintMonthly" class="btn bpr">🖨️ 인쇄</button>
+        </div>
+      </div>
+      <div class="sc" id="monthlyCards"></div>
+      <div class="chart-grid" style="margin-bottom:16px;">
+        <div class="chart-card">
+          <h3>📊 항목별 지출 비율</h3>
+          <div class="chart-wrap"><canvas id="chartMonthlyDough"></canvas></div>
+        </div>
+      </div>
+      <div class="tw">
+        <div class="th"><h3>항목별 지출 현황</h3>
+          <div class="no-print" id="auditSignBtn" style="display:none">
+            <button class="btn bs btn-sm">🔍 감사 확인 서명</button>
+          </div>
+        </div>
+        <div class="ts"><table>
+          <thead><tr><th>항목</th><th>세부항목</th><th>건수</th><th>지출액</th><th>비율</th></tr></thead>
+          <tbody id="monthlyBody"></tbody>
+        </table></div>
+        <div id="auditSignedInfo" style="display:none;padding:12px 18px;background:var(--green-light);
+          border-top:1px solid var(--border);font-size:12px;color:var(--green);font-weight:700;"></div>
+      </div>
+    </div>
+
+    <!-- 📆 연간현황 -->
+    <div class="page" id="page-annual">
+      <div class="print-header"><h2 id="annualPrintTitle">2025년도 연간 예산집행현황</h2><p>(단위: 원) B5 가로</p></div>
+      <div class="ph">
+        <div class="ph-left"><h2>📆 연간 현황</h2><p>2025년도 연간 예산집행현황</p></div>
+        <div class="ph-right no-print">
+          <button id="btnPrintAnnual" class="btn bpr">🖨️ 인쇄 (B5)</button>
+        </div>
+      </div>
+      <div class="tw">
+        <div class="th"><h3 id="annualTableTitle">연간 예산집행현황 (단위: 원)</h3>
+          <div class="no-print" id="auditSignBtn2" style="display:none">
+            <button class="btn bs btn-sm">🔍 연간 감사 서명</button>
+          </div>
+        </div>
+        <div class="ts"><table id="annualTable">
+          <thead><tr id="annualHead"></tr></thead>
+          <tbody id="annualBody"></tbody>
+        </table></div>
+      </div>
+    </div>
+
+    <!-- 📈 통합현황 -->
+    <div class="page" id="page-integrated">
+      <div class="ph">
+        <div class="ph-left"><h2>📈 통합 현황</h2><p>전체 위원회 예산집행 통합현황</p></div>
+        <div class="ph-right no-print"><button id="btnPrintIntegrated" class="btn bpr">🖨️ 인쇄</button></div>
+      </div>
+      <div class="sc">
+        <div class="scard cb"><div class="lbl">전체 예산</div><div class="val vb">470,000,000</div><div class="sub">원</div></div>
+        <div class="scard cr"><div class="lbl">전체 지출</div><div class="val vr">89,250,000</div><div class="sub">원 (19%)</div><div class="prog"><div class="pf pfr" style="width:19%"></div></div></div>
+        <div class="scard cg"><div class="lbl">전체 잔액</div><div class="val vg">380,750,000</div><div class="sub">원</div></div>
+        <div class="scard co"><div class="lbl">결재대기</div><div class="val vo">7</div><div class="sub">건 전체</div></div>
+      </div>
+      <div class="chart-grid">
+        <div class="chart-card">
+          <h3>📊 위원회별 예산집행률</h3>
+          <div class="chart-wrap"><canvas id="chartIntegrated"></canvas></div>
+        </div>
+      </div>
+      <div class="tw">
+        <div class="th"><h3>위원회별 예산집행 현황</h3></div>
+        <div class="ts"><table>
+          <thead><tr><th>위원회</th><th>예산</th><th>지출</th><th>잔액</th><th>집행률</th><th>상태</th></tr></thead>
+          <tbody id="intBody"></tbody>
+        </table></div>
+      </div>
+    </div>
+
+    <!-- 📋 지출결의서 -->
+    <div class="page" id="page-voucher">
+      <div class="ph">
+        <div class="ph-left"><h2>📋 지출결의서</h2><p>지출 결재 신청 및 현황</p></div>
+        <div class="ph-right no-print">
+          <button class="btn bp" id="btnAddVoucher">＋ 새 결의서 작성</button>
+          <button id="btnPrintVoucher" class="btn bpr">🖨️ 인쇄</button>
+        </div>
+      </div>
+
+      <div class="fc no-print">
+        <div class="fch">📌 전자결재 7단계 흐름</div>
+        <div class="fb2" style="padding:16px;">
+          <div class="flow" id="approvalFlow"></div>
+        </div>
+      </div>
+
+      <div class="fc" id="voucherForm" style="display:none">
+        <div class="fch">✏️ 지출결의서 작성</div>
+        <div class="fb2">
+          <div class="voucher" id="voucherPreview">
+            <div class="voucher-title"><h2>지 출 결 의 서</h2></div>
+            <div class="voucher-info">
+              <div>
+                <p style="font-size:13px;font-weight:700">위원회: <span id="vComm">-</span> 위원회</p>
+                <p style="font-size:13px;font-weight:700;margin-top:5px">부&nbsp;&nbsp;&nbsp;서: <span id="vDept">-</span></p>
+              </div>
+              <table class="voucher-approval">
+                <tr><th>결</th><th>회&nbsp;&nbsp;계</th><th>부&nbsp;&nbsp;장</th><th>위원장</th></tr>
+                <tr><th>재</th><td id="vsign1"></td><td id="vsign2"></td><td id="vsign3"></td></tr>
+              </table>
+            </div>
+            <table class="voucher-table" style="margin-bottom:14px">
+              <tr><th>예산항목</th><th>총 예산액</th><th>집행액(금회포함누계)</th><th>현재잔액</th><th>비고</th></tr>
+              <tr>
+                <td><select id="vBudgetItem" style="border:none;width:100%;font-size:12px;outline:none;"></select></td>
+                <td class="tc" id="vTotalBudget">-</td><td class="tc" id="vExecuted">-</td>
+                <td class="tc" id="vBalance">-</td>
+                <td><input type="text" id="vNote1" placeholder="비고" style="border:none;width:100%;font-size:12px;outline:none;"></td>
+              </tr>
+            </table>
+            <table class="voucher-table">
+              <tr><th colspan="2">청&nbsp;&nbsp;구&nbsp;&nbsp;내&nbsp;&nbsp;역</th><th>금&nbsp;&nbsp;액</th><th>비&nbsp;&nbsp;고</th></tr>
+              <tr><td colspan="2"><input type="text" id="vi1" placeholder="내역 입력" style="border:none;width:100%;font-size:12px;outline:none;"></td>
+                <td><input type="number" id="va1" placeholder="0" style="border:none;width:90px;font-size:12px;text-align:right;outline:none;"></td>
+                <td><input type="text" id="vn1" placeholder="비고" style="border:none;width:100%;font-size:12px;outline:none;"></td></tr>
+              <tr><td colspan="2"><input type="text" id="vi2" placeholder="내역 입력" style="border:none;width:100%;font-size:12px;outline:none;"></td>
+                <td><input type="number" id="va2" placeholder="0" style="border:none;width:90px;font-size:12px;text-align:right;outline:none;"></td>
+                <td><input type="text" id="vn2" placeholder="비고" style="border:none;width:100%;font-size:12px;outline:none;"></td></tr>
+              <tr><td colspan="2"><input type="text" id="vi3" placeholder="내역 입력" style="border:none;width:100%;font-size:12px;outline:none;"></td>
+                <td><input type="number" id="va3" placeholder="0" style="border:none;width:90px;font-size:12px;text-align:right;outline:none;"></td>
+                <td><input type="text" id="vn3" placeholder="비고" style="border:none;width:100%;font-size:12px;outline:none;"></td></tr>
+              <tr><td colspan="2"><input type="text" id="vi4" placeholder="내역 입력" style="border:none;width:100%;font-size:12px;outline:none;"></td>
+                <td><input type="number" id="va4" placeholder="0" style="border:none;width:90px;font-size:12px;text-align:right;outline:none;"></td>
+                <td><input type="text" id="vn4" placeholder="비고" style="border:none;width:100%;font-size:12px;outline:none;"></td></tr>
+              <tr><td colspan="2"><input type="text" id="vi5" placeholder="내역 입력" style="border:none;width:100%;font-size:12px;outline:none;"></td>
+                <td><input type="number" id="va5" placeholder="0" style="border:none;width:90px;font-size:12px;text-align:right;outline:none;"></td>
+                <td><input type="text" id="vn5" placeholder="비고" style="border:none;width:100%;font-size:12px;outline:none;"></td></tr>
+              <tr><td colspan="2" style="text-align:center;font-weight:800;font-size:13px;">합&nbsp;&nbsp;&nbsp;&nbsp;계</td>
+                <td class="tc" id="vTotal" style="font-weight:800">0</td><td></td></tr>
+            </table>
+            <div class="voucher-bottom">
+              <p style="font-size:14px;font-weight:700;">위와 같이 지출을 바라나이다.</p>
+              <p style="font-size:13px;margin-top:8px;">서기 2025년 <input type="text" id="vMonth" placeholder="월" style="width:40px;border:none;border-bottom:1px solid #999;text-align:center;font-size:13px;outline:none;"> 월
+              <input type="text" id="vDay" placeholder="일" style="width:40px;border:none;border-bottom:1px solid #999;text-align:center;font-size:13px;outline:none;"> 일</p>
+            </div>
+            <div class="voucher-sign">
+              <table class="sign-table">
+                <tr><th>부<br>서<br>결<br>재</th><th>재 정 부 장</th><th>재 정 위 원 장</th><th>당 회 장</th></tr>
+                <tr><td></td><td id="fsign1" style="min-width:80px"></td><td id="fsign2" style="min-width:80px"></td><td id="fsign3" style="min-width:80px"></td></tr>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="faction">
+          <button class="btn bp" id="btnSubmitVoucher">📨 결재 신청</button>
+          <button class="btn bpr">🖨️ 인쇄</button>
+          <button id="btnCancelVoucher" class="btn bo">취소</button>
+        </div>
+      </div>
+
+      <div class="tw">
+        <div class="th"><h3>📋 결의서 목록</h3></div>
+        <div class="ts"><table>
+          <thead><tr><th>날짜</th><th>위원회</th><th>부서</th><th>예산항목</th><th>청구금액</th><th>현재단계</th><th>상태</th><th>관리</th></tr></thead>
+          <tbody id="voucherList"></tbody>
+        </table></div>
+      </div>
+    </div>
+
+    <!-- ✅ 전자결재함 -->
+    <div class="page" id="page-approval">
+      <div class="ph"><div class="ph-left"><h2>✅ 전자결재함</h2><p>내 결재 대기 및 처리현황</p></div></div>
+      <div class="sc">
+        <div class="scard co"><div class="lbl">⏳ 결재 대기</div><div class="val vo" id="approvalPendCnt">0</div><div class="sub">건</div></div>
+        <div class="scard cg"><div class="lbl">✅ 처리 완료</div><div class="val vg" id="approvalDoneCnt">0</div><div class="sub">건</div></div>
+      </div>
+      <div id="approvalCardList"></div>
+      <div class="tw">
+        <div class="th"><h3>✅ 처리 완료 목록</h3></div>
+        <div class="ts"><table>
+          <thead><tr><th>신청자</th><th>항목</th><th>금액</th><th>결과</th><th>처리일시</th></tr></thead>
+          <tbody id="approvalDone"></tbody>
+        </table></div>
+      </div>
+    </div>
+
+    <!-- 🎯 특별활동 -->
+    <div class="page" id="page-special">
+      <div class="ph">
+        <div class="ph-left"><h2>🎯 특별활동 장부</h2><p>교육위원회 특별활동 예산집행</p></div>
+        <div class="ph-right no-print">
+          <button id="btnAddSpec" class="btn bp">＋ 지출 입력</button>
+          <button id="btnPrintSpec" class="btn bpr">🖨️ 인쇄</button>
+        </div>
+      </div>
+      <div class="fb no-print">
+        <label>부서</label>
+        <select id="selSpDept">
+          <option>중등부</option><option>고등부</option><option>청년부</option>
+          <option>유년1부</option><option>유년2부</option>
+          <option>소년1부</option><option>소년2부</option>
+          <option>유치부</option><option>유아부</option>
+        </select>
+        <label>행사</label>
+        <select id="selEvent">
+          <option>여름 수련회</option><option>겨울 수련회</option>
+          <option>여름 성경학교</option><option>겨울 성경학교</option>
+          <option>사용자입력</option>
+        </select>
+      </div>
+      <div class="sc">
+        <div class="scard cb"><div class="lbl">행사 예산</div><div class="val vb">5,000,000</div><div class="sub">원</div></div>
+        <div class="scard cr"><div class="lbl">행사 지출</div><div class="val vr">625,000</div><div class="sub">원</div><div class="prog"><div class="pf pfr" style="width:12%"></div></div></div>
+        <div class="scard cg"><div class="lbl">행사 잔액</div><div class="val vg">4,375,000</div><div class="sub">원</div></div>
+        <div class="scard co"><div class="lbl">지출건수</div><div class="val vo" id="specCount">0</div><div class="sub">건</div></div>
+      </div>
+      <div class="fc no-print" id="specForm" style="display:none">
+        <div class="fch">✏️ 특별활동 지출 입력</div>
+        <div class="fb2">
+          <div class="fgrid">
+            <div class="fg"><label>날짜 *</label><input type="date" id="sfDate"></div>
+            <div class="fg"><label>항목 *</label>
+              <select id="sfCat">
+                <option>음향/영상</option><option>간식/사례비</option><option>식사재료</option>
+                <option>숙박비</option><option>교통비</option><option>레크레이션</option>
+                <option>인쇄물</option><option>소모품</option><option>강사사례비</option><option>기타</option>
+              </select>
+            </div>
+            <div class="fg full"><label>적요 *</label><input type="text" id="sfMemo" placeholder="예) 조별 요리대결 식재료"></div>
+            <div class="fg"><label>지출액 (원) *</label><input type="number" id="sfExp" placeholder="0"></div>
+            <div class="fg"><label>영수증</label>
+              <input type="file" id="sfReceipt" accept="image/*" capture="environment" style="display:none">
+              <button type="button" class="btn bo" style="width:100%">📷 촬영/첨부</button>
+            </div>
+          </div>
+        </div>
+        <div class="faction">
+          <button id="btnSubmitSpec" class="btn bp" id="btnSaveBudget">💾 저장</button>
+          <button id="btnCancelSpec" class="btn bo">취소</button>
+        </div>
+      </div>
+      <div class="tw">
+        <div class="th"><h3 id="specTableTitle">특별활동 지출내역</h3></div>
+        <div class="ts"><table>
+          <thead><tr><th>날짜</th><th>항목</th><th>적요</th><th>영수증</th><th>지출액</th><th>누계잔액</th><th>결재</th><th class="no-print">감사확인</th></tr></thead>
+          <tbody id="specBody"></tbody>
+        </table></div>
+      </div>
+    </div>
+
+    <!-- 👑 당회장 -->
+    <div class="page" id="page-pastor">
+      <div class="ph">
+        <div class="ph-left"><h2>👑 결의서 사후승인</h2><p>재정부회계 승인요청 결의서 목록</p></div>
+        <div class="ph-right no-print">
+          <button class="btn bp" id="btnBatchApprove">📋 일괄 승인</button>
+        </div>
+      </div>
+      <div class="sc">
+        <div class="scard co"><div class="lbl">⏳ 승인 대기</div><div class="val vo" id="pastorPending">5</div><div class="sub">건</div></div>
+        <div class="scard cg"><div class="lbl">✅ 승인 완료</div><div class="val vg" id="pastorDone">38</div><div class="sub">건</div></div>
+        <div class="scard cb"><div class="lbl">💰 대기 금액</div><div class="val vb">1,245,000</div><div class="sub">원</div></div>
+      </div>
+      <div class="tw">
+        <div class="th"><h3>⏳ 승인 대기 목록</h3></div>
+        <div class="ts"><table>
+          <thead><tr><th><input type="checkbox" id="chkAll"></th><th>위원회</th><th>부서</th><th>예산항목</th><th>금액</th><th>집행일</th><th>결의서</th><th>처리</th></tr></thead>
+          <tbody id="pastorBody"></tbody>
+        </table></div>
+      </div>
+    </div>
+
+    <!-- 🔍 감사 -->
+    <div class="page" id="page-audit">
+      <div class="ph"><div class="ph-left"><h2>🔍 감사 확인</h2><p id="auditSub">담당 위원회 감사 확인</p></div></div>
+      <div class="sc">
+        <div class="scard cp"><div class="lbl">감사 기간</div><div class="val vp" id="auditPeriod">비활성</div><div class="sub">현재 상태</div></div>
+        <div class="scard cg"><div class="lbl">확인 완료</div><div class="val vg" id="auditDone">0</div><div class="sub">행</div></div>
+        <div class="scard co"><div class="lbl">미확인</div><div class="val vo" id="auditPend">0</div><div class="sub">행</div></div>
+      </div>
+      <div class="tw">
+        <div class="th"><h3>감사 현황</h3></div>
+        <div class="ts"><table>
+          <thead><tr><th>위원회</th><th>부서</th><th>월간감사</th><th>연간감사</th><th>행별확인</th></tr></thead>
+          <tbody id="auditBody"></tbody>
+        </table></div>
+      </div>
+    </div>
+
+    <!-- 💰 예산관리 -->
+    <div class="page" id="page-budget">
+      <div class="ph">
+        <div class="ph-left"><h2>💰 예산 관리</h2><p>2025년도 위원회/부서/항목별 예산</p></div>
+        <div class="ph-right no-print">
+          <label class="btn bg" style="cursor:pointer">📂 엑셀 일괄입력
+            <input type="file" accept=".xlsx,.xls,.csv" style="display:none">
+          </label>
+          <button class="btn bp">💾 저장</button>
+        </div>
+      </div>
+      <div class="tw">
+        <div class="th"><h3>위원회/부서/항목별 예산 (단위: 원)</h3></div>
+        <div class="ts"><table>
+          <thead><tr><th>위원회</th><th>부서</th><th>항목</th><th>세부목록</th><th>예산확정액</th><th>수정</th></tr></thead>
+          <tbody id="budgetBody"></tbody>
+        </table></div>
+      </div>
+    </div>
+
+    <!-- 👥 사용자/권한 -->
+    <div class="page" id="page-users">
+      <div class="ph">
+        <div class="ph-left"><h2>👥 사용자/권한 관리</h2><p>위원회별 계정 및 권한 설정</p></div>
+        <div class="ph-right no-print"><button class="btn bp" id="btnAddUser">＋ 사용자 추가</button></div>
+      </div>
+      <div class="tw">
+        <div class="th"><h3>권한 레벨 안내</h3></div>
+        <div class="ts"><table>
+          <thead><tr><th>역할</th><th>접근범위</th><th>주요기능</th></tr></thead>
+          <tbody>
+            <tr><td><span class="rbadge rm">마스터</span></td><td>전체</td><td>모든기능+설정+사용자관리+감사기간설정</td></tr>
+            <tr><td><span class="rbadge rm">부마스터</span></td><td>전체</td><td>마스터 대행 (시스템설정/마스터계정 제외)</td></tr>
+            <tr><td><span class="rbadge rp">당회장</span></td><td>전체(읽기)</td><td>결의서 사후승인</td></tr>
+            <tr><td><span class="rbadge rc">위원장</span></td><td>소속위원회</td><td>1차결재 승인/반려 + 전결처리</td></tr>
+            <tr><td><span class="rbadge rch">부장</span></td><td>소속부서</td><td>결재확인 + 전결처리</td></tr>
+            <tr><td><span class="rbadge ra">회계</span></td><td>소속부서</td><td>지출입력+결의서작성+영수증</td></tr>
+            <tr><td><span class="rbadge rau">감사위원</span></td><td>담당위원회</td><td>체크박스확인+결산서명</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+      <div class="tw">
+        <div class="th"><h3>전체 사용자 목록</h3></div>
+        <div class="ts"><table>
+          <thead><tr><th>위원회</th><th>부서</th><th>이름</th><th>아이디</th><th>역할</th><th>감사담당</th><th>상태</th><th>관리</th></tr></thead>
+          <tbody id="userBody"></tbody>
+        </table></div>
+      </div>
+    </div>
+
+    <!-- 📆 감사기간 설정 -->
+    <div class="page" id="page-audit-period">
+      <div class="ph"><div class="ph-left"><h2>📆 감사기간 설정</h2><p>연 2회 감사기간 관리 (2월/7월)</p></div></div>
+      <div class="fc">
+        <div class="fch">감사기간 설정</div>
+        <div class="fb2">
+          <div class="fgrid">
+            <div class="fg"><label>감사 회차</label>
+              <select id="auditTerm">
+                <option>2025년 2월 (상반기)</option>
+                <option>2025년 7월 (하반기)</option>
+              </select>
+            </div>
+            <div class="fg"><label>시작일</label><input type="date" id="auditStart"></div>
+            <div class="fg"><label>종료일</label><input type="date" id="auditEnd"></div>
+          </div>
+          <p style="font-size:12px;color:var(--text3);margin-top:12px;">
+            ※ 종료일 자정 이후 자동 종료됩니다. 수동 종료도 가능합니다.
+          </p>
+        </div>
+        <div class="faction">
+          <button class="btn bp" id="btnStartAudit">🔍 감사 시작</button>
+          <button class="btn bd" id="btnEndAudit">⏹ 감사 종료</button>
+        </div>
+      </div>
+      <div class="tw">
+        <div class="th"><h3>감사위원 담당위원회 지정</h3></div>
+        <div class="ts"><table>
+          <thead><tr><th>감사위원</th><th>아이디</th><th>담당 위원회</th><th>수정</th></tr></thead>
+          <tbody id="auditorBody"></tbody>
+        </table></div>
+      </div>
+    </div>
+
+    <!-- ⚙️ 설정 -->
+    <div class="page" id="page-settings">
+      <div class="ph"><div class="ph-left"><h2>⚙️ 시스템 설정</h2></div></div>
+      <div class="fc">
+        <div class="fch">보안 설정</div>
+        <div class="fb2">
+          <div class="fgrid">
+            <div class="fg"><label>자동 로그아웃</label><select><option>30분</option><option>1시간</option></select></div>
+            <div class="fg"><label>로그인 실패 잠금</label><select><option>5회 실패시 잠금</option><option>3회</option></select></div>
+            <div class="fg"><label>시스템 명칭</label><input type="text" value="스마트웹회계시스템"></div>
+            <div class="fg"><label>연도</label><input type="text" value="2025"></div>
+          </div>
+        </div>
+        <div class="faction"><button id="btnSaveSettings" class="btn bp">저장</button></div>
+      </div>
+    </div>
+
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<!-- 인쇄 미리보기 모달 -->
+<div class="modal-bg" id="printModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>🖨️ 인쇄 설정</h3>
+      <button id="btnClosePrint2" class="modal-close">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="print-opt">
+        <label>📄 용지 크기 (B5 고정)</label>
+        <div class="print-btns"><div class="popt-btn selected">B5 (182×257mm)</div></div>
+      </div>
+      <div class="print-opt">
+        <label>🔄 용지 방향</label>
+        <div class="print-btns">
+          <button class="popt-btn" id="pLand">📃 가로</button>
+          <button class="popt-btn selected" id="pPort">📄 세로</button>
+        </div>
+      </div>
+      <div class="preview-box">
+        <div style="text-align:center">
+          <div style="font-size:32px">📄</div>
+          <p>B5 <span id="prevDir">세로</span> 미리보기</p>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn bp" id="btnDoPrint">🖨️ 인쇄</button>
+      <button id="btnClosePrint" class="btn bo">취소</button>
+    </div>
+  </div>
+</div>
+
+<!-- 영수증 팝업 -->
+<div class="modal-bg" id="recModal">
+  <div class="modal">
+    <div class="modal-head"><h3>🧾 영수증 상세</h3><button id="btnCloseRec" class="modal-close">×</button></div>
+    <div class="modal-body">
+      <div style="background:var(--bg);border:2px dashed var(--border2);border-radius:var(--radius);
+        height:160px;display:flex;align-items:center;justify-content:center;font-size:48px;margin-bottom:14px;">🧾</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div><div style="font-size:11px;color:var(--text3)">영수증번호</div><div style="font-weight:800" id="ri1"></div></div>
+        <div><div style="font-size:11px;color:var(--text3)">날짜</div><div style="font-weight:800" id="ri2"></div></div>
+        <div><div style="font-size:11px;color:var(--text3)">항목</div><div style="font-weight:800" id="ri3"></div></div>
+        <div><div style="font-size:11px;color:var(--text3)">금액</div><div style="font-weight:800;color:var(--red)" id="ri4"></div></div>
+        <div style="grid-column:1/-1"><div style="font-size:11px;color:var(--text3)">적요</div><div style="font-weight:800" id="ri5"></div></div>
+      </div>
+    </div>
+    <div style="text-align:center;font-size:11px;color:var(--text3);padding:10px;border-top:1px solid var(--border);">
+      팝업 밖 터치하면 닫힙니다
+    </div>
+  </div>
+</div>
+
+<!-- 알림 -->
+<div class="notif" id="notif"><div class="nt" id="notifT"></div><div id="notifM"></div></div>
+
+<!-- 하단 탭바 (모바일) -->
+<div id="tab-bar" style="display:none">
+  <button data-tab="dashboard"><span class="tico">📊</span>홈</button>
+  <button data-tab="ledger"><span class="tico">📒</span>장부</button>
+  <button data-tab="monthly"><span class="tico">📅</span>월간</button>
+  <button data-tab="annual"><span class="tico">📆</span>연간</button>
+  <button data-tab="approval"><span class="tico">✅</span>결재함</button>
+  <button data-tab="voucher"><span class="tico">📋</span>결의서</button>
+  <button data-tab="special"><span class="tico">🎯</span>특활</button>
+</div>
+
+<script>
+
+// ── MiniChart: Chart.js 없이 동작하는 경량 차트 ──────────────
+const Chart = (function() {
+  function MiniChart(canvas, config) {
+    this.canvas = canvas;
+    this.config = config;
+    this._draw();
+  }
+  MiniChart.prototype.destroy = function() {
+    if (this.canvas) {
+      const ctx = this.canvas.getContext('2d');
+      ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+  };
+  MiniChart.prototype._draw = function() {
+    const canvas = this.canvas;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    const W = canvas.parentElement ? canvas.parentElement.clientWidth || 300 : 300;
+    const H = canvas.parentElement ? canvas.parentElement.clientHeight || 200 : 200;
+    canvas.width = W; canvas.height = H;
+    ctx.clearRect(0, 0, W, H);
+    const type = this.config.type;
+    const data = this.config.data;
+    const colors = ['#2c5f8a','#2d7a4f','#c0392b','#b5860d','#6b4c9a','#d4650a','#1a3a5c','#3498db','#27ae60','#e74c3c'];
+    if (type === 'bar') this._drawBar(ctx, W, H, data, colors);
+    else if (type === 'doughnut') this._drawDoughnut(ctx, W, H, data, colors);
+  };
+  MiniChart.prototype._drawBar = function(ctx, W, H, data, colors) {
+    const labels = data.labels || [];
+    const datasets = data.datasets || [];
+    const PAD = {top:20, right:10, bottom:40, left:55};
+    const chartW = W - PAD.left - PAD.right;
+    const chartH = H - PAD.top - PAD.bottom;
+    // 최대값
+    let maxVal = 0;
+    datasets.forEach(ds => ds.data.forEach(v => { if(v > maxVal) maxVal = v; }));
+    if (maxVal === 0) maxVal = 1;
+    const nGroups = labels.length;
+    const nDS = datasets.length;
+    const groupW = chartW / nGroups;
+    const barW = Math.max(2, (groupW * 0.7) / nDS);
+    // Y축
+    ctx.strokeStyle = '#e0dbd3'; ctx.lineWidth = 1;
+    for (let i = 0; i <= 4; i++) {
+      const y = PAD.top + chartH - (chartH * i / 4);
+      ctx.beginPath(); ctx.moveTo(PAD.left, y); ctx.lineTo(PAD.left + chartW, y); ctx.stroke();
+      ctx.fillStyle = '#888'; ctx.font = '9px sans-serif'; ctx.textAlign = 'right';
+      const val = (maxVal * i / 4);
+      const label = val >= 1000000 ? (val/1000000).toFixed(0)+'M' : val >= 1000 ? (val/1000).toFixed(0)+'K' : val.toFixed(0);
+      ctx.fillText(label, PAD.left - 4, y + 3);
+    }
+    // 바 그리기
+    datasets.forEach((ds, di) => {
+      const bg = Array.isArray(ds.backgroundColor) ? ds.backgroundColor[0] : (ds.backgroundColor || colors[di]);
+      ds.data.forEach((val, gi) => {
+        const x = PAD.left + gi * groupW + (groupW * 0.15) + di * barW;
+        const bH = (val / maxVal) * chartH;
+        const y = PAD.top + chartH - bH;
+        ctx.fillStyle = bg;
+        ctx.beginPath();
+        ctx.roundRect ? ctx.roundRect(x, y, barW - 1, bH, 3) : ctx.rect(x, y, barW - 1, bH);
+        ctx.fill();
+      });
+    });
+    // X축 레이블
+    ctx.fillStyle = '#666'; ctx.font = '9px sans-serif'; ctx.textAlign = 'center';
+    labels.forEach((label, gi) => {
+      const x = PAD.left + gi * groupW + groupW / 2;
+      ctx.fillText(label.slice(0,4), x, H - 8);
+    });
+    // 범례
+    if (datasets.length > 1) {
+      datasets.forEach((ds, di) => {
+        const bg = Array.isArray(ds.backgroundColor) ? ds.backgroundColor[0] : (ds.backgroundColor || colors[di]);
+        ctx.fillStyle = bg;
+        ctx.fillRect(PAD.left + di * 70, 4, 10, 10);
+        ctx.fillStyle = '#444'; ctx.font = '9px sans-serif'; ctx.textAlign = 'left';
+        ctx.fillText(ds.label || '', PAD.left + di * 70 + 13, 13);
+      });
+    }
+  };
+  MiniChart.prototype._drawDoughnut = function(ctx, W, H, data, colors) {
+    const vals = (data.datasets[0] || {}).data || [];
+    const bgs = (data.datasets[0] || {}).backgroundColor || colors;
+    const labels = data.labels || [];
+    const total = vals.reduce((a, b) => a + b, 0) || 1;
+    const cx = W * 0.42, cy = H / 2, r = Math.min(cx, cy) - 16, inner = r * 0.55;
+    let angle = -Math.PI / 2;
+    vals.forEach((v, i) => {
+      const slice = (v / total) * Math.PI * 2;
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.arc(cx, cy, r, angle, angle + slice);
+      ctx.closePath();
+      ctx.fillStyle = bgs[i % bgs.length];
+      ctx.fill();
+      ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
+      angle += slice;
+    });
+    // 도넛 구멍
+    ctx.beginPath(); ctx.arc(cx, cy, inner, 0, Math.PI * 2);
+    ctx.fillStyle = '#fff'; ctx.fill();
+    // 범례
+    const legX = W * 0.86, legStartY = cy - (labels.length * 14) / 2;
+    labels.forEach((lb, i) => {
+      const y = legStartY + i * 16;
+      ctx.fillStyle = bgs[i % bgs.length];
+      ctx.fillRect(legX - W * 0.28, y, 10, 10);
+      ctx.fillStyle = '#444'; ctx.font = '9px sans-serif'; ctx.textAlign = 'left';
+      const pct = Math.round(vals[i] / total * 100);
+      ctx.fillText(lb.slice(0,5) + ' ' + pct + '%', legX - W * 0.28 + 13, y + 9);
+    });
+  };
+  return MiniChart;
+})();
+// ─────────────────────────────────────────────────────────────
+
+// ══════════════════════════════════════════════════════
+// v4.1.0 데이터 레이어 (하드코딩 → 추후 API 교체 가능)
+// ══════════════════════════════════════════════════════
+
+// 데이터 추상화 레이어 (호스팅 시 Supabase API로 교체)
+// 현재: 메모리(JS 변수) 기반 / 호스팅 후: Supabase REST API
+const DATA = {
+  get:    (key)       => { console.log('[DATA.get]', key); },
+  set:    (key, val)  => { console.log('[DATA.set]', key, val); },
+  list:   ()          => { console.log('[DATA.list]'); },
+};
+
+// ══ 위원회 정의 ══
+const COMMITTEES = {
+  "예배위원회":  {ico:"🎵",sub:"4개 부서"},
+  "찬양위원회":  {ico:"🎶",sub:"6개 부서"},
+  "세계선교위원회":{ico:"🌏",sub:"3개 부서"},
+  "국내선교위원회":{ico:"🏘️",sub:"2개 부서"},
+  "새가족위원회": {ico:"🤝",sub:"1개 부서"},
+  "교육위원회":  {ico:"📚",sub:"10개 부서"},
+  "평생교육위원회":{ico:"🎓",sub:"4개 부서"},
+  "관리위원회":  {ico:"🔧",sub:"4개 부서"},
+  "봉사위원회":  {ico:"❤️",sub:"3개 부서"},
+  "차량위원회":  {ico:"🚌",sub:"2개 부서"},
+  "총무위원회":  {ico:"📌",sub:"2개 부서"},
+  "홍보위원회":  {ico:"📢",sub:"2개 부서"},
+  "감사위원회":  {ico:"🔍",sub:"1개 부서"},
+  "마을사역위원회":{ico:"🏙️",sub:"3개 부서"},
+  "친교위원회":  {ico:"🎉",sub:"3개 부서"},
+  "50주년기념위원회":{ico:"🎊",sub:"1개 부서"},
+  "재정위원회":  {ico:"💰",sub:"2개 부서"},
+};
+
+// ══ 예산/부서 데이터 (DB) ══
+const DB = {
+  "예배위원회":{"예배부":{"절기행사비":["행사준비"],"성례비":["성찬식 준비"]},"안내부":{"주보대":["주보용지","주보인쇄","예비비"],"안내":["운영비"]},"영어예배부":{"예배":["예배,교육,및 절기행사"],"교육비":["교육활동비","ZOOM사용비"],"전도":["새신자및 외국인심방","한국소개프로그램","친교, 경조","간식, 교우만찬"],"운영":["사무,행정","운영비","예비비"],"선교,구제":["외국인 학생긴급구제","해외단기선교"]},"미디어사업부":{"미디어사업":["음향장비 유지관리","영상장비 유지관리","SW(프로그램관리)","방송실 관리(운영비)"],"홈페이지":["호스팅비용","스마트요람","유지보수"],"인건비":["음향간사인건비"]}},
+  "찬양위원회":{"갈릴리찬양부":{"자료비":["악보, 악보대"],"찬양대활동비":["간식비"],"운영비":["가운세탁"]},"할렐루야찬양부":{"자료비":["악보, 악보대"],"찬양대활동비":["간식비","가운세탁비"]},"시온찬양부":{"자료비":["악보, 악보대"],"찬양대활동비":["간식비"],"운영비":["가운세탁"]},"중창부":{"중창단":["주바람","브니엘","소리모아","가이오","새노래","아이노스"]},"찬양위원회":{"찬양대 운영비":["찬양대 운영비","관현부 편곡비"]},"인건비":{"찬양대 인건비":["지휘자","반주자","교통비(관현악주자)","봉사자격려","절기찬양"]}},
+  "세계선교위원회":{"비전트립부":{"단기선교":["단기선교","단기선교 항공권 구입"]},"선교지원부":{"선교지원비":["1.몽골(신동환)","2.태국(서주현)","3.태국(김종식)","4.태국(김상석)","5.말레이시아(김사무엘)","6.요르단(한동희)","8.브라질(강영수)","9.중국(임종길)","10.태국(정태일)","11.캄보디아(이성욱)","기아대책","총회 지원","동부시찰","캐나다 선교지원","선교사 긴급지원"]},"위원회":{"선교운영비":["선교지 탐방, 여비"]}},
+  "국내선교위원회":{"국내지원부":{"국내선교지원비":["미자립교회(노회)","미자립교회(시찰회)","협력기관,한반도평화","군선교","심방비","문자발송비","구역협의회","공과비(구역공과책)","협력교회 방문"]},"전도부":{"국내전도비":["전도비","전도용품비","식대","교육비","차, 음료","문서선교","현수막"]}},
+  "새가족위원회":{"새가족부":{"선물구입비":["등록축하/심방/아기축복/새신랑신부 선물"],"심방비":["새신자 심방"],"교육비":["교육도서"],"환영회비":["환영회 운영"],"접대운영비":["새가족 접대 다과및 운영"],"사무용품비":["문구류 구매"]}},
+  "교육위원회":{"교육실행위":{"공동행사":["수능 기도회","성탄 행사","아동부 어린이 교육대회","유치부 가족 찬양축제"],"교사훈련":["교사 강습회","교사 워크숍","교역자 모임","목회 연구비"],"교사복지":["교사 근속 표창"],"운영비":["상회비","회의비","홍보비"]},"유아부":{"예배비":["절기예배 외"],"교육비":["매월 교육활동"],"성경학교":["여름 성경학교","겨울 성경학교"],"행사비":["새친구 환영 외"],"친교비":["생일잔치 외"],"서무비":["서무용품"],"교사협의회":["간식 및 협의"]},"유치부":{"예배비":["절기예배 외"],"교육비":["성경공부 교재 & 교육활동비"],"성경학교":["여름 성경학교","겨울 성경학교"],"행사비":["달란트 잔치"],"친교비":["주일간식 외"],"서무비":["비품비"],"교사협의회":["교사협의회"]},"유년1부":{"예배비":["절기 예배 외"],"교육비":["공과대금 외"],"수련회":["여름 수련회","겨울 수련회"],"행사비":["달란트 외"],"친교비":["생일잔치 외"],"서무비":["어린이날 선물 외"],"교사협의회":["교사협의회"]},"유년2부":{"예배비":["절기예배"],"교육비":["공과대금 외"],"수련회":["여름 수련회","겨울 수련회"],"행사비":["달란트 외"],"친교비":["생일잔치 외"],"서무비":["어린이날 선물 외"],"교사협의회":["총회 외"]},"소년1부":{"예배비":["절기 예배 외"],"교육비":["교재비 외"],"수련회":["여름 수련회","겨울 수련회"],"행사비":["달란트 외"],"친교비":["생일잔치 외"],"서무비및 기타":["사무용품"],"교사협의회":["교사협의회"]},"소년2부":{"예배비":["절기예배 외"],"교육비":["공과교재 외"],"수련회":["여름 수련회","겨울 수련회"],"행사비":["새신자 환영 외"],"친교비":["어린이주일 외"],"서무비 및 기타":["생일잔치 외"],"교사협의회":["교사협의회"]},"중등부":{"예배비":["졸업예배 외"],"교육비":["신입생 환영선물 외"],"수련회":["여름 수련회","겨울 수련회"],"행사비":["전도비 외"],"친교비":["반별모임 외"],"운영비":["사무용품비"],"교사협의회":["교사협의회"]},"고등부":{"예배비":["절기예배 외"],"교육비":["제자훈련 외"],"수련회":["여름 수련회","겨울 수련회"],"행사비":["수능 응원 외"],"친교비":["반별모임 외"],"서무비":["비품비"],"교사협의회":["교사협의회"]},"청년부":{"예배비":["절기예배"],"교육비":["교재구입 외"],"수련회":["여름 수련회","겨울 수련회","리더 수련회"],"행사비":["단지운영 외"],"선교비":["단기선교 지원"],"운영비":["찬양팀 활동 외"],"기타":["선물비 외"]}},
+  "평생교육위원회":{"실행위원회":{"행사지원":["연합홍보비"]},"아기학교":{"교육비":["교육비(봄,가을학기)"],"행사":["행사비","시상비","서무비"],"간식":["간식비(봄, 가을학기)"],"교사지원":["지원비"]},"예꿈터":{"교육비":["예꿈터 강사비"]},"조이맘":{"교육비":["교제비 지원","세미나","교육 활동자료"],"행사비":["수료식, 만찬"],"친교비":["간식"],"교사지원":["스텝복지"],"서무비":["환경구성"]}},
+  "관리위원회":{"재산관리부":{"재산관리":["사무비","비품비","수도광열비","공과관리비","통신비","소모품비"]},"영선부":{"수리(영선)":["교육관에어컨 수리","본당 에어컨 교체","노후시설 유지보수"]},"시설부":{"시설비":["시설교체 유지보수","교회 화단정비","옥상방수, 내외벽도색"]},"지급임차료":{"지급임차료":["주택(사택)임차료"]}},
+  "봉사위원회":{"사회봉사부":{"복지기관지원":["한아봉사회","한정협","교회와 신앙","예사랑공동체"],"결혼예비학교":["결혼예비학교"]},"교내봉사부":{"교회내 봉사":["설, 추석 불우이웃돕기"],"추수감사절":["추수감사떡"],"환경미화":["환경미화"],"긴급구제":["긴급구제"],"중보기도":["중보기도원"]},"식당운영부":{"식대지원":["주일식대지원"],"하절기 김치":["김치,장 담그기"],"절기지원":["식자재"],"운영비":["주방기기 구입","양념 구입,주방소모품"]}},
+  "차량위원회":{"차량관리부":{"차량관리":["차량연료비","차량유지비","수리비","임차료","인건비(주일 운행)"]},"차량안내부":{"주차장":["주차장임차료","안내용품구입"]}},
+  "총무위원회":{"서무부":{"상회비":["노회","노회 시찰","성서신학원 이사회","전국 남선교회","전국 장로회","총회 총대","총회 회비","기관찬조"],"기타":["수수료(우편 등)","교통비 및 차대비","일반행사비"]},"기획부":{"운영비":["회의비"],"행사비":["신년준비당회","은퇴, 임직식 준비비","50주년 기념사업"]}},
+  "홍보위원회":{"홍보부":{"절기장식":["본관 장식비","교육관 장식비"]},"문서출판부":{"인쇄비":["요람","달력","홍보물 제작비","헌금봉투","성경통독카드","연말 말씀카드"]}},
+  "감사위원회":{"감사부":{"감사":["회의비"]}},
+  "마을사역위원회":{"영덕동마을쟁이":{"마을사역":["학생 방학기간 식사대용 지원","계절과일 선물(설,추석)","폐식용유 수거 및 비누제작","미혼모 생일 선물","취약계층 보양 음식나눔","성탄절 선물(케익) 나눔"],"운영비":["긴급집행비","진행 및 서무비"]},"교외장학부":{"운영비":["장학목적 헌금"]},"NGO설립준비부":{"활동비":["NGO설립활동비"],"마음이음":["마음이음 사역"],"운영비":["교회내 회의/홍보비"]}},
+  "친교위원회":{"체육부":{"체육활동지원비":["운동장 대여료","체육활동 용품 지원"],"남선교회체육대회":["중식","교회광고홍보비","참가비","단체티","차량 용달비"],"동아리":["동아리활동비"]},"친교부":{"경로잔치":["경로잔치(70세이상)"],"3040초대행사":["3040가족 초대 행사(상,하반기)"],"구역장권찰수련회":["구역장 권찰수련회"],"교회 야유회":["사전답사","야유회(입장료+버스임대)","예비비"]},"경조부":{"본교회경조비":["운구위원활동비","교회 애경사"],"친교활동비":["축하성경책","심방액자","심방예배상","축하꽃 경비 외"]}},
+  "50주년기념위원회":{"50주년T/F":{"기념사업":["50주년 기념 엠블럼 제작","50주년 기념 티저 포스터 제작","멀티미디어 제작용 컴퓨터 구축","본관 1층 로비 아트월","홍보용 리플렛 제작","아카이브자료 수집","교인들의 이야기 영상 제작","기념 전시회","기념 책자 발간"]}},
+  "재정위원회":{"재정부":{"재정운영":["예산편성","결산보고","재정감사 지원"]},"회계부":{"회계":["수입관리","지출관리","장부정리"]}},
+};
+
+// ══ 사용자 데이터 ══
+const USERS = {
+  "master":    {pw:"1234",name:"마스터관리자",committee:"전체",dept:"-",role:"master"},
+  "sub_master":{pw:"1234",name:"부마스터",committee:"전체",dept:"-",role:"sub_master"},
+  "pastor":    {pw:"1234",name:"담임목사",committee:"전체",dept:"-",role:"pastor"},
+  "fin_chair": {pw:"1234",name:"재정위원장",committee:"재정위원회",dept:"재정부",role:"chair"},
+  "fin_chief": {pw:"1234",name:"재정부장",committee:"재정위원회",dept:"재정부",role:"fin_chief"},
+  "fin_acc":   {pw:"1234",name:"재정부회계",committee:"재정위원회",dept:"재정부",role:"fin_acc"},
+  "edu_chair": {pw:"1234",name:"교육위원장",committee:"교육위원회",dept:"-",role:"chair"},
+  "mid_chief": {pw:"1234",name:"중등부장",committee:"교육위원회",dept:"중등부",role:"chief"},
+  "mid_acc":   {pw:"1234",name:"중등부회계",committee:"교육위원회",dept:"중등부",role:"acc"},
+  "wor_chair": {pw:"1234",name:"예배위원장",committee:"예배위원회",dept:"-",role:"chair"},
+  "wor_acc":   {pw:"1234",name:"예배부회계",committee:"예배위원회",dept:"예배부",role:"acc"},
+  "audit1":    {pw:"1234",name:"감사위원1",committee:"감사위원회",dept:"감사부",role:"auditor",scope:"교육위원회"},
+  "audit2":    {pw:"1234",name:"감사위원2",committee:"감사위원회",dept:"감사부",role:"auditor",scope:"예배위원회"},
+  "audit3":    {pw:"1234",name:"감사위원3",committee:"감사위원회",dept:"감사부",role:"auditor",scope:"찬양위원회"},
+  "audit4":    {pw:"1234",name:"감사위원4",committee:"감사위원회",dept:"감사부",role:"auditor",scope:"세계선교위원회"},
+  "audit5":    {pw:"1234",name:"감사위원5",committee:"감사위원회",dept:"감사부",role:"auditor",scope:"국내선교위원회"},
+  "audit6":    {pw:"1234",name:"감사위원6",committee:"감사위원회",dept:"감사부",role:"auditor",scope:"관리위원회"},
+};
+
+// ══ 위원회 계정 매핑 ══
+const COMM_ACCOUNTS = {
+  "전체":      [{id:"master",label:"마스터 관리자",role:"master"},{id:"sub_master",label:"부마스터",role:"sub_master"},{id:"pastor",label:"담임목사",role:"pastor"}],
+  "재정위원회": [{id:"fin_chair",label:"재정위원장",role:"chair"},{id:"fin_chief",label:"재정부장",role:"fin_chief"},{id:"fin_acc",label:"재정부회계",role:"fin_acc"}],
+  "교육위원회": [{id:"edu_chair",label:"교육위원장",role:"chair"},{id:"mid_chief",label:"중등부장",role:"chief"},{id:"mid_acc",label:"중등부회계",role:"acc"}],
+  "예배위원회": [{id:"wor_chair",label:"예배위원장",role:"chair"},{id:"wor_acc",label:"예배부회계",role:"acc"}],
+  "감사위원회": [{id:"audit1",label:"감사위원1(교육담당)",role:"auditor"},{id:"audit2",label:"감사위원2(예배담당)",role:"auditor"}],
+};
+
+// ══ 장부 샘플 데이터 (풍부하게) ══
+let LEDGER = [
+  {id:1,date:"01/05",mon:"1월",cat:"수입",detail:"예산청구",memo:"1월 예산신청",rno:"-",income:3000000,expense:0,status:"approved",audited:false},
+  {id:2,date:"01/12",mon:"1월",cat:"교육비",detail:"교재비 외",memo:"1월 교재 구입",rno:"1",income:0,expense:85000,status:"approved",audited:false},
+  {id:3,date:"01/19",mon:"1월",cat:"친교비",detail:"반별모임 외",memo:"1월 생일 파티",rno:"2",income:0,expense:35000,status:"approved",audited:false},
+  {id:4,date:"01/26",mon:"1월",cat:"운영비",detail:"사무용품비",memo:"사무용품 구매",rno:"3",income:0,expense:22000,status:"approved",audited:false},
+  {id:5,date:"02/02",mon:"2월",cat:"수입",detail:"예산청구",memo:"2월 예산신청",rno:"-",income:3000000,expense:0,status:"approved",audited:false},
+  {id:6,date:"02/09",mon:"2월",cat:"예배비",detail:"졸업예배 외",memo:"찬양팀 간식",rno:"4",income:0,expense:18000,status:"approved",audited:false},
+  {id:7,date:"02/09",mon:"2월",cat:"교육비",detail:"신입생 환영선물 외",memo:"찬양팀 MT 교통비",rno:"5",income:0,expense:51500,status:"approved",audited:false},
+  {id:8,date:"02/16",mon:"2월",cat:"수련회",detail:"여름 수련회",memo:"음향간사 사례비",rno:"18",income:0,expense:100000,status:"approved",audited:false},
+  {id:9,date:"02/18",mon:"2월",cat:"수련회",detail:"여름 수련회",memo:"일회용 마스크/장갑",rno:"19",income:0,expense:45000,status:"approved",audited:false},
+  {id:10,date:"02/22",mon:"2월",cat:"수련회",detail:"여름 수련회",memo:"점심식사재료",rno:"20",income:0,expense:45000,status:"pending",audited:false},
+  {id:11,date:"02/22",mon:"2월",cat:"수련회",detail:"여름 수련회",memo:"조별 요리대결",rno:"30",income:0,expense:50000,status:"approved",audited:false},
+  {id:12,date:"02/23",mon:"2월",cat:"행사비",detail:"전도비 외",memo:"오리엔테이션 행사",rno:"37",income:0,expense:80000,status:"pending",audited:false},
+  {id:13,date:"02/24",mon:"2월",cat:"수련회",detail:"여름 수련회",memo:"레크레이션",rno:"39",income:0,expense:150000,status:"approved",audited:false},
+  {id:14,date:"02/24",mon:"2월",cat:"친교비",detail:"반별모임 외",memo:"2월 생일파티",rno:"40",income:0,expense:35000,status:"approved",audited:false},
+  {id:15,date:"02/24",mon:"2월",cat:"운영비",detail:"사무용품비",memo:"스티커 및 라벨지",rno:"41",income:0,expense:15000,status:"approved",audited:false},
+  {id:16,date:"02/28",mon:"2월",cat:"교육비",detail:"교재비 외",memo:"3월 교재 구입",rno:"42",income:0,expense:65000,status:"draft",audited:false},
+];
+
+// ══ 결재 대기 데이터 ══
+let VOUCHERS = [
+  {id:"V-0001",date:"02/22",comm:"교육위원회",dept:"중등부",item:"수련회 - 여름 수련회",amt:195000,status:"pending",step:2,submitter:"중등부회계",submitDate:"2025-02-22 14:30"},
+  {id:"V-0002",date:"02/23",comm:"교육위원회",dept:"중등부",item:"행사비 - 전도비 외",amt:80000,status:"pending",step:1,submitter:"중등부회계",submitDate:"2025-02-23 09:15"},
+  {id:"V-0003",date:"02/28",comm:"교육위원회",dept:"중등부",item:"교육비 - 교재비 외",amt:65000,status:"draft",step:0,submitter:"중등부회계",submitDate:"2025-02-28 16:45"},
+  {id:"V-0004",date:"02/10",comm:"예배위원회",dept:"예배부",item:"절기행사비 - 행사준비",amt:250000,status:"approved",step:5,submitter:"예배부회계",submitDate:"2025-02-10 11:00"},
+  {id:"V-0005",date:"02/15",comm:"예배위원회",dept:"예배부",item:"성례비 - 성찬식 준비",amt:120000,status:"approved",step:5,submitter:"예배부회계",submitDate:"2025-02-15 10:30"},
+];
+
+// ══ 결재 처리 이력 ══
+let APPROVAL_HISTORY = [
+  {vId:"V-0004",action:"approved",by:"재정위원장",byId:"fin_chair",date:"2025-02-12 10:00",memo:"승인"},
+  {vId:"V-0004",action:"approved",by:"당회장",byId:"pastor",date:"2025-02-13 11:00",memo:"사후승인"},
+  {vId:"V-0005",action:"approved",by:"재정위원장",byId:"fin_chair",date:"2025-02-17 09:30",memo:"승인"},
+];
+
+// ══ 감사 상태 ══
+let auditActive = false;
+let auditInfo = {start:"",end:"",term:""};
+let printDirection = "portrait";
+let printTarget = "ledger";
+let CU = null;
+let autoTimer = null;
+let _chartMonthly = null, _chartBudget = null, _chartDough = null, _chartIntegrated = null;
+
+// ══ 인터내셔널 통합 데이터 ══
+const INTEGRATED_DATA = [
+  {comm:"예배위원회",budget:45000000,expense:8250000},
+  {comm:"찬양위원회",budget:28000000,expense:5600000},
+  {comm:"세계선교위원회",budget:62000000,expense:11800000},
+  {comm:"국내선교위원회",budget:38000000,expense:7200000},
+  {comm:"교육위원회",budget:85000000,expense:14500000},
+  {comm:"관리위원회",budget:65000000,expense:18900000},
+  {comm:"봉사위원회",budget:22000000,expense:4100000},
+  {comm:"친교위원회",budget:15000000,expense:3200000},
+  {comm:"총무위원회",budget:32000000,expense:9800000},
+  {comm:"홍보위원회",budget:18000000,expense:4100000},
+  {comm:"마을사역위원회",budget:12000000,expense:2600000},
+  {comm:"차량위원회",budget:24000000,expense:3200000},
+  {comm:"재정위원회",budget:5000000,expense:0},
+  {comm:"감사위원회",budget:500000,expense:0},
+  {comm:"평생교육위원회",budget:15000000,expense:4900000},
+  {comm:"새가족위원회",budget:8000000,expense:1600000},
+  {comm:"50주년기념위원회",budget:20000000,expense:6800000},
+];
+
+// ══════════════════════════════
+// STEP 1~3 로그인 플로우
+// ══════════════════════════════
+function step1Login(){
+  const id=document.getElementById('s1id').value.trim();
+  const pw=document.getElementById('s1pw').value.trim();
+  if(id==="church2025"&&pw==="1234"){
+    document.getElementById('step1').style.display='none';
+    buildStep2();
+    document.getElementById('step2').style.display='block';
+  } else {
+    alert('❌ 비밀번호 오류\n\n정확한 정보로 입력하세요:\nID: church2025\nPW: 1234');
+  }
+}
+
+function buildStep2(){
+  const grid=document.getElementById('commGrid');
+  grid.innerHTML='';
+  Object.entries(COMMITTEES).forEach(([name,info])=>{
+    const tile=document.createElement('div');
+    tile.className='comm-tile';
+    tile.innerHTML=`<span class="ico">${info.ico}</span><div class="name">${name}</div><div class="sub">${info.sub}</div>`;
+    tile.onclick=()=>goStep3(name,info.ico);
+    grid.appendChild(tile);
+  });
+  document.getElementById('specialTiles').innerHTML=`
+    <div class="special-tile">
+      <span class="ico">👑</span>
+      <div class="info"><div class="name">마스터 / 부마스터</div><div class="sub">전체 시스템 관리</div></div>
+    </div>
+    <div class="special-tile">
+      <span class="ico">⛪</span>
+      <div class="info"><div class="name">당 회 장</div><div class="sub">결의서 사후승인</div></div>
+    </div>
+    <div class="special-tile">
+      <span class="ico">💰</span>
+      <div class="info"><div class="name">재정위원회</div><div class="sub">재정 결재 관리</div></div>
+    </div>
+    <div class="special-tile">
+      <span class="ico">🔍</span>
+      <div class="info"><div class="name">감사위원회</div><div class="sub">감사 확인</div></div>
+    </div>
+  `;
+}
+
+function goStep3(commName,ico){
+  document.getElementById('step2').style.display='none';
+  const s3=document.getElementById('step3');
+  s3.style.display='flex';
+  document.getElementById('s3ico').textContent=ico;
+  document.getElementById('s3name').textContent=commName==='전체'?'마스터/당회장 계정':commName;
+  document.getElementById('s3sub').textContent='아이디와 비밀번호를 입력하세요';
+  document.getElementById('s3id').value='';
+  document.getElementById('s3pw').value='';
+  document.getElementById('s3id').focus();
+  window._loginComm=commName;
+  const accs=COMM_ACCOUNTS[commName]||[];
+  const rl=document.getElementById('roleList');
+  rl.innerHTML='';
+  const rmap={master:'rm',sub_master:'rm',pastor:'rp',chair:'rc',chief:'rch',fin_chief:'rch',fin_acc:'ra',acc:'ra',auditor:'rau'};
+  if(accs.length){
+    accs.forEach(a=>{
+      rl.innerHTML+=`<span class="rbadge ${rmap[a.role]||'ra'}">${a.label} (${a.id}/1234)</span>`;
+    });
+  } else {
+    rl.innerHTML=`<span style="font-size:11px;color:var(--text3)">이 위원회 계정으로 로그인하세요</span>`;
+  }
+}
+
+function goStep2(){
+  document.getElementById('step3').style.display='none';
+  document.getElementById('step2').style.display='block';
+}
+
+function step3Login(){
+  const id=document.getElementById('s3id').value.trim();
+  const pw=document.getElementById('s3pw').value.trim();
+  const u=USERS[id];
+  if(!u||u.pw!==pw){alert('❌ 아이디 또는 비밀번호가 올바르지 않습니다');return;}
+  CU={id,...u};
+  document.getElementById('step3').style.display='none';
+  document.getElementById('app').style.display='block';
+  showTabs(true);
+  setupApp();
+  startAutoLogout();
+  goTab('dashboard', document.querySelector('#tab-bar button'));
+  showNotif('환영합니다! '+u.name+'님 👋',u.committee+(u.dept!=='-'?' | '+u.dept:''));
+}
+
+// ══════════════════════════════
+// APP 초기화
+// ══════════════════════════════
+function setupApp(){
+  const u=CU;
+  document.getElementById('tbName').textContent=u.name;
+  document.getElementById('tbComm').textContent=u.committee+(u.dept!=='-'?' | '+u.dept:'');
+  const isMgr=['master','sub_master'].includes(u.role);
+  const isPastor=u.role==='pastor';
+  const isAuditor=u.role==='auditor';
+  document.getElementById('nav-admin').style.display=isMgr?'block':'none';
+  document.getElementById('ndiv-admin').style.display=isMgr?'block':'none';
+  document.getElementById('nav-pastor').style.display=isPastor||isMgr?'block':'none';
+  document.getElementById('ndiv-pastor').style.display=isPastor||isMgr?'block':'none';
+  document.getElementById('nav-audit').style.display=isAuditor||isMgr?'block':'none';
+  document.getElementById('ndiv-audit').style.display=isAuditor||isMgr?'block':'none';
+  document.getElementById('nav-integrated').style.display=isMgr||isPastor?'':'none';
+
+  // 결재함 배지
+  const pendVouchers=VOUCHERS.filter(v=>v.status==='pending');
+  const myPending=pendVouchers.filter(v=>canApprove(v));
+  if(myPending.length>0){
+    const badge=document.getElementById('abadge');
+    badge.style.display='inline';
+    badge.textContent=myPending.length;
+  }
+  if(auditActive){
+    document.getElementById('auditBanner').style.display='flex';
+    document.getElementById('auditBannerMsg').textContent=`${auditInfo.term} 정기감사 진행 중 (${auditInfo.start} ~ ${auditInfo.end})`;
+  }
+
+  buildCommSelect();
+  buildApprovalFlow();
+  buildVoucherList();
+  buildApprovalPage();
+  buildPastorList();
+  buildIntegrated();
+  buildBudget();
+  buildUsers();
+  buildAuditorList();
+  buildSpecial();
+  buildAuditPage();
+  buildDashboard();
+
+  if(isPastor){sp('pastor',document.querySelector('[data-page="pastor"]'));}
+  else if(isAuditor){sp('audit',document.querySelector('[data-page="audit"]'));}
+}
+
+function canApprove(v){
+  if(!CU||v.status!=='pending')return false;
+  const step=v.step||0;
+  if(step===1&&['chief','fin_chief'].includes(CU.role))return true;
+  if(step===2&&['chair','fin_chair'].includes(CU.role))return true;
+  if(step>=3&&['fin_acc','fin_chief'].includes(CU.role))return true;
+  if(['master','sub_master'].includes(CU.role))return true;
+  return false;
+}
+
+// ══════════════════════════════
+// 내비게이션
+// ══════════════════════════════
+function sp(name,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('active'));
+  const pg=document.getElementById('page-'+name);
+  if(pg)pg.classList.add('active');
+  if(btn)btn.classList.add('active');
+  if(window.innerWidth<=768){
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebarOverlay').classList.remove('show');
+  }
+  // 페이지별 초기화
+  if(name==='ledger')renderLedger();
+  if(name==='monthly')buildMonthly();
+  if(name==='annual')buildAnnual();
+  if(name==='voucher')buildApprovalFlow();
+  if(name==='special')buildSpecial();
+  if(name==='dashboard')buildDashboard();
+  window.scrollTo(0,0);
+}
+
+function goTab(page,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  const pg=document.getElementById('page-'+page);
+  if(pg)pg.classList.add('active');
+  document.querySelectorAll('#tab-bar button').forEach(b=>b.classList.remove('on'));
+  if(btn)btn.classList.add('on');
+  if(page==='ledger')renderLedger();
+  if(page==='monthly')buildMonthly();
+  if(page==='annual')buildAnnual();
+  if(page==='voucher')buildApprovalFlow();
+  if(page==='special')buildSpecial();
+  if(page==='dashboard')buildDashboard();
+  window.scrollTo(0,0);
+}
+
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebarOverlay').classList.toggle('show');
+}
+
+function showTabs(v){
+  const b=document.getElementById('tab-bar');
+  if(b)b.style.display=v?'flex':'none';
+}
+
+function doLogout(){
+  showTabs(false);
+  if(autoTimer)clearTimeout(autoTimer);
+  CU=null;
+  document.getElementById('app').style.display='none';
+  document.getElementById('step1').style.display='flex';
+  document.getElementById('s1pw').value='';
+  // destroy charts
+  [_chartMonthly,_chartBudget,_chartDough,_chartIntegrated].forEach(c=>{if(c)c.destroy();});
+  _chartMonthly=_chartBudget=_chartDough=_chartIntegrated=null;
+}
+
+function startAutoLogout(){
+  const reset=()=>{
+    clearTimeout(autoTimer);
+    autoTimer=setTimeout(()=>{alert('⏰ 30분 미사용으로 자동 로그아웃됩니다');doLogout();},30*60*1000);
+  };
+  document.addEventListener('click',reset);
+  document.addEventListener('keydown',reset);
+  reset();
+}
+
+// ══════════════════════════════
+// 대시보드 & 차트
+// ══════════════════════════════
+function buildDashboard(){
+  // 요약 카드 계산
+  const totalExp=LEDGER.filter(r=>r.expense>0).reduce((a,r)=>a+r.expense,0);
+  const budget=3000000*2; // 1,2월
+  const pendCnt=LEDGER.filter(r=>r.status==='pending').length;
+  document.getElementById('dBudget').textContent=budget.toLocaleString();
+  document.getElementById('dExp').textContent=totalExp.toLocaleString();
+  document.getElementById('dBal').textContent=(budget-totalExp).toLocaleString();
+  document.getElementById('dPend').textContent=pendCnt;
+  document.getElementById('dProg').style.width=Math.min(100,Math.round(totalExp/budget*100))+'%';
+
+  // 월별 수입/지출 차트
+  const months=['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+  const incData=months.map((_,i)=>{
+    const m=(i+1)+'월';return LEDGER.filter(r=>r.mon===m&&r.income>0).reduce((a,r)=>a+r.income,0);
+  });
+  const expData=months.map((_,i)=>{
+    const m=(i+1)+'월';return LEDGER.filter(r=>r.mon===m&&r.expense>0).reduce((a,r)=>a+r.expense,0);
+  });
+  const ctxM=document.getElementById('chartMonthly');
+  if(_chartMonthly)_chartMonthly.destroy();
+  _chartMonthly=new Chart(ctxM,{
+    type:'bar',
+    data:{
+      labels:months,
+      datasets:[
+        {label:'수입',data:incData,backgroundColor:'rgba(44,95,138,.7)',borderRadius:4},
+        {label:'지출',data:expData,backgroundColor:'rgba(192,57,43,.7)',borderRadius:4}
+      ]
+    },
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{font:{size:11}}}},
+      scales:{y:{ticks:{callback:v=>v.toLocaleString()+'원',font:{size:10}},grid:{color:'rgba(0,0,0,.05)'}},
+              x:{ticks:{font:{size:10}}}}}
+  });
+
+  // 예산 항목별 집행률 도넛
+  const cats={};
+  LEDGER.filter(r=>r.expense>0).forEach(r=>{
+    if(!cats[r.cat])cats[r.cat]=0;
+    cats[r.cat]+=r.expense;
+  });
+  const catLabels=Object.keys(cats);
+  const catVals=Object.values(cats);
+  const colors=['#2c5f8a','#2d7a4f','#c0392b','#b5860d','#6b4c9a','#d4650a','#1a3a5c'];
+  const ctxB=document.getElementById('chartBudget');
+  if(_chartBudget)_chartBudget.destroy();
+  _chartBudget=new Chart(ctxB,{
+    type:'doughnut',
+    data:{labels:catLabels,datasets:[{data:catVals,backgroundColor:colors.slice(0,catLabels.length),borderWidth:2,borderColor:'#fff'}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{font:{size:10},boxWidth:12}}}}
+  });
+
+  // 최근 활동 피드
+  const feed=document.getElementById('activityFeed');
+  const recent=[...LEDGER].reverse().slice(0,6);
+  const actColors={approved:'var(--green-light)',pending:'var(--gold-light)',draft:'#f0ede8',rejected:'var(--red-light)'};
+  const actIco={approved:'✅',pending:'⏳',draft:'📝',rejected:'❌'};
+  feed.innerHTML=recent.map(r=>`
+    <div class="activity-item">
+      <div class="act-ico" style="background:${actColors[r.status]||'#f0ede8'}">${actIco[r.status]||'📌'}</div>
+      <div class="act-body">
+        <strong>${r.memo}</strong>
+        <span>${r.date} · ${r.cat} · ${r.status==='approved'?'승인':r.status==='pending'?'결재대기':'작성중'}</span>
+      </div>
+      ${r.expense?`<span class="act-amt">-${r.expense.toLocaleString()}원</span>`:''}
+    </div>
+  `).join('');
+
+  // 결재 대기 대시보드 목록
+  const pList=document.getElementById('dashPendingList');
+  const pendV=VOUCHERS.filter(v=>v.status==='pending').slice(0,4);
+  if(pendV.length){
+    pList.innerHTML=pendV.map(v=>`
+      <div style="padding:10px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;">
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:700">${v.item}</div>
+          <div style="font-size:11px;color:var(--text3)">${v.comm} · ${v.dept} · ${v.date}</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:13px;font-weight:800;color:var(--red)">-${v.amt.toLocaleString()}원</div>
+          <span class="sb sb-wait" style="font-size:10px">단계 ${v.step}/5</span>
+        </div>
+      </div>
+    `).join('');
+  } else {
+    pList.innerHTML='<p style="text-align:center;color:var(--text3);padding:20px;font-size:13px;">결재 대기 없음 ✅</p>';
+  }
+}
+
+// ══════════════════════════════
+// 위원회/부서 셀렉트
+// ══════════════════════════════
+function buildCommSelect(){
+  const sel=document.getElementById('selComm');
+  sel.innerHTML='<option value="">-- 위원회 선택 --</option>';
+  let comms=Object.keys(DB);
+  if(!['master','sub_master','pastor'].includes(CU.role)){
+    comms=comms.filter(c=>c===CU.committee);
+  }
+  comms.forEach(c=>{
+    const o=document.createElement('option');
+    o.value=c;o.textContent=c;
+    if(c===CU.committee)o.selected=true;
+    sel.appendChild(o);
+  });
+  if(CU.committee&&DB[CU.committee])onCommChange();
+}
+
+function onCommChange(){
+  const comm=document.getElementById('selComm').value;
+  const sel=document.getElementById('selDept');
+  sel.innerHTML='<option value="">-- 부서 선택 --</option>';
+  if(!comm||!DB[comm])return;
+  let depts=Object.keys(DB[comm]);
+  if(['acc','chief'].includes(CU.role))depts=depts.filter(d=>d===CU.dept);
+  depts.forEach(d=>{
+    const o=document.createElement('option');o.value=d;o.textContent=d;
+    if(d===CU.dept)o.selected=true;sel.appendChild(o);
+  });
+  if(CU.dept&&CU.dept!=='-')onDeptChange();
+}
+
+function onDeptChange(){
+  const comm=document.getElementById('selComm').value;
+  const dept=document.getElementById('selDept').value;
+  if(!dept)return;
+  const catSel=document.getElementById('fCat');
+  catSel.innerHTML='<option value="">-- 항목 선택 --</option>';
+  if(DB[comm]&&DB[comm][dept]){
+    Object.keys(DB[comm][dept]).forEach(cat=>{
+      const o=document.createElement('option');o.value=cat;o.textContent=cat;catSel.appendChild(o);
+    });
+  }
+  catSel.innerHTML+='<option value="수입">수입(예산청구)</option>';
+  const vsel=document.getElementById('vBudgetItem');
+  if(vsel){
+    vsel.innerHTML='<option value="">-- 예산항목 선택 --</option>';
+    if(DB[comm]&&DB[comm][dept]){
+      Object.keys(DB[comm][dept]).forEach(cat=>{
+        DB[comm][dept][cat].forEach(detail=>{
+          const o=document.createElement('option');
+          o.value=cat+'::'+detail;o.textContent=cat+' - '+detail;vsel.appendChild(o);
+        });
+      });
+    }
+  }
+  document.getElementById('ledgerSub').textContent=`${comm} > ${dept} 지출장부`;
+  document.getElementById('printTitle').textContent=`2025년도 ${dept} 예산집행현황`;
+  if(document.getElementById('vComm'))document.getElementById('vComm').textContent=comm.replace('위원회','');
+  if(document.getElementById('vDept'))document.getElementById('vDept').textContent=dept;
+  renderLedger();
+  buildAnnual(comm,dept);
+  buildMonthly();
+}
+
+function onCatChange(){
+  const comm=document.getElementById('selComm').value;
+  const dept=document.getElementById('selDept').value;
+  const cat=document.getElementById('fCat').value;
+  const detSel=document.getElementById('fDetail');
+  detSel.innerHTML='<option value="">-- 세부항목 선택 --</option>';
+  if(DB[comm]&&DB[comm][dept]&&DB[comm][dept][cat]){
+    DB[comm][dept][cat].forEach(d=>{
+      const o=document.createElement('option');o.value=d;o.textContent=d;detSel.appendChild(o);
+    });
+  }
+  detSel.innerHTML+='<option value="직접입력">✏️ 직접입력</option>';
+}
+
+// ══════════════════════════════
+// 장부 렌더링
+// ══════════════════════════════
+function renderLedger(){
+  const mon=document.getElementById('selMon').value;
+  const carry=parseInt(document.getElementById('carryAmt').value)||0;
+  let data=mon==='전체'?LEDGER:LEDGER.filter(r=>r.mon===mon);
+  const tbody=document.getElementById('ledgerBody');
+  tbody.innerHTML='';
+  let bal=carry,totInc=carry,totExp=0;
+  const smap={
+    approved:'<span class="sb sb-ok">✓ 승인</span>',
+    pending:'<span class="sb sb-wait">⏳ 대기</span>',
+    rejected:'<span class="sb sb-no">✗ 반려</span>',
+    draft:'<span class="sb sb-draft">📝 작성중</span>'
+  };
+
+  data.forEach((row,i)=>{
+    bal+=row.income-row.expense;
+    totInc+=row.income;totExp+=row.expense;
+    const isAuditEnabled=auditActive&&(CU.role==='auditor'||['master','sub_master'].includes(CU.role));
+    const auditCell=isAuditEnabled?
+      `<div class="audit-check">
+        <input type="radio" name="audit_${row.id}" id="aud_${row.id}" ${row.audited?'checked':''}>
+        <label for="aud_${row.id}">${row.audited?'✅확인':'체크'}</label>
+      </div>`:`<span style="font-size:11px;color:var(--text3)">${row.audited?'✅확인':'—'}</span>`;
+
+    const rnoCell=row.rno!=='-'?
+      `<span class="sb sb-draft" style="cursor:pointer">🧾 #${row.rno}</span>`:'-';
+
+    const tr=document.createElement('tr');
+    if(row.audited)tr.className='audited';
+    tr.innerHTML=`
+      <td class="tc">${row.date}</td>
+      <td>${row.cat}</td>
+      <td style="font-size:11px">${row.detail||'-'}</td>
+      <td>${row.memo}</td>
+      <td class="tc">${rnoCell}</td>
+      <td class="tnum">${row.income?row.income.toLocaleString():'-'}</td>
+      <td class="tnum">${row.expense?'<span style="color:var(--red)">-'+row.expense.toLocaleString()+'</span>':'-'}</td>
+      <td class="tnum" style="color:${bal<0?'var(--red)':'var(--green)'};font-weight:700">${bal.toLocaleString()}</td>
+      <td class="tc">${smap[row.status]||''}</td>
+      <td class="tc no-print">${auditCell}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  const sub=document.createElement('tr');sub.className='tsub';
+  sub.innerHTML=`<td colspan="5" class="tc">${mon==='전체'?'합':'월'} 소 계</td><td class="tnum">${totInc.toLocaleString()}</td><td class="tnum" style="color:var(--red)">${totExp.toLocaleString()}</td><td class="tnum">${(totInc-totExp).toLocaleString()}</td><td></td><td class="no-print"></td>`;
+  tbody.appendChild(sub);
+  const tot=document.createElement('tr');tot.className='ttot';
+  tot.innerHTML=`<td colspan="5" class="tc">누 계 (이월금 포함)</td><td class="tnum">${totInc.toLocaleString()}</td><td class="tnum">${totExp.toLocaleString()}</td><td class="tnum" style="color:${bal<0?'var(--red)':'var(--green)'};font-weight:900">${bal.toLocaleString()}</td><td></td><td class="no-print"></td>`;
+  tbody.appendChild(tot);
+
+  const budget=3000000;
+  document.getElementById('cBudget').textContent=budget.toLocaleString();
+  document.getElementById('cCarry').textContent=carry.toLocaleString();
+  document.getElementById('cExp').textContent=totExp.toLocaleString();
+  document.getElementById('cBal').textContent=(budget+carry-totExp).toLocaleString();
+  document.getElementById('cProg').style.width=Math.min(100,Math.round(totExp/(budget+carry||1)*100))+'%';
+  document.getElementById('ledgerTableTitle').textContent=`📋 ${mon} 지출내역`;
+}
+
+function markAudit(i,el){
+  if(!auditActive){el.checked=false;return;}
+  LEDGER[i].audited=el.checked;
+  renderLedger();
+  if(el.checked)showNotif('감사 확인 완료 ✅',`${CU.name} 서명 기록`);
+}
+
+// ══════════════════════════════
+// 월간현황
+// ══════════════════════════════
+function buildMonthly(){
+  const cats={};
+  LEDGER.forEach(r=>{
+    if(r.expense>0){
+      const k=r.cat+'::'+r.detail;
+      if(!cats[k])cats[k]={cat:r.cat,detail:r.detail,count:0,total:0};
+      cats[k].count++;cats[k].total+=r.expense;
+    }
+  });
+  const total=Object.values(cats).reduce((a,v)=>a+v.total,0)||1;
+  const tbody=document.getElementById('monthlyBody');
+  tbody.innerHTML='';
+  Object.values(cats).forEach(v=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${v.cat}</td><td style="font-size:11px">${v.detail||'-'}</td><td class="tc">${v.count}건</td>
+      <td class="tnum" style="color:var(--red)">${v.total.toLocaleString()}</td>
+      <td class="tc"><div class="prog" style="width:80px;display:inline-block"><div class="pf pfr" style="width:${Math.round(v.total/total*100)}%"></div></div> ${Math.round(v.total/total*100)}%</td>`;
+    tbody.appendChild(tr);
+  });
+  const tr2=document.createElement('tr');tr2.className='ttot';
+  tr2.innerHTML=`<td colspan="3" class="tc">합 계</td><td class="tnum">${total.toLocaleString()}</td><td class="tc">100%</td>`;
+  tbody.appendChild(tr2);
+
+  // 도넛차트
+  const catGroups={};
+  LEDGER.filter(r=>r.expense>0).forEach(r=>{
+    if(!catGroups[r.cat])catGroups[r.cat]=0;
+    catGroups[r.cat]+=r.expense;
+  });
+  const colors=['#2c5f8a','#2d7a4f','#c0392b','#b5860d','#6b4c9a','#d4650a','#1a3a5c','#3498db'];
+  const ctxD=document.getElementById('chartMonthlyDough');
+  if(_chartDough)_chartDough.destroy();
+  _chartDough=new Chart(ctxD,{
+    type:'doughnut',
+    data:{labels:Object.keys(catGroups),datasets:[{data:Object.values(catGroups),backgroundColor:colors,borderWidth:2,borderColor:'#fff'}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{font:{size:10},boxWidth:12}}}}
+  });
+
+  const showAuditBtn=auditActive&&(CU.role==='auditor'||['master','sub_master'].includes(CU.role));
+  document.getElementById('auditSignBtn').style.display=showAuditBtn?'block':'none';
+  document.getElementById('auditSignBtn2').style.display=showAuditBtn?'block':'none';
+}
+
+// ══════════════════════════════
+// 연간현황
+// ══════════════════════════════
+function buildAnnual(comm,dept){
+  const comm2=comm||document.getElementById('selComm').value;
+  const dept2=dept||document.getElementById('selDept').value;
+  const cats=comm2&&dept2&&DB[comm2]&&DB[comm2][dept2]?Object.keys(DB[comm2][dept2]):['예배비','교육비','수련회','행사비','친교비','운영비'];
+  const head=document.getElementById('annualHead');
+  head.innerHTML=`<th>월</th><th>수입(a)</th>${cats.map(c=>`<th>${c}</th>`).join('')}<th>지출소계(b)</th><th>잔액(a-b)</th>`;
+  const months=['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+  const tbody=document.getElementById('annualBody');tbody.innerHTML='';
+  let totI=0,totCols=Array(cats.length).fill(0);
+  months.forEach((m,i)=>{
+    const inc=LEDGER.filter(r=>r.mon===m&&r.income>0).reduce((a,r)=>a+r.income,0);
+    const cols=cats.map(cat=>LEDGER.filter(r=>r.mon===m&&r.cat===cat&&r.expense>0).reduce((a,r)=>a+r.expense,0));
+    const sub=cols.reduce((a,b)=>a+b,0);
+    totI+=inc;cols.forEach((v,j)=>totCols[j]+=v);
+    const tr=document.createElement('tr');
+    if(i>=2)tr.style.color='var(--text3)';
+    tr.innerHTML=`<td class="tc" style="font-weight:700">${m}</td><td class="tnum">${inc?inc.toLocaleString():'-'}</td>${cols.map(v=>`<td class="tnum">${v?v.toLocaleString():'-'}</td>`).join('')}<td class="tnum" style="color:var(--red);font-weight:700">${sub?sub.toLocaleString():'-'}</td><td class="tnum" style="color:${inc?(inc-sub<0?'var(--red)':'var(--green)'):'var(--text3)'};font-weight:700">${inc?(inc-sub).toLocaleString():'-'}</td>`;
+    tbody.appendChild(tr);
+  });
+  const totSub=totCols.reduce((a,b)=>a+b,0);
+  const totTr=document.createElement('tr');totTr.className='ttot';
+  totTr.innerHTML=`<td class="tc">합 계</td><td class="tnum">${totI.toLocaleString()}</td>${totCols.map(v=>`<td class="tnum" style="color:var(--red)">${v?v.toLocaleString():'-'}</td>`).join('')}<td class="tnum" style="color:var(--red);font-weight:900">${totSub.toLocaleString()}</td><td class="tnum" style="color:${totI-totSub<0?'var(--red)':'var(--green)'};font-weight:900">${(totI-totSub).toLocaleString()}</td>`;
+  tbody.appendChild(totTr);
+}
+
+// ══════════════════════════════
+// 통합현황
+// ══════════════════════════════
+function buildIntegrated(){
+  const tbody=document.getElementById('intBody');
+  tbody.innerHTML='';
+  INTEGRATED_DATA.forEach(r=>{
+    const pct=Math.round(r.expense/r.budget*100);
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td style="font-weight:700">${COMMITTEES[r.comm]?COMMITTEES[r.comm].ico+' ':''} ${r.comm}</td>
+      <td class="tnum">${r.budget.toLocaleString()}</td>
+      <td class="tnum" style="color:var(--red)">${r.expense.toLocaleString()}</td>
+      <td class="tnum" style="color:var(--green)">${(r.budget-r.expense).toLocaleString()}</td>
+      <td class="tc"><div class="prog" style="width:80px;display:inline-block"><div class="pf pfr" style="width:${pct}%"></div></div> ${pct}%</td>
+      <td class="tc"><span class="sb ${pct>80?'sb-no':pct>50?'sb-wait':'sb-ok'}">${pct>80?'주의':pct>50?'보통':'양호'}</span></td>`;
+    tbody.appendChild(tr);
+  });
+
+  // 통합 차트
+  const top8=INTEGRATED_DATA.slice(0,8);
+  const ctxI=document.getElementById('chartIntegrated');
+  if(_chartIntegrated)_chartIntegrated.destroy();
+  _chartIntegrated=new Chart(ctxI,{
+    type:'bar',
+    data:{
+      labels:top8.map(r=>r.comm.replace('위원회','').replace('위원','').slice(0,4)),
+      datasets:[
+        {label:'예산',data:top8.map(r=>r.budget),backgroundColor:'rgba(44,95,138,.3)',borderColor:'rgba(44,95,138,1)',borderWidth:1,borderRadius:3},
+        {label:'지출',data:top8.map(r=>r.expense),backgroundColor:'rgba(192,57,43,.7)',borderRadius:3}
+      ]
+    },
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{labels:{font:{size:10}}}},
+      scales:{y:{ticks:{callback:v=>(v/1000000).toFixed(0)+'M',font:{size:10}},grid:{color:'rgba(0,0,0,.05)'}},
+              x:{ticks:{font:{size:10}}}}}
+  });
+}
+
+// ══════════════════════════════
+// 결재 흐름 & 결의서
+// ══════════════════════════════
+function buildApprovalFlow(){
+  const steps=[
+    {name:'회계\n작성',ico:'✏️',done:true},
+    {name:'부장\n확인',ico:'👤',done:true},
+    {name:'위원장\n1차결재',ico:'⭐',done:false,active:true},
+    {name:'재정부\n회계',ico:'📊',done:false},
+    {name:'재정부장\n결재',ico:'💼',done:false},
+    {name:'재정\n위원장',ico:'🎖️',done:false},
+    {name:'당회장\n사후승인',ico:'👑',done:false},
+  ];
+  const flow=document.getElementById('approvalFlow');
+  flow.innerHTML='';
+  steps.forEach((s,i)=>{
+    const div=document.createElement('div');
+    div.className='flow-step '+(s.done?'step-done':s.active?'step-active':'step-wait');
+    div.innerHTML=`<div class="circle">${s.ico}</div>
+      <div class="name">${s.name.replace('\n','<br>')}</div>
+      <div class="status">${s.done?'✅완료':s.active?'⏳진행중':'대기중'}</div>`;
+    flow.appendChild(div);
+    if(i<steps.length-1){
+      const arr=document.createElement('div');arr.className='flow-arrow';arr.textContent='→';
+      flow.appendChild(arr);
+    }
+  });
+}
+
+function buildVoucherList(){
+  const tbody=document.getElementById('voucherList');
+  tbody.innerHTML='';
+  const smap={
+    approved:'<span class="sb sb-ok">✅ 완료</span>',
+    pending:'<span class="sb sb-wait">⏳ 진행중</span>',
+    rejected:'<span class="sb sb-no">❌ 반려</span>',
+    draft:'<span class="sb sb-draft">📝 작성중</span>'
+  };
+  VOUCHERS.forEach(v=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td class="tc" style="font-size:11px;font-weight:700">${v.date}</td>
+      <td>${v.comm}</td><td>${v.dept}</td><td style="font-size:11px">${v.item}</td>
+      <td class="tnum" style="color:var(--red)">${v.amt.toLocaleString()}</td>
+      <td class="tc"><span style="font-size:11px">${v.step}/7단계</span></td>
+      <td class="tc">${smap[v.status]||''}</td>
+      <td class="tc"><button class="btn bo btn-sm">상세</button></td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+function toggleVoucher(){
+  const f=document.getElementById('voucherForm');
+  f.style.display=f.style.display==='none'?'block':'none';
+}
+
+function onVBudgetChange(){
+  document.getElementById('vTotalBudget').textContent='3,000,000';
+  document.getElementById('vExecuted').textContent='593,500';
+  document.getElementById('vBalance').textContent='2,406,500';
+}
+
+function calcVTotal(){
+  let sum=0;
+  for(let i=1;i<=5;i++){
+    const v=parseInt(document.getElementById('va'+i).value)||0;sum+=v;
+  }
+  document.getElementById('vTotal').textContent=sum.toLocaleString();
+}
+
+function submitVoucher(){
+  const item=document.getElementById('vBudgetItem').value;
+  if(!item){alert('예산항목을 선택하세요');return;}
+  const total=parseInt(document.getElementById('vTotal').textContent.replace(/,/g,''))||0;
+  if(!total){alert('청구금액을 입력하세요');return;}
+  const newV={
+    id:'V-'+String(VOUCHERS.length+1).padStart(4,'0'),
+    date:new Date().toLocaleDateString('ko-KR',{month:'2-digit',day:'2-digit'}).replace('. ','').replace('.',''),
+    comm:CU.committee,dept:CU.dept,
+    item:item.replace('::','-'),
+    amt:total,status:'pending',step:1,
+    submitter:CU.name,submitDate:new Date().toLocaleString()
+  };
+  VOUCHERS.unshift(newV);
+  toggleVoucher();
+  buildVoucherList();
+  buildApprovalPage();
+  updateApprovalBadge();
+  showNotif('결의서 결재신청 완료 📨','결재선에 승인요청이 전달되었습니다');
+}
+
+function showVoucherDetail(id){
+  const v=VOUCHERS.find(x=>x.id===id);
+  if(!v)return;
+  alert(`📋 ${v.id}\n\n위원회: ${v.comm}\n부서: ${v.dept}\n항목: ${v.item}\n금액: ${v.amt.toLocaleString()}원\n상태: ${v.status==='pending'?'결재진행중':v.status==='approved'?'완료':'작성중'}\n단계: ${v.step}/7`);
+}
+
+// ══════════════════════════════
+// 전자결재함 (실제 동작)
+// ══════════════════════════════
+function buildApprovalPage(){
+  const pending=VOUCHERS.filter(v=>v.status==='pending');
+  const done=VOUCHERS.filter(v=>v.status==='approved'||v.status==='rejected');
+  document.getElementById('approvalPendCnt').textContent=pending.length;
+  document.getElementById('approvalDoneCnt').textContent=done.length;
+
+  const cardList=document.getElementById('approvalCardList');
+  cardList.innerHTML='';
+
+  if(pending.length===0){
+    cardList.innerHTML='<div style="text-align:center;padding:30px;color:var(--text3);background:var(--white);border-radius:var(--radius);border:1px solid var(--border)">✅ 결재 대기 없음</div>';
+  } else {
+    pending.forEach(v=>{
+      const canAct=canApprove(v);
+      const card=document.createElement('div');
+      card.className='appr-card';
+      card.innerHTML=`
+        <div class="appr-card-header">
+          <div>
+            <span style="font-size:12px;font-weight:800;color:var(--navy2)">${v.id}</span>
+            <span class="sb sb-wait" style="margin-left:8px">단계 ${v.step}/7</span>
+          </div>
+          <span style="font-size:11px;color:var(--text3)">${v.submitDate}</span>
+        </div>
+        <div class="appr-card-info">
+          <div class="appr-card-info-item"><label>위원회</label><span>${v.comm}</span></div>
+          <div class="appr-card-info-item"><label>부서</label><span>${v.dept}</span></div>
+          <div class="appr-card-info-item"><label>예산항목</label><span>${v.item}</span></div>
+          <div class="appr-card-info-item"><label>청구금액</label><span style="color:var(--red);font-weight:900">${v.amt.toLocaleString()}원</span></div>
+          <div class="appr-card-info-item"><label>신청자</label><span>${v.submitter}</span></div>
+        </div>
+        ${canAct?`<div class="appr-card-actions">
+          <button class="btn btn-approve btn-sm">✅ 승인</button>
+          <button class="btn btn-reject btn-sm">❌ 반려</button>
+          <button class="btn bo btn-sm">📋 상세</button>
+        </div>`:`<div style="font-size:11px;color:var(--text3);padding:4px 0">* 현재 ${v.step}단계 결재자가 처리해야 합니다</div>`}
+      `;
+      cardList.appendChild(card);
+    });
+  }
+
+  // 처리 완료 목록
+  const doneTbody=document.getElementById('approvalDone');
+  doneTbody.innerHTML='';
+  done.forEach(v=>{
+    const hist=APPROVAL_HISTORY.filter(h=>h.vId===v.id).slice(-1)[0];
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${v.submitter}</td><td style="font-size:11px">${v.item}</td>
+      <td class="tnum">${v.amt.toLocaleString()}</td>
+      <td class="tc">${v.status==='approved'?'<span class="sb sb-ok">✅ 승인</span>':'<span class="sb sb-no">❌ 반려</span>'}</td>
+      <td class="tc" style="font-size:11px">${hist?hist.date:'-'}</td>`;
+    doneTbody.appendChild(tr);
+  });
+}
+
+function doApprove(id){
+  const v=VOUCHERS.find(x=>x.id===id);
+  if(!v)return;
+  if(v.step<7){
+    v.step++;
+    if(v.step>=7)v.status='approved';
+  } else {
+    v.status='approved';
+  }
+  APPROVAL_HISTORY.push({vId:id,action:'approved',by:CU.name,byId:CU.id,date:new Date().toLocaleString(),memo:'승인'});
+  buildApprovalPage();
+  buildVoucherList();
+  updateApprovalBadge();
+  buildDashboard();
+  showNotif('결재 승인 완료 ✅',`${id} — ${v.step>=7?'최종 승인':'다음 단계로 이동'}`);
+}
+
+function doReject(id){
+  const reason=prompt('반려 사유를 입력하세요:');
+  if(reason===null)return;
+  const v=VOUCHERS.find(x=>x.id===id);
+  if(!v)return;
+  v.status='rejected';
+  APPROVAL_HISTORY.push({vId:id,action:'rejected',by:CU.name,byId:CU.id,date:new Date().toLocaleString(),memo:reason||'반려'});
+  buildApprovalPage();
+  buildVoucherList();
+  updateApprovalBadge();
+  buildDashboard();
+  showNotif('결재 반려 처리 ❌',`${id} — 신청자에게 반려 통보`);
+}
+
+function updateApprovalBadge(){
+  const pending=VOUCHERS.filter(v=>v.status==='pending'&&canApprove(v)).length;
+  const badge=document.getElementById('abadge');
+  if(pending>0){badge.style.display='inline';badge.textContent=pending;}
+  else{badge.style.display='none';}
+  const pbadge=document.getElementById('pbadge');
+  const pastorPend=VOUCHERS.filter(v=>v.status==='approved').length;
+  if(pbadge)pbadge.textContent=Math.max(0,5-pastorPend);
+}
+
+// ══════════════════════════════
+// 당회장 사후승인
+// ══════════════════════════════
+const PASTOR_LIST=[
+  {comm:"교육위원회",dept:"중등부",item:"수련회",amt:250000,date:"2025.02.16"},
+  {comm:"교육위원회",dept:"중등부",item:"행사비",amt:80000,date:"2025.02.23"},
+  {comm:"예배위원회",dept:"예배부",item:"절기행사비",amt:350000,date:"2025.02.05"},
+  {comm:"찬양위원회",dept:"갈릴리찬양부",item:"찬양대활동비",amt:65000,date:"2025.02.09"},
+  {comm:"봉사위원회",dept:"교내봉사부",item:"긴급구제",amt:500000,date:"2025.02.14"},
+];
+
+function buildPastorList(){
+  const tbody=document.getElementById('pastorBody');
+  tbody.innerHTML='';
+  PASTOR_LIST.forEach((item,i)=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td class="tc"><input type="checkbox" class="pastor-chk"></td>
+      <td>${item.comm}</td><td>${item.dept}</td><td>${item.item}</td>
+      <td class="tnum">${item.amt.toLocaleString()}</td><td class="tc">${item.date}</td>
+      <td class="tc"><span class="sb sb-draft" style="cursor:pointer">📋 #${i+1}</span></td>
+      <td><button class="btn bs btn-sm">👑 사후승인</button></td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+function pastorApprove(btn){
+  const row=btn.closest('tr');
+  row.cells[7].innerHTML='<span class="sb sb-ok">✅ 승인완료</span>';
+  btn.remove();
+  const pending=parseInt(document.getElementById('pastorPending').textContent);
+  const done=parseInt(document.getElementById('pastorDone').textContent);
+  document.getElementById('pastorPending').textContent=Math.max(0,pending-1);
+  document.getElementById('pastorDone').textContent=done+1;
+  document.getElementById('pbadge').textContent=Math.max(0,pending-1);
+  showNotif('사후승인 완료 👑','재정부회계에게 승인완료 알림 발송');
+}
+
+function batchApprove(){
+  const chks=document.querySelectorAll('.pastor-chk:checked');
+  if(chks.length===0){showNotif('선택된 결의서가 없습니다','체크박스를 선택하세요');return;}
+  chks.forEach(c=>{
+    const row=c.closest('tr');
+    row.cells[7].innerHTML='<span class="sb sb-ok">✅ 승인완료</span>';
+    c.closest('td').innerHTML='';
+  });
+  showNotif(`일괄 사후승인 완료 👑 (${chks.length}건)`,'');
+}
+
+function checkAll(cb){
+  document.querySelectorAll('.pastor-chk').forEach(c=>c.checked=cb.checked);
+}
+
+// ══════════════════════════════
+// 감사
+// ══════════════════════════════
+function buildAuditPage(){
+  const tbody=document.getElementById('auditBody');
+  tbody.innerHTML='';
+  const comms=CU.role==='auditor'?[CU.scope]:Object.keys(COMMITTEES).slice(0,5);
+  comms.forEach(comm=>{
+    if(!comm||!DB[comm])return;
+    Object.keys(DB[comm]).forEach(dept=>{
+      const tr=document.createElement('tr');
+      tr.innerHTML=`<td>${comm}</td><td>${dept}</td>
+        <td class="tc">${auditActive?'<button class="btn bs btn-sm">🔍 서명</button>':'<span class="sb sb-draft">비활성</span>'}</td>
+        <td class="tc">${auditActive?'<button class="btn bo btn-sm">🔍 서명</button>':'<span class="sb sb-draft">비활성</span>'}</td>
+        <td class="tc">${auditActive?'<span class="sb sb-wait">활성화됨</span>':'<span class="sb sb-draft">비활성</span>'}</td>`;
+      tbody.appendChild(tr);
+    });
+  });
+  document.getElementById('auditPeriod').textContent=auditActive?`감사중 (${auditInfo.start})`:'-';
+  document.getElementById('auditSub').textContent=CU.scope?`담당: ${CU.scope}`:'전체 위원회 감사';
+}
+
+function auditSign(type){
+  if(!auditActive){showNotif('감사 기간이 아닙니다','마스터가 감사기간을 설정해야 합니다');return;}
+  const typeStr=type==='monthly'?'월간결산':'연간결산';
+  if(confirm(`${typeStr} 감사 확인 서명을 하시겠습니까?\n\n서명자: ${CU.name}\n일시: ${new Date().toLocaleString()}`)){
+    document.getElementById('auditSignedInfo').style.display='block';
+    document.getElementById('auditSignedInfo').textContent=`✅ ${typeStr} 감사 확인 완료 | 서명: ${CU.name} | 일시: ${new Date().toLocaleString()}`;
+    showNotif(`${typeStr} 감사 서명 완료 ✅`,`${CU.name} 전자서명 기록`);
+  }
+}
+
+function startAudit(){
+  const start=document.getElementById('auditStart').value;
+  const end=document.getElementById('auditEnd').value;
+  const term=document.getElementById('auditTerm').value;
+  if(!start||!end){alert('날짜를 입력하세요');return;}
+  auditActive=true;auditInfo={start,end,term};
+  document.getElementById('auditBanner').style.display='flex';
+  document.getElementById('auditBannerMsg').textContent=`${term} 정기감사 진행 중 (${start} ~ ${end})`;
+  showNotif('감사 기간 시작 🔍',`${term} | ${start} ~ ${end}`);
+  buildAuditPage();renderLedger();buildMonthly();
+}
+
+function endAudit(){
+  auditActive=false;
+  document.getElementById('auditBanner').style.display='none';
+  showNotif('감사 기간 종료 ✅','감사가 완료되었습니다');
+  buildAuditPage();renderLedger();buildMonthly();
+}
+
+// ══════════════════════════════
+// 특별활동
+// ══════════════════════════════
+const SPECIAL_BIBLE=['유아부','유치부'];
+function onSpDeptChange(){
+  const dept=document.getElementById('selSpDept').value;
+  const evSel=document.getElementById('selEvent');evSel.innerHTML='';
+  const events=SPECIAL_BIBLE.includes(dept)?
+    ['여름 성경학교','겨울 성경학교','사용자입력']:
+    ['여름 수련회','겨울 수련회','사용자입력'];
+  events.forEach(e=>{const o=document.createElement('option');o.value=e;o.textContent=e;evSel.appendChild(o);});
+  buildSpecial();
+}
+
+function buildSpecial(){
+  const dept=document.getElementById('selSpDept')?document.getElementById('selSpDept').value:'중등부';
+  const event=document.getElementById('selEvent')?document.getElementById('selEvent').value:'겨울 수련회';
+  document.getElementById('specTableTitle').textContent=`${dept} ${event} 지출내역`;
+  const data=[
+    {date:"02/16",cat:"음향",memo:"음향간사 사례비",rno:"18",expense:100000,status:"approved"},
+    {date:"02/18",cat:"소모품",memo:"일회용 마스크/장갑",rno:"19",expense:45000,status:"approved"},
+    {date:"02/22",cat:"식재료",memo:"점심식사재료",rno:"20",expense:45000,status:"pending"},
+    {date:"02/22",cat:"식재료",memo:"조별 요리대결",rno:"30",expense:50000,status:"approved"},
+    {date:"02/22",cat:"소모품",memo:"텐트나눔 준비물",rno:"29",expense:35000,status:"approved"},
+    {date:"02/23",cat:"행사",memo:"오리엔테이션",rno:"37",expense:80000,status:"pending"},
+    {date:"02/24",cat:"레크",memo:"레크레이션(1)",rno:"39",expense:150000,status:"approved"},
+    {date:"02/24",cat:"레크",memo:"레크레이션(2)",rno:"40",expense:120000,status:"approved"},
+  ];
+  document.getElementById('specCount').textContent=data.length+'건';
+  const tbody=document.getElementById('specBody');tbody.innerHTML='';
+  let bal=5000000;
+  const smap={approved:'<span class="sb sb-ok">✓ 승인</span>',pending:'<span class="sb sb-wait">⏳ 대기</span>'};
+  const isAuditEnabled=auditActive&&(CU?CU.role==='auditor'||['master','sub_master'].includes(CU.role):false);
+  data.forEach((row,i)=>{
+    bal-=row.expense;
+    const auditCell=isAuditEnabled?`<input type="radio" name="saudit_${i}" title="감사확인">`:`<span style="font-size:10px;color:var(--text3)">—</span>`;
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td class="tc">${row.date}</td><td>${row.cat}</td><td>${row.memo}</td>
+      <td class="tc"><span class="sb sb-draft" style="cursor:pointer">🧾 #${row.rno}</span></td>
+      <td class="tnum" style="color:var(--red)">-${row.expense.toLocaleString()}</td>
+      <td class="tnum" style="color:${bal<0?'var(--red)':'var(--green)'}">${bal.toLocaleString()}</td>
+      <td class="tc">${smap[row.status]}</td>
+      <td class="tc no-print">${auditCell}</td>`;
+    tbody.appendChild(tr);
+  });
+  const total=data.reduce((a,r)=>a+r.expense,0);
+  const sub=document.createElement('tr');sub.className='tsub';
+  sub.innerHTML=`<td colspan="4" class="tc">소 계</td><td class="tnum" style="color:var(--red)">${total.toLocaleString()}</td><td class="tnum">${(5000000-total).toLocaleString()}</td><td></td><td class="no-print"></td>`;
+  tbody.appendChild(sub);
+}
+
+// ══════════════════════════════
+// 예산 관리
+// ══════════════════════════════
+function buildBudget(){
+  const tbody=document.getElementById('budgetBody');tbody.innerHTML='';
+  Object.entries(DB).forEach(([comm,depts])=>{
+    Object.entries(depts).forEach(([dept,cats])=>{
+      Object.entries(cats).forEach(([cat,details])=>{
+        details.forEach(detail=>{
+          const tr=document.createElement('tr');
+          tr.innerHTML=`<td style="font-size:11px">${comm}</td><td style="font-size:11px">${dept}</td>
+            <td style="font-size:11px">${cat}</td><td style="font-size:11px">${detail}</td>
+            <td><input type="number" value="100000" style="width:100px;padding:3px 6px;border:1px solid var(--border);border-radius:4px;text-align:right;font-size:12px"></td>
+            <td class="tc"><button class="btn bo btn-sm">수정</button></td>`;
+          tbody.appendChild(tr);
+        });
+      });
+    });
+  });
+}
+
+// ══════════════════════════════
+// 사용자 관리
+// ══════════════════════════════
+function buildUsers(){
+  const tbody=document.getElementById('userBody');tbody.innerHTML='';
+  const rmap={master:'rm',sub_master:'rm',pastor:'rp',chair:'rc',chief:'rch',fin_chief:'rch',fin_acc:'ra',acc:'ra',auditor:'rau'};
+  const rlabel={master:'마스터',sub_master:'부마스터',pastor:'당회장',chair:'위원장',chief:'부장',fin_chief:'재정부장',fin_acc:'재정회계',acc:'회계',auditor:'감사위원'};
+  Object.entries(USERS).forEach(([id,u])=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${u.committee}</td><td>${u.dept||'-'}</td><td style="font-weight:700">${u.name}</td>
+      <td><code>${id}</code></td>
+      <td><span class="rbadge ${rmap[u.role]||'ra'}">${rlabel[u.role]||u.role}</span></td>
+      <td style="font-size:11px">${u.scope||'-'}</td>
+      <td><span class="sb sb-ok">활성</span></td>
+      <td><button class="btn bo btn-sm">수정</button></td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+function buildAuditorList(){
+  const tbody=document.getElementById('auditorBody');tbody.innerHTML='';
+  const auditors=Object.entries(USERS).filter(([,u])=>u.role==='auditor');
+  const commList=Object.keys(COMMITTEES);
+  auditors.forEach(([id,u])=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td style="font-weight:700">${u.name}</td><td><code>${id}</code></td>
+      <td><select style="font-size:12px;padding:4px 8px;border:1px solid var(--border);border-radius:4px;">
+        ${commList.map(c=>`<option ${c===u.scope?'selected':''}>${c}</option>`).join('')}
+      </select></td>
+      <td><button class="btn bs btn-sm">저장</button></td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+// ══════════════════════════════
+// 지출 입력 폼
+// ══════════════════════════════
+function toggleExpForm(){
+  const f=document.getElementById('expForm');
+  f.style.display=f.style.display==='none'?'block':'none';
+  if(f.style.display==='block'){
+    const today=new Date().toISOString().split('T')[0];
+    document.getElementById('fDate').value=today;
+  }
+}
+
+function submitExp(){
+  const memo=document.getElementById('fMemo').value;
+  const cat=document.getElementById('fCat').value;
+  const detail=document.getElementById('fDetail').value;
+  const expAmt=parseInt(document.getElementById('fExp').value)||0;
+  const incAmt=parseInt(document.getElementById('fInc').value)||0;
+  const date=document.getElementById('fDate').value;
+  if(!memo||!cat){alert('항목과 적요를 입력해주세요');return;}
+  if(!expAmt&&!incAmt){alert('수입 또는 지출 금액을 입력하세요');return;}
+  const mon=new Date(date).getMonth()+1+'월';
+  const rno=document.getElementById('fRno').value||String(LEDGER.length+1);
+  const newEntry={
+    id:LEDGER.length+1,
+    date:date.slice(5).replace('-','/'),
+    mon,cat,detail:detail||'',memo,
+    rno:rno||'-',income:incAmt,expense:expAmt,
+    status:'pending',audited:false
+  };
+  LEDGER.push(newEntry);
+  // 결의서도 자동 생성
+  if(expAmt>0){
+    const newV={
+      id:'V-'+String(VOUCHERS.length+1).padStart(4,'0'),
+      date:date.slice(5).replace('-','/'),
+      comm:CU.committee,dept:CU.dept,
+      item:cat+(detail?' - '+detail:''),
+      amt:expAmt,status:'pending',step:1,
+      submitter:CU.name,submitDate:new Date().toLocaleString()
+    };
+    VOUCHERS.unshift(newV);
+    updateApprovalBadge();
+  }
+  toggleExpForm();
+  renderLedger();
+  buildDashboard();
+  document.getElementById('fMemo').value='';
+  document.getElementById('fExp').value='';
+  document.getElementById('fInc').value='';
+  showNotif('지출 등록 완료 ✅','결재 요청이 발송되었습니다');
+}
+
+function saveDraft(){
+  const memo=document.getElementById('fMemo').value;
+  if(!memo){alert('적요를 입력하세요');return;}
+  const expAmt=parseInt(document.getElementById('fExp').value)||0;
+  const date=document.getElementById('fDate').value;
+  const cat=document.getElementById('fCat').value;
+  const detail=document.getElementById('fDetail').value;
+  const mon=new Date(date||new Date()).getMonth()+1+'월';
+  LEDGER.push({id:LEDGER.length+1,date:(date||'').slice(5).replace('-','/'),mon,cat:cat||'미분류',detail:detail||'',memo,rno:'-',income:0,expense:expAmt,status:'draft',audited:false});
+  toggleExpForm();
+  renderLedger();
+  showNotif('임시저장 완료 📝','');
+}
+
+function toggleSpecForm(){
+  const f=document.getElementById('specForm');
+  f.style.display=f.style.display==='none'?'block':'none';
+}
+
+function submitSpec(){
+  const memo=document.getElementById('sfMemo').value;
+  if(!memo){alert('적요를 입력하세요');return;}
+  toggleSpecForm();
+  showNotif('특별활동 지출 등록 완료 ✅','');
+}
+
+function onReceiptChg(){
+  const f=document.getElementById('fReceipt');
+  if(f.files.length>0){
+    document.getElementById('rcvPreview').style.display='block';
+    document.getElementById('rcvPreview').textContent='📎 '+f.files[0].name+' 첨부완료';
+  }
+}
+
+function excelImport(i){if(i.files.length>0)showNotif('엑셀 불러오기 완료 📂','예산 데이터 자동 입력완료');}
+
+// ══════════════════════════════
+// 영수증 & 인쇄
+// ══════════════════════════════
+function showRec(num,date,cat,memo,amt){
+  document.getElementById('ri1').textContent=num;
+  document.getElementById('ri2').textContent='2025.'+date;
+  document.getElementById('ri3').textContent=cat;
+  document.getElementById('ri4').textContent=parseInt(amt).toLocaleString()+'원';
+  document.getElementById('ri5').textContent=memo;
+  document.getElementById('recModal').classList.add('show');
+}
+function closeRecModal(){document.getElementById('recModal').classList.remove('show');}
+
+let nt=null;
+function showNotif(title,msg=''){
+  const el=document.getElementById('notif');
+  document.getElementById('notifT').textContent='🔔 '+title;
+  document.getElementById('notifM').textContent=msg;
+  el.classList.add('show');
+  if(nt)clearTimeout(nt);
+  nt=setTimeout(()=>el.classList.remove('show'),4000);
+}
+
+function showPrintModal(target){
+  printTarget=target;
+  document.getElementById('printModal').classList.add('show');
+  const isLand=target==='annual'||target==='integrated';
+  setPrintDir(isLand?'landscape':'portrait');
+}
+function closePrintModal(){document.getElementById('printModal').classList.remove('show');}
+function setPrintDir(dir){
+  printDirection=dir;
+  document.getElementById('pLand').classList.toggle('selected',dir==='landscape');
+  document.getElementById('pPort').classList.toggle('selected',dir==='portrait');
+  document.getElementById('prevDir').textContent=dir==='landscape'?'가로':'세로';
+}
+function doPrint(){
+  const style=document.createElement('style');
+  style.id='printStyle';
+  style.textContent=printDirection==='landscape'?'@page{size:B5 landscape;margin:10mm}':'@page{size:B5 portrait;margin:10mm}';
+  const existing=document.getElementById('printStyle');
+  if(existing)existing.remove();
+  document.head.appendChild(style);
+  closePrintModal();
+  setTimeout(()=>window.print(),200);
+}
+
+
+// ══════════════════════════════════════════════════════
+// 이벤트 바인딩 (addEventListener 방식 — 모든 환경 호환)
+// ══════════════════════════════════════════════════════
+function setupEvents() {
+  // ── STEP 1 로그인 ──
+  const s1autofill = document.getElementById('s1autofill');
+  if (s1autofill) s1autofill.addEventListener('click', () => {
+    document.getElementById('s1id').value = 'church2025';
+    document.getElementById('s1pw').value = '1234';
+    document.getElementById('s1id').style.borderColor = '#2d7a4f';
+    document.getElementById('s1pw').style.borderColor = '#2d7a4f';
+  });
+  const s1btn = document.getElementById('s1btn');
+  if (s1btn) s1btn.addEventListener('click', step1Login);
+  
+  const s1id = document.getElementById('s1id');
+  const s1pw = document.getElementById('s1pw');
+  if (s1id) s1id.addEventListener('keydown', e => { if(e.key==='Enter') step1Login(); });
+  if (s1pw) s1pw.addEventListener('keydown', e => { if(e.key==='Enter') step1Login(); });
+
+  // ── STEP 3 로그인 ──
+  const s3btn = document.getElementById('s3btn');
+  if (s3btn) s3btn.addEventListener('click', step3Login);
+  const s3back = document.getElementById('s3back');
+  if (s3back) s3back.addEventListener('click', goStep2);
+  const s3id = document.getElementById('s3id');
+  const s3pw = document.getElementById('s3pw');
+  if (s3id) s3id.addEventListener('keydown', e => { if(e.key==='Enter') step3Login(); });
+  if (s3pw) s3pw.addEventListener('keydown', e => { if(e.key==='Enter') step3Login(); });
+
+  // ── 사이드바 토글 ──
+  document.querySelectorAll('.menu-btn').forEach(btn => {
+    btn.addEventListener('click', toggleSidebar);
+  });
+  const overlay = document.getElementById('sidebarOverlay');
+  if (overlay) overlay.addEventListener('click', toggleSidebar);
+
+  // ── 로그아웃 ──
+  const logoutBtn = document.getElementById('logoutBtn');
+  if (logoutBtn) logoutBtn.addEventListener('click', doLogout);
+
+  // ── 사이드바 nav 버튼 ──
+  document.querySelectorAll('.nb[data-page]').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.nb').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      const page = this.getAttribute('data-page');
+      sp(page, this);
+    });
+  });
+
+  // ── 하단 탭바 ──
+  document.querySelectorAll('#tab-bar button[data-tab]').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('#tab-bar button').forEach(b => b.classList.remove('on'));
+      this.classList.add('on');
+      goTab(this.getAttribute('data-tab'), this);
+    });
+  });
+
+  // ── 장부 필터 ──
+  const selComm = document.getElementById('selComm');
+  const selDept = document.getElementById('selDept');
+  const selMon = document.getElementById('selMon');
+  if (selComm) selComm.addEventListener('change', onCommChange);
+  if (selDept) selDept.addEventListener('change', onDeptChange);
+  if (selMon) selMon.addEventListener('change', renderLedger);
+
+  // ── 이월금 ──
+  const carryAmt = document.getElementById('carryAmt');
+  if (carryAmt) carryAmt.addEventListener('input', renderLedger);
+
+  // ── 항목/세부항목 ──
+  const fCat = document.getElementById('fCat');
+  if (fCat) fCat.addEventListener('change', onCatChange);
+
+  // ── 지출 입력 버튼 ──
+  const btnAddExp = document.getElementById('btnAddExp');
+  const btnPrintLedger = document.getElementById('btnPrintLedger');
+  const btnSubmitExp = document.getElementById('btnSubmitExp');
+  const btnSaveDraft = document.getElementById('btnSaveDraft');
+  const btnCancelExp = document.getElementById('btnCancelExp');
+  if (btnAddExp) btnAddExp.addEventListener('click', toggleExpForm);
+  if (btnPrintLedger) btnPrintLedger.addEventListener('click', () => showPrintModal('ledger'));
+  if (btnSubmitExp) btnSubmitExp.addEventListener('click', submitExp);
+  if (btnSaveDraft) btnSaveDraft.addEventListener('click', saveDraft);
+  if (btnCancelExp) btnCancelExp.addEventListener('click', toggleExpForm);
+
+  // ── 결의서 ──
+  const btnAddVoucher = document.getElementById('btnAddVoucher');
+  const btnPrintVoucher = document.getElementById('btnPrintVoucher');
+  const btnSubmitVoucher = document.getElementById('btnSubmitVoucher');
+  const btnCancelVoucher = document.getElementById('btnCancelVoucher');
+  const vBudgetItem = document.getElementById('vBudgetItem');
+  if (btnAddVoucher) btnAddVoucher.addEventListener('click', toggleVoucher);
+  if (btnPrintVoucher) btnPrintVoucher.addEventListener('click', () => showPrintModal('voucher'));
+  if (btnSubmitVoucher) btnSubmitVoucher.addEventListener('click', submitVoucher);
+  if (btnCancelVoucher) btnCancelVoucher.addEventListener('click', toggleVoucher);
+  if (vBudgetItem) vBudgetItem.addEventListener('change', onVBudgetChange);
+
+  // ── 월간/연간/통합 인쇄 ──
+  const btnPrintMonthly = document.getElementById('btnPrintMonthly');
+  const btnPrintAnnual = document.getElementById('btnPrintAnnual');
+  const btnPrintIntegrated = document.getElementById('btnPrintIntegrated');
+  const btnPrintDash = document.getElementById('btnPrintDash');
+  if (btnPrintMonthly) btnPrintMonthly.addEventListener('click', () => showPrintModal('monthly'));
+  if (btnPrintAnnual) btnPrintAnnual.addEventListener('click', () => showPrintModal('annual'));
+  if (btnPrintIntegrated) btnPrintIntegrated.addEventListener('click', () => showPrintModal('integrated'));
+  if (btnPrintDash) btnPrintDash.addEventListener('click', () => showPrintModal('dashboard'));
+
+  // ── 특별활동 ──
+  const selSpDept = document.getElementById('selSpDept');
+  const selEvent = document.getElementById('selEvent');
+  const btnAddSpec = document.getElementById('btnAddSpec');
+  const btnPrintSpec = document.getElementById('btnPrintSpec');
+  const btnSubmitSpec = document.getElementById('btnSubmitSpec');
+  const btnCancelSpec = document.getElementById('btnCancelSpec');
+  if (selSpDept) selSpDept.addEventListener('change', onSpDeptChange);
+  if (selEvent) selEvent.addEventListener('change', buildSpecial);
+  if (btnAddSpec) btnAddSpec.addEventListener('click', toggleSpecForm);
+  if (btnPrintSpec) btnPrintSpec.addEventListener('click', () => showPrintModal('special'));
+  if (btnSubmitSpec) btnSubmitSpec.addEventListener('click', submitSpec);
+  if (btnCancelSpec) btnCancelSpec.addEventListener('click', toggleSpecForm);
+
+  // ── 감사 기간 ──
+  const btnStartAudit = document.getElementById('btnStartAudit');
+  const btnEndAudit = document.getElementById('btnEndAudit');
+  if (btnStartAudit) btnStartAudit.addEventListener('click', startAudit);
+  if (btnEndAudit) btnEndAudit.addEventListener('click', endAudit);
+
+  // ── 영수증 첨부 ──
+  const fReceipt = document.getElementById('fReceipt');
+  if (fReceipt) fReceipt.addEventListener('change', onReceiptChg);
+
+  // ── 인쇄 모달 ──
+  const btnDoPrint = document.getElementById('btnDoPrint');
+  const btnClosePrint = document.getElementById('btnClosePrint');
+  const btnClosePrint2 = document.getElementById('btnClosePrint2');
+  const pLand = document.getElementById('pLand');
+  const pPort = document.getElementById('pPort');
+  if (btnDoPrint) btnDoPrint.addEventListener('click', doPrint);
+  if (btnClosePrint) btnClosePrint.addEventListener('click', closePrintModal);
+  if (btnClosePrint2) btnClosePrint2.addEventListener('click', closePrintModal);
+  if (pLand) pLand.addEventListener('click', () => setPrintDir('landscape'));
+  if (pPort) pPort.addEventListener('click', () => setPrintDir('portrait'));
+
+  const printModalBg = document.getElementById('printModal');
+  if (printModalBg) printModalBg.addEventListener('click', function(e) {
+    if (e.target === this) closePrintModal();
+  });
+
+  // ── 영수증 모달 ──
+  const recModalBg = document.getElementById('recModal');
+  if (recModalBg) recModalBg.addEventListener('click', function(e) {
+    if (e.target === this) closeRecModal();
+  });
+  const btnCloseRec = document.getElementById('btnCloseRec');
+  if (btnCloseRec) btnCloseRec.addEventListener('click', closeRecModal);
+
+  // ── 당회장 일괄 승인 ──
+  const btnBatchApprove = document.getElementById('btnBatchApprove');
+  const chkAll = document.getElementById('chkAll');
+  if (btnBatchApprove) btnBatchApprove.addEventListener('click', batchApprove);
+  if (chkAll) chkAll.addEventListener('change', function() { checkAll(this); });
+
+  // ── 감사 서명 ──
+  const btnAuditSign = document.querySelector('#auditSignBtn button');
+  const btnAuditSign2 = document.querySelector('#auditSignBtn2 button');
+  if (btnAuditSign) btnAuditSign.addEventListener('click', () => auditSign('monthly'));
+  if (btnAuditSign2) btnAuditSign2.addEventListener('click', () => auditSign('annual'));
+
+  // ── 예산 저장 ──
+  const btnSaveBudget = document.getElementById('btnSaveBudget');
+  if (btnSaveBudget) btnSaveBudget.addEventListener('click', () => showNotif('예산 저장 완료 💰','전체 부서 예산 적용 완료'));
+
+  // ── 설정 저장 ──
+  const btnSaveSettings = document.getElementById('btnSaveSettings');
+  if (btnSaveSettings) btnSaveSettings.addEventListener('click', () => showNotif('설정 저장 완료 ✅',''));
+
+  // ── 사용자 추가 ──
+  const btnAddUser = document.getElementById('btnAddUser');
+  if (btnAddUser) btnAddUser.addEventListener('click', () => showNotif('사용자 추가','완성버전에서 지원'));
+}
+
+// DOM 준비 후 실행
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', setupEvents);
+} else {
+  setupEvents();
+}
+
+// ══ INIT ══
+window.addEventListener('load',()=>{
+  const today=new Date().toISOString().split('T')[0];
+  ['auditStart','auditEnd'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=today;});
+});
+</script>
+</body>
+</html>
