@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>교회 회계 장부 시스템 v3.2.1</title>
+<title>교회 회계 장부 시스템 v3.2.3</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Serif+KR:wght@400;600;700;900&display=swap');
 
@@ -451,7 +451,7 @@ tr:hover td{background:#fafaf7;}
       <span class="cross">✝️</span>
       <h1>교회 회계 장부 시스템</h1>
       <p>Church Financial Management System</p>
-      <span class="ver">v3.2.1</span>
+      <span class="ver">v3.2.3</span>
     </div>
     <div class="ig"><label>통합 아이디</label>
       <input type="text" id="s1id" placeholder="아이디 입력" value="church2025">
@@ -498,18 +498,23 @@ tr:hover td{background:#fafaf7;}
       <p>🔑 이 위원회 계정 (아이디/비밀번호)</p>
       <div class="role-list" id="roleList"></div>
       <div style="margin-top:8px;padding-top:8px;border-top:1px dashed #ddd;font-size:10px;color:#aaa">
-        📌 ID 체계: 위원회코드_역할 (예: edu_mid_acc)<br>
-        📌 PW 체계: 위원회코드+1234 (예: edu1234)
+        📌 ID: 부서약칭+역할번호 (예: m1=미디어회계, m2=미디어부장)<br>
+        📌 PW: 부서약칭+역할번호+1004 (예: m11004) / 감사위원: 1111~7777
       </div>
     </div>
     <div class="ig"><label>아이디</label>
       <input type="text" id="s3id" placeholder="아이디 입력">
     </div>
+    <div style="display:flex;align-items:center;gap:6px;margin:-6px 0 8px 0;font-size:12px;color:var(--text3)">
+      <input type="checkbox" id="chkAutoId" style="width:14px;height:14px;cursor:pointer" onchange="onAutoIdCheck()">
+      <label for="chkAutoId" style="cursor:pointer;user-select:none">다음에 ID 자동입력</label>
+    </div>
     <div class="ig"><label>비밀번호</label>
       <input type="password" id="s3pw" placeholder="비밀번호 입력"
              onkeydown="if(event.key==='Enter')step3Login()">
     </div>
-    <button class="btn-login" onclick="step3Login()">로그인</button>
+    <div id="lockMsg" style="display:none;color:#c0392b;font-size:12px;text-align:center;padding:6px;background:#fff0f0;border-radius:6px;margin-bottom:6px"></div>
+    <button class="btn-login" id="btnLogin" onclick="step3Login()">로그인</button>
   </div>
 </div>
 
@@ -517,7 +522,7 @@ tr:hover td{background:#fafaf7;}
 <div id="app">
   <div class="topbar">
     <button class="menu-btn" onclick="toggleSidebar()">☰</button>
-    <div class="topbar-title">✝️ 교회 회계 장부 v3.2.1</div>
+    <div class="topbar-title">✝️ 교회 회계 장부 v3.2.3</div>
     <div class="topbar-user">
       <strong id="tbName">-</strong>
       <span id="tbComm">-</span>
@@ -1264,7 +1269,7 @@ tr:hover td{background:#fafaf7;}
 
 <script>
 // ══════════════════════════════════════════
-// 전체 데이터 구조 v3.2.1
+// 전체 데이터 구조 v3.2.3
 // ══════════════════════════════════════════
 
 // 예배위원회 SVG: 성경책+음표+기도손 합성
@@ -2091,126 +2096,171 @@ const DB50 = {
 
 
 // 사용자 데이터
-const USERS = {
-  "worship1":{"pw":"worship1","name":"미디어 회계","role":"acc","committee":"예배위원회","dept":"미디어"},
-  "worship2":{"pw":"worship2","name":"미디어 부장","role":"chief","committee":"예배위원회","dept":"미디어"},
-  "worship3":{"pw":"worship3","name":"미디어 위원장","role":"chair","committee":"예배위원회","dept":"미디어"},
-  "worship4":{"pw":"worship4","name":"영어 회계","role":"acc","committee":"예배위원회","dept":"영어"},
-  "worship5":{"pw":"worship5","name":"영어 부장","role":"chief","committee":"예배위원회","dept":"영어"},
-  "praise1":{"pw":"praise1","name":"갈릴리 회계","role":"acc","committee":"찬양위원회","dept":"갈릴리"},
-  "praise2":{"pw":"praise2","name":"갈릴리 부장","role":"chief","committee":"찬양위원회","dept":"갈릴리"},
-  "praise3":{"pw":"praise3","name":"할렐루야 회계","role":"acc","committee":"찬양위원회","dept":"할렐루야"},
-  "praise4":{"pw":"praise4","name":"할렐루야 부장","role":"chief","committee":"찬양위원회","dept":"할렐루야"},
-  "praise5":{"pw":"praise5","name":"할렐루야_관현악부 회계","role":"acc","committee":"찬양위원회","dept":"할렐루야_관현악부"},
-  "praise6":{"pw":"praise6","name":"할렐루야_관현악부 부장","role":"chief","committee":"찬양위원회","dept":"할렐루야_관현악부"},
-  "praise7":{"pw":"praise7","name":"시온 회계","role":"acc","committee":"찬양위원회","dept":"시온"},
-  "praise8":{"pw":"praise8","name":"시온 부장","role":"chief","committee":"찬양위원회","dept":"시온"},
-  "praise9":{"pw":"praise9","name":"시온_관현악부 회계","role":"acc","committee":"찬양위원회","dept":"시온_관현악부"},
-  "praise10":{"pw":"praise10","name":"시온_관현악부 부장","role":"chief","committee":"찬양위원회","dept":"시온_관현악부"},
-  "praise11":{"pw":"praise11","name":"중창부 회계","role":"acc","committee":"찬양위원회","dept":"중창부"},
-  "praise12":{"pw":"praise12","name":"중창부 부장","role":"chief","committee":"찬양위원회","dept":"중창부"},
-  "praise13":{"pw":"praise13","name":"위원회 회계","role":"acc","committee":"찬양위원회","dept":"위원회"},
-  "praise14":{"pw":"praise14","name":"위원회 부장","role":"chief","committee":"찬양위원회","dept":"위원회"},
-  "wmission1":{"pw":"wmission1","name":"비전트립부 회계","role":"acc","committee":"세계선교위원회","dept":"비전트립부"},
-  "wmission2":{"pw":"wmission2","name":"비전트립부 부장","role":"chief","committee":"세계선교위원회","dept":"비전트립부"},
-  "wmission3":{"pw":"wmission3","name":"비전트립부 위원장","role":"chair","committee":"세계선교위원회","dept":"비전트립부"},
-  "wmission4":{"pw":"wmission4","name":"선교지원부 회계","role":"acc","committee":"세계선교위원회","dept":"선교지원부"},
-  "wmission5":{"pw":"wmission5","name":"선교지원부 부장","role":"chief","committee":"세계선교위원회","dept":"선교지원부"},
-  "wmission6":{"pw":"wmission6","name":"선교위원회 부장","role":"chief","committee":"세계선교위원회","dept":"선교위원회"},
-  "dmission1":{"pw":"dmission1","name":"국내지원부 부장","role":"chief","committee":"국내선교위원회","dept":"국내지원부"},
-  "dmission2":{"pw":"dmission2","name":"전도부 부장","role":"chief","committee":"국내선교위원회","dept":"전도부"},
-  "nmember1":{"pw":"nmember1","name":"새가족부 회계","role":"acc","committee":"새가족위원회","dept":"새가족부"},
-  "nmember2":{"pw":"nmember2","name":"새가족부 부장","role":"chief","committee":"새가족위원회","dept":"새가족부"},
-  "nmember3":{"pw":"nmember3","name":"새가족부 위원장","role":"chair","committee":"새가족위원회","dept":"새가족부"},
-  "sweduc1":{"pw":"sweduc1","name":"교육지원부 회계","role":"acc","committee":"교육위원회","dept":"교육지원부"},
-  "sweduc2":{"pw":"sweduc2","name":"교육지원부 부장","role":"chief","committee":"교육위원회","dept":"교육지원부"},
-  "sweduc3":{"pw":"sweduc3","name":"교육지원부 위원장","role":"chair","committee":"교육위원회","dept":"교육지원부"},
-  "sweduc4":{"pw":"sweduc4","name":"유아부 회계","role":"acc","committee":"교육위원회","dept":"유아부"},
-  "sweduc5":{"pw":"sweduc5","name":"유아부 부장","role":"chief","committee":"교육위원회","dept":"유아부"},
-  "sweduc6":{"pw":"sweduc6","name":"유치부 회계","role":"acc","committee":"교육위원회","dept":"유치부"},
-  "sweduc7":{"pw":"sweduc7","name":"유치부 부장","role":"chief","committee":"교육위원회","dept":"유치부"},
-  "sweduc8":{"pw":"sweduc8","name":"유년1부 회계","role":"acc","committee":"교육위원회","dept":"유년1부"},
-  "sweduc9":{"pw":"sweduc9","name":"유년1부 부장","role":"chief","committee":"교육위원회","dept":"유년1부"},
-  "sweduc10":{"pw":"sweduc10","name":"유년2부 회계","role":"acc","committee":"교육위원회","dept":"유년2부"},
-  "sweduc11":{"pw":"sweduc11","name":"유년2부 부장","role":"chief","committee":"교육위원회","dept":"유년2부"},
-  "sweduc12":{"pw":"sweduc12","name":"소년1부 회계","role":"acc","committee":"교육위원회","dept":"소년1부"},
-  "sweduc13":{"pw":"sweduc13","name":"소년1부 부장","role":"chief","committee":"교육위원회","dept":"소년1부"},
-  "sweduc14":{"pw":"sweduc14","name":"소년2부 회계","role":"acc","committee":"교육위원회","dept":"소년2부"},
-  "sweduc15":{"pw":"sweduc15","name":"소년2부 부장","role":"chief","committee":"교육위원회","dept":"소년2부"},
-  "sweduc16":{"pw":"sweduc16","name":"중등부 회계","role":"acc","committee":"교육위원회","dept":"중등부"},
-  "sweduc17":{"pw":"sweduc17","name":"중등부 부장","role":"chief","committee":"교육위원회","dept":"중등부"},
-  "sweduc18":{"pw":"sweduc18","name":"고등부 회계","role":"acc","committee":"교육위원회","dept":"고등부"},
-  "sweduc19":{"pw":"sweduc19","name":"고등부 부장","role":"chief","committee":"교육위원회","dept":"고등부"},
-  "sweduc20":{"pw":"sweduc20","name":"청년부 회계","role":"acc","committee":"교육위원회","dept":"청년부"},
-  "sweduc21":{"pw":"sweduc21","name":"청년부 부장","role":"chief","committee":"교육위원회","dept":"청년부"},
-  "llsweduc1":{"pw":"llsweduc1","name":"위원회 회계","role":"acc","committee":"평생교육위원회","dept":"위원회"},
-  "llsweduc2":{"pw":"llsweduc2","name":"위원회 부장","role":"chief","committee":"평생교육위원회","dept":"위원회"},
-  "llsweduc3":{"pw":"llsweduc3","name":"위원회 위원장","role":"chair","committee":"평생교육위원회","dept":"위원회"},
-  "llsweduc4":{"pw":"llsweduc4","name":"아기학교 회계","role":"acc","committee":"평생교육위원회","dept":"아기학교"},
-  "llsweduc5":{"pw":"llsweduc5","name":"아기학교 부장","role":"chief","committee":"평생교육위원회","dept":"아기학교"},
-  "llsweduc6":{"pw":"llsweduc6","name":"예꿈터 부장","role":"chief","committee":"평생교육위원회","dept":"예꿈터"},
-  "llsweduc7":{"pw":"llsweduc7","name":"조이맘 회계","role":"acc","committee":"평생교육위원회","dept":"조이맘"},
-  "llsweduc8":{"pw":"llsweduc8","name":"조이맘 부장","role":"chief","committee":"평생교육위원회","dept":"조이맘"},
-  "mgmt1":{"pw":"mgmt1","name":"재산관리부 위원장","role":"chair","committee":"관리위원회","dept":"재산관리부"},
-  "service1":{"pw":"service1","name":"사회봉사부 위원장","role":"chair","committee":"봉사위원회","dept":"사회봉사부"},
-  "fmgmt1":{"pw":"fmgmt1","name":"재정부 부장","role":"chief","committee":"재정위원회","dept":"재정부"},
-  "fmgmt2":{"pw":"fmgmt2","name":"재정부 위원장","role":"chair","committee":"재정위원회","dept":"재정부"},
-  "fmgmt3":{"pw":"fmgmt3","name":"회계부 부장","role":"chief","committee":"재정위원회","dept":"회계부"},
-  "carmgmt1":{"pw":"carmgmt1","name":"차량관리부 부장","role":"chief","committee":"차량관리위원회","dept":"차량관리부"},
-  "carmgmt2":{"pw":"carmgmt2","name":"차량관리부 위원장","role":"chair","committee":"차량관리위원회","dept":"차량관리부"},
-  "general1":{"pw":"general1","name":"서무부 부장","role":"chief","committee":"총무위원회","dept":"서무부"},
-  "general2":{"pw":"general2","name":"서무부 위원장","role":"chair","committee":"총무위원회","dept":"서무부"},
-  "general3":{"pw":"general3","name":"기획부 부장","role":"chief","committee":"총무위원회","dept":"기획부"},
-  "prcom1":{"pw":"prcom1","name":"홍보부 회계","role":"acc","committee":"홍보위원회","dept":"홍보부"},
-  "prcom2":{"pw":"prcom2","name":"홍보부 부장","role":"chief","committee":"홍보위원회","dept":"홍보부"},
-  "prcom3":{"pw":"prcom3","name":"홍보부 위원장","role":"chair","committee":"홍보위원회","dept":"홍보부"},
-  "prcom4":{"pw":"prcom4","name":"문서출판부 회계","role":"acc","committee":"홍보위원회","dept":"문서출판부"},
-  "prcom5":{"pw":"prcom5","name":"문서출판부 부장","role":"chief","committee":"홍보위원회","dept":"문서출판부"},
-  "audit1":{"pw":"audit1","name":"감사위원1","role":"auditor","committee":"감사위원회","dept":"감사부"},
-  "audit2":{"pw":"audit2","name":"감사위원2","role":"auditor","committee":"감사위원회","dept":"감사부"},
-  "audit3":{"pw":"audit3","name":"감사위원3","role":"auditor","committee":"감사위원회","dept":"감사부"},
-  "audit4":{"pw":"audit4","name":"감사위원4","role":"auditor","committee":"감사위원회","dept":"감사부"},
-  "audit5":{"pw":"audit5","name":"감사위원5","role":"auditor","committee":"감사위원회","dept":"감사부"},
-  "audit6":{"pw":"audit6","name":"감사위원6","role":"auditor","committee":"감사위원회","dept":"감사부"},
-  "audit7":{"pw":"audit7","name":"감사위원7","role":"auditor","committee":"감사위원회","dept":"감사부"},
-  "village1":{"pw":"village1","name":"영덕동마을쟁이 회계","role":"acc","committee":"마을사역위원회","dept":"영덕동마을쟁이"},
-  "village2":{"pw":"village2","name":"영덕동마을쟁이 부장","role":"chief","committee":"마을사역위원회","dept":"영덕동마을쟁이"},
-  "village3":{"pw":"village3","name":"영덕동마을쟁이 위원장","role":"chair","committee":"마을사역위원회","dept":"영덕동마을쟁이"},
-  "fellow1":{"pw":"fellow1","name":"체육부 회계","role":"acc","committee":"친교위원회","dept":"체육부"},
-  "fellow2":{"pw":"fellow2","name":"체육부 부장","role":"chief","committee":"친교위원회","dept":"체육부"},
-  "fellow3":{"pw":"fellow3","name":"체육부 위원장","role":"chair","committee":"친교위원회","dept":"체육부"},
-  "fellow4":{"pw":"fellow4","name":"친교부 회계","role":"acc","committee":"친교위원회","dept":"친교부"},
-  "fellow5":{"pw":"fellow5","name":"친교부 부장","role":"chief","committee":"친교위원회","dept":"친교부"},
-  "fellow6":{"pw":"fellow6","name":"경조부 회계","role":"acc","committee":"친교위원회","dept":"경조부"},
-  "fellow7":{"pw":"fellow7","name":"경조부 부장","role":"chief","committee":"친교위원회","dept":"경조부"},
-  "anniv501":{"pw":"anniv501","name":"50주년위원회 회계","role":"acc","committee":"50기사위원회","dept":"50주년위원회"},
-  "anniv502":{"pw":"anniv502","name":"50주년위원회 위원장","role":"chair","committee":"50기사위원회","dept":"50주년위원회"},
-  "master":{"pw":"master","name":"시스템관리자","role":"master","committee":"전체","dept":"전체"},
-  "sub":{"pw":"sub","name":"부관리자","role":"sub_master","committee":"전체","dept":"전체"},
-  "pastor":{"pw":"pastor","name":"당회장","role":"pastor","committee":"전체","dept":"전체"},
+const USERS_BY_COMM = {
+  "예배위원회": {
+    "m1":{"pw":"m11004","name":"미디어 회계","role":"acc","committee":"예배위원회","dept":"미디어"},
+    "m2":{"pw":"m21004","name":"미디어 부장","role":"chief","committee":"예배위원회","dept":"미디어"},
+    "m3":{"pw":"m31004","name":"미디어 위원장","role":"chair","committee":"예배위원회","dept":"미디어"},
+    "e1":{"pw":"e11004","name":"영어 회계","role":"acc","committee":"예배위원회","dept":"영어"},
+    "e2":{"pw":"e21004","name":"영어 부장","role":"chief","committee":"예배위원회","dept":"영어"},
+  },
+  "찬양위원회": {
+    "g1":{"pw":"g11004","name":"갈릴리 회계","role":"acc","committee":"찬양위원회","dept":"갈릴리"},
+    "g2":{"pw":"g21004","name":"갈릴리 부장","role":"chief","committee":"찬양위원회","dept":"갈릴리"},
+    "h1":{"pw":"h11004","name":"할렐루야 회계","role":"acc","committee":"찬양위원회","dept":"할렐루야"},
+    "h2":{"pw":"h21004","name":"할렐루야 부장","role":"chief","committee":"찬양위원회","dept":"할렐루야"},
+    "ho1":{"pw":"ho11004","name":"할렐루야_관현악부 회계","role":"acc","committee":"찬양위원회","dept":"할렐루야_관현악부"},
+    "ho2":{"pw":"ho21004","name":"할렐루야_관현악부 부장","role":"chief","committee":"찬양위원회","dept":"할렐루야_관현악부"},
+    "s1":{"pw":"s11004","name":"시온 회계","role":"acc","committee":"찬양위원회","dept":"시온"},
+    "s2":{"pw":"s21004","name":"시온 부장","role":"chief","committee":"찬양위원회","dept":"시온"},
+    "so1":{"pw":"so11004","name":"시온_관현악부 회계","role":"acc","committee":"찬양위원회","dept":"시온_관현악부"},
+    "so2":{"pw":"so21004","name":"시온_관현악부 부장","role":"chief","committee":"찬양위원회","dept":"시온_관현악부"},
+    "j1":{"pw":"j11004","name":"중창부 회계","role":"acc","committee":"찬양위원회","dept":"중창부"},
+    "j2":{"pw":"j21004","name":"중창부 부장","role":"chief","committee":"찬양위원회","dept":"중창부"},
+    "c1":{"pw":"c11004","name":"위원회 회계","role":"acc","committee":"찬양위원회","dept":"위원회"},
+    "c2":{"pw":"c21004","name":"위원회 부장","role":"chief","committee":"찬양위원회","dept":"위원회"},
+  },
+  "세계선교위원회": {
+    "v1":{"pw":"v11004","name":"비전트립부 회계","role":"acc","committee":"세계선교위원회","dept":"비전트립부"},
+    "v2":{"pw":"v21004","name":"비전트립부 부장","role":"chief","committee":"세계선교위원회","dept":"비전트립부"},
+    "v3":{"pw":"v31004","name":"비전트립부 위원장","role":"chair","committee":"세계선교위원회","dept":"비전트립부"},
+    "sp1":{"pw":"sp11004","name":"선교지원부 회계","role":"acc","committee":"세계선교위원회","dept":"선교지원부"},
+    "sp2":{"pw":"sp21004","name":"선교지원부 부장","role":"chief","committee":"세계선교위원회","dept":"선교지원부"},
+    "sc2":{"pw":"sc21004","name":"선교위원회 부장","role":"chief","committee":"세계선교위원회","dept":"선교위원회"},
+  },
+  "국내선교위원회": {
+    "n2":{"pw":"n21004","name":"국내지원부 부장","role":"chief","committee":"국내선교위원회","dept":"국내지원부"},
+    "e2":{"pw":"e21004","name":"전도부 부장","role":"chief","committee":"국내선교위원회","dept":"전도부"},
+  },
+  "새가족위원회": {
+    "n1":{"pw":"n11004","name":"새가족부 회계","role":"acc","committee":"새가족위원회","dept":"새가족부"},
+    "n2":{"pw":"n21004","name":"새가족부 부장","role":"chief","committee":"새가족위원회","dept":"새가족부"},
+    "n3":{"pw":"n31004","name":"새가족부 위원장","role":"chair","committee":"새가족위원회","dept":"새가족부"},
+  },
+  "교육위원회": {
+    "x1":{"pw":"x11004","name":"교육지원부 회계","role":"acc","committee":"교육위원회","dept":"교육지원부"},
+    "x2":{"pw":"x21004","name":"교육지원부 부장","role":"chief","committee":"교육위원회","dept":"교육지원부"},
+    "x3":{"pw":"x31004","name":"교육지원부 위원장","role":"chair","committee":"교육위원회","dept":"교육지원부"},
+    "i1":{"pw":"i11004","name":"유아부 회계","role":"acc","committee":"교육위원회","dept":"유아부"},
+    "i2":{"pw":"i21004","name":"유아부 부장","role":"chief","committee":"교육위원회","dept":"유아부"},
+    "k1":{"pw":"k11004","name":"유치부 회계","role":"acc","committee":"교육위원회","dept":"유치부"},
+    "k2":{"pw":"k21004","name":"유치부 부장","role":"chief","committee":"교육위원회","dept":"유치부"},
+    "c11":{"pw":"c111004","name":"유년1부 회계","role":"acc","committee":"교육위원회","dept":"유년1부"},
+    "c12":{"pw":"c121004","name":"유년1부 부장","role":"chief","committee":"교육위원회","dept":"유년1부"},
+    "c21":{"pw":"c211004","name":"유년2부 회계","role":"acc","committee":"교육위원회","dept":"유년2부"},
+    "c22":{"pw":"c221004","name":"유년2부 부장","role":"chief","committee":"교육위원회","dept":"유년2부"},
+    "b11":{"pw":"b111004","name":"소년1부 회계","role":"acc","committee":"교육위원회","dept":"소년1부"},
+    "b12":{"pw":"b121004","name":"소년1부 부장","role":"chief","committee":"교육위원회","dept":"소년1부"},
+    "b21":{"pw":"b211004","name":"소년2부 회계","role":"acc","committee":"교육위원회","dept":"소년2부"},
+    "b22":{"pw":"b221004","name":"소년2부 부장","role":"chief","committee":"교육위원회","dept":"소년2부"},
+    "m1":{"pw":"m11004","name":"중등부 회계","role":"acc","committee":"교육위원회","dept":"중등부"},
+    "m2":{"pw":"m21004","name":"중등부 부장","role":"chief","committee":"교육위원회","dept":"중등부"},
+    "h1":{"pw":"h11004","name":"고등부 회계","role":"acc","committee":"교육위원회","dept":"고등부"},
+    "h2":{"pw":"h21004","name":"고등부 부장","role":"chief","committee":"교육위원회","dept":"고등부"},
+    "y1":{"pw":"y11004","name":"청년부 회계","role":"acc","committee":"교육위원회","dept":"청년부"},
+    "y2":{"pw":"y21004","name":"청년부 부장","role":"chief","committee":"교육위원회","dept":"청년부"},
+  },
+  "평생교육위원회": {
+    "c1":{"pw":"c11004","name":"위원회 회계","role":"acc","committee":"평생교육위원회","dept":"위원회"},
+    "c2":{"pw":"c21004","name":"위원회 부장","role":"chief","committee":"평생교육위원회","dept":"위원회"},
+    "c3":{"pw":"c31004","name":"위원회 위원장","role":"chair","committee":"평생교육위원회","dept":"위원회"},
+    "a1":{"pw":"a11004","name":"아기학교 회계","role":"acc","committee":"평생교육위원회","dept":"아기학교"},
+    "a2":{"pw":"a21004","name":"아기학교 부장","role":"chief","committee":"평생교육위원회","dept":"아기학교"},
+    "d2":{"pw":"d21004","name":"예꿈터 부장","role":"chief","committee":"평생교육위원회","dept":"예꿈터"},
+    "j1":{"pw":"j11004","name":"조이맘 회계","role":"acc","committee":"평생교육위원회","dept":"조이맘"},
+    "j2":{"pw":"j21004","name":"조이맘 부장","role":"chief","committee":"평생교육위원회","dept":"조이맘"},
+  },
+  "관리위원회": {
+    "p3":{"pw":"p31004","name":"재산관리부 위원장","role":"chair","committee":"관리위원회","dept":"재산관리부"},
+  },
+  "봉사위원회": {
+    "s3":{"pw":"s31004","name":"사회봉사부 위원장","role":"chair","committee":"봉사위원회","dept":"사회봉사부"},
+  },
+  "재정위원회": {
+    "f2":{"pw":"f21004","name":"재정부 부장","role":"chief","committee":"재정위원회","dept":"재정부"},
+    "f3":{"pw":"f31004","name":"재정부 위원장","role":"chair","committee":"재정위원회","dept":"재정부"},
+    "a2":{"pw":"a21004","name":"회계부 부장","role":"chief","committee":"재정위원회","dept":"회계부"},
+  },
+  "차량관리위원회": {
+    "c2":{"pw":"c21004","name":"차량관리부 부장","role":"chief","committee":"차량관리위원회","dept":"차량관리부"},
+    "c3":{"pw":"c31004","name":"차량관리부 위원장","role":"chair","committee":"차량관리위원회","dept":"차량관리부"},
+  },
+  "총무위원회": {
+    "s2":{"pw":"s21004","name":"서무부 부장","role":"chief","committee":"총무위원회","dept":"서무부"},
+    "s3":{"pw":"s31004","name":"서무부 위원장","role":"chair","committee":"총무위원회","dept":"서무부"},
+    "p2":{"pw":"p21004","name":"기획부 부장","role":"chief","committee":"총무위원회","dept":"기획부"},
+  },
+  "홍보위원회": {
+    "p1":{"pw":"p11004","name":"홍보부 회계","role":"acc","committee":"홍보위원회","dept":"홍보부"},
+    "p2":{"pw":"p21004","name":"홍보부 부장","role":"chief","committee":"홍보위원회","dept":"홍보부"},
+    "p3":{"pw":"p31004","name":"홍보부 위원장","role":"chair","committee":"홍보위원회","dept":"홍보부"},
+    "pub1":{"pw":"pub11004","name":"문서출판부 회계","role":"acc","committee":"홍보위원회","dept":"문서출판부"},
+    "pub2":{"pw":"pub21004","name":"문서출판부 부장","role":"chief","committee":"홍보위원회","dept":"문서출판부"},
+  },
+  "감사위원회": {
+    "audit1":{"pw":"1111","name":"감사위원1","role":"auditor","committee":"감사위원회","dept":"감사부"},
+    "audit2":{"pw":"2222","name":"감사위원2","role":"auditor","committee":"감사위원회","dept":"감사부"},
+    "audit3":{"pw":"3333","name":"감사위원3","role":"auditor","committee":"감사위원회","dept":"감사부"},
+    "audit4":{"pw":"4444","name":"감사위원4","role":"auditor","committee":"감사위원회","dept":"감사부"},
+    "audit5":{"pw":"5555","name":"감사위원5","role":"auditor","committee":"감사위원회","dept":"감사부"},
+    "audit6":{"pw":"6666","name":"감사위원6","role":"auditor","committee":"감사위원회","dept":"감사부"},
+    "audit7":{"pw":"7777","name":"감사위원7","role":"auditor","committee":"감사위원회","dept":"감사부"},
+  },
+  "마을사역위원회": {
+    "v1":{"pw":"v11004","name":"영덕동마을쟁이 회계","role":"acc","committee":"마을사역위원회","dept":"영덕동마을쟁이"},
+    "v2":{"pw":"v21004","name":"영덕동마을쟁이 부장","role":"chief","committee":"마을사역위원회","dept":"영덕동마을쟁이"},
+    "v3":{"pw":"v31004","name":"영덕동마을쟁이 위원장","role":"chair","committee":"마을사역위원회","dept":"영덕동마을쟁이"},
+  },
+  "친교위원회": {
+    "s1":{"pw":"s11004","name":"체육부 회계","role":"acc","committee":"친교위원회","dept":"체육부"},
+    "s2":{"pw":"s21004","name":"체육부 부장","role":"chief","committee":"친교위원회","dept":"체육부"},
+    "s3":{"pw":"s31004","name":"체육부 위원장","role":"chair","committee":"친교위원회","dept":"체육부"},
+    "f1":{"pw":"f11004","name":"친교부 회계","role":"acc","committee":"친교위원회","dept":"친교부"},
+    "f2":{"pw":"f21004","name":"친교부 부장","role":"chief","committee":"친교위원회","dept":"친교부"},
+    "c1":{"pw":"c11004","name":"경조부 회계","role":"acc","committee":"친교위원회","dept":"경조부"},
+    "c2":{"pw":"c21004","name":"경조부 부장","role":"chief","committee":"친교위원회","dept":"경조부"},
+  },
+  "50기사위원회": {
+    "a1":{"pw":"a11004","name":"50주년위원회 회계","role":"acc","committee":"50기사위원회","dept":"50주년위원회"},
+    "a3":{"pw":"a31004","name":"50주년위원회 위원장","role":"chair","committee":"50기사위원회","dept":"50주년위원회"},
+  },
+  "전체": {
+    "master":{"pw":"master","name":"시스템관리자","role":"master","committee":"전체","dept":"전체"},
+    "sub":{"pw":"sub","name":"부관리자","role":"sub_master","committee":"전체","dept":"전체"},
+    "pastor":{"pw":"pastor","name":"당회장","role":"pastor","committee":"전체","dept":"전체"},
+  },
 };
+// USERS_FLAT: USERS_BY_COMM을 플랫하게 합친 헬퍼 (관리자용)
+const USERS_FLAT = {};
+Object.values(USERS_BY_COMM).forEach(commMap=>{
+  Object.entries(commMap).forEach(([id,u])=>{ USERS_FLAT[id+'::'+u.committee]=u; });
+});
+// USERS 호환성 유지
+const USERS = USERS_FLAT;
+
+
 
 
 
 // 위원회별 계정 매핑 (전체)
 const COMM_ACCOUNTS = {
-  "예배위원회": [{"id":"worship1","label":"미디어 회계","role":"acc","pw":"worship1"},{"id":"worship2","label":"미디어 부장","role":"chief","pw":"worship2"},{"id":"worship3","label":"미디어 위원장","role":"chair","pw":"worship3"},{"id":"worship4","label":"영어 회계","role":"acc","pw":"worship4"},{"id":"worship5","label":"영어 부장","role":"chief","pw":"worship5"}],
-  "찬양위원회": [{"id":"praise1","label":"갈릴리 회계","role":"acc","pw":"praise1"},{"id":"praise2","label":"갈릴리 부장","role":"chief","pw":"praise2"},{"id":"praise3","label":"할렐루야 회계","role":"acc","pw":"praise3"},{"id":"praise4","label":"할렐루야 부장","role":"chief","pw":"praise4"},{"id":"praise5","label":"할렐루야_관현악부 회계","role":"acc","pw":"praise5"},{"id":"praise6","label":"할렐루야_관현악부 부장","role":"chief","pw":"praise6"},{"id":"praise7","label":"시온 회계","role":"acc","pw":"praise7"},{"id":"praise8","label":"시온 부장","role":"chief","pw":"praise8"},{"id":"praise9","label":"시온_관현악부 회계","role":"acc","pw":"praise9"},{"id":"praise10","label":"시온_관현악부 부장","role":"chief","pw":"praise10"},{"id":"praise11","label":"중창부 회계","role":"acc","pw":"praise11"},{"id":"praise12","label":"중창부 부장","role":"chief","pw":"praise12"},{"id":"praise13","label":"위원회 회계","role":"acc","pw":"praise13"},{"id":"praise14","label":"위원회 부장","role":"chief","pw":"praise14"}],
-  "세계선교위원회": [{"id":"wmission1","label":"비전트립부 회계","role":"acc","pw":"wmission1"},{"id":"wmission2","label":"비전트립부 부장","role":"chief","pw":"wmission2"},{"id":"wmission3","label":"비전트립부 위원장","role":"chair","pw":"wmission3"},{"id":"wmission4","label":"선교지원부 회계","role":"acc","pw":"wmission4"},{"id":"wmission5","label":"선교지원부 부장","role":"chief","pw":"wmission5"},{"id":"wmission6","label":"선교위원회 부장","role":"chief","pw":"wmission6"}],
-  "국내선교위원회": [{"id":"dmission1","label":"국내지원부 부장","role":"chief","pw":"dmission1"},{"id":"dmission2","label":"전도부 부장","role":"chief","pw":"dmission2"}],
-  "새가족위원회": [{"id":"nmember1","label":"새가족부 회계","role":"acc","pw":"nmember1"},{"id":"nmember2","label":"새가족부 부장","role":"chief","pw":"nmember2"},{"id":"nmember3","label":"새가족부 위원장","role":"chair","pw":"nmember3"}],
-  "교육위원회": [{"id":"sweduc1","label":"교육지원부 회계","role":"acc","pw":"sweduc1"},{"id":"sweduc2","label":"교육지원부 부장","role":"chief","pw":"sweduc2"},{"id":"sweduc3","label":"교육지원부 위원장","role":"chair","pw":"sweduc3"},{"id":"sweduc4","label":"유아부 회계","role":"acc","pw":"sweduc4"},{"id":"sweduc5","label":"유아부 부장","role":"chief","pw":"sweduc5"},{"id":"sweduc6","label":"유치부 회계","role":"acc","pw":"sweduc6"},{"id":"sweduc7","label":"유치부 부장","role":"chief","pw":"sweduc7"},{"id":"sweduc8","label":"유년1부 회계","role":"acc","pw":"sweduc8"},{"id":"sweduc9","label":"유년1부 부장","role":"chief","pw":"sweduc9"},{"id":"sweduc10","label":"유년2부 회계","role":"acc","pw":"sweduc10"},{"id":"sweduc11","label":"유년2부 부장","role":"chief","pw":"sweduc11"},{"id":"sweduc12","label":"소년1부 회계","role":"acc","pw":"sweduc12"},{"id":"sweduc13","label":"소년1부 부장","role":"chief","pw":"sweduc13"},{"id":"sweduc14","label":"소년2부 회계","role":"acc","pw":"sweduc14"},{"id":"sweduc15","label":"소년2부 부장","role":"chief","pw":"sweduc15"},{"id":"sweduc16","label":"중등부 회계","role":"acc","pw":"sweduc16"},{"id":"sweduc17","label":"중등부 부장","role":"chief","pw":"sweduc17"},{"id":"sweduc18","label":"고등부 회계","role":"acc","pw":"sweduc18"},{"id":"sweduc19","label":"고등부 부장","role":"chief","pw":"sweduc19"},{"id":"sweduc20","label":"청년부 회계","role":"acc","pw":"sweduc20"},{"id":"sweduc21","label":"청년부 부장","role":"chief","pw":"sweduc21"}],
-  "평생교육위원회": [{"id":"llsweduc1","label":"위원회 회계","role":"acc","pw":"llsweduc1"},{"id":"llsweduc2","label":"위원회 부장","role":"chief","pw":"llsweduc2"},{"id":"llsweduc3","label":"위원회 위원장","role":"chair","pw":"llsweduc3"},{"id":"llsweduc4","label":"아기학교 회계","role":"acc","pw":"llsweduc4"},{"id":"llsweduc5","label":"아기학교 부장","role":"chief","pw":"llsweduc5"},{"id":"llsweduc6","label":"예꿈터 부장","role":"chief","pw":"llsweduc6"},{"id":"llsweduc7","label":"조이맘 회계","role":"acc","pw":"llsweduc7"},{"id":"llsweduc8","label":"조이맘 부장","role":"chief","pw":"llsweduc8"}],
-  "관리위원회": [{"id":"mgmt1","label":"재산관리부 위원장","role":"chair","pw":"mgmt1"}],
-  "봉사위원회": [{"id":"service1","label":"사회봉사부 위원장","role":"chair","pw":"service1"}],
-  "재정위원회": [{"id":"fmgmt1","label":"재정부 부장","role":"chief","pw":"fmgmt1"},{"id":"fmgmt2","label":"재정부 위원장","role":"chair","pw":"fmgmt2"},{"id":"fmgmt3","label":"회계부 부장","role":"chief","pw":"fmgmt3"}],
-  "차량관리위원회": [{"id":"carmgmt1","label":"차량관리부 부장","role":"chief","pw":"carmgmt1"},{"id":"carmgmt2","label":"차량관리부 위원장","role":"chair","pw":"carmgmt2"}],
-  "총무위원회": [{"id":"general1","label":"서무부 부장","role":"chief","pw":"general1"},{"id":"general2","label":"서무부 위원장","role":"chair","pw":"general2"},{"id":"general3","label":"기획부 부장","role":"chief","pw":"general3"}],
-  "홍보위원회": [{"id":"prcom1","label":"홍보부 회계","role":"acc","pw":"prcom1"},{"id":"prcom2","label":"홍보부 부장","role":"chief","pw":"prcom2"},{"id":"prcom3","label":"홍보부 위원장","role":"chair","pw":"prcom3"},{"id":"prcom4","label":"문서출판부 회계","role":"acc","pw":"prcom4"},{"id":"prcom5","label":"문서출판부 부장","role":"chief","pw":"prcom5"}],
-  "감사위원회": [{"id":"audit1","label":"감사위원1","role":"auditor","pw":"audit1"},{"id":"audit2","label":"감사위원2","role":"auditor","pw":"audit2"},{"id":"audit3","label":"감사위원3","role":"auditor","pw":"audit3"},{"id":"audit4","label":"감사위원4","role":"auditor","pw":"audit4"},{"id":"audit5","label":"감사위원5","role":"auditor","pw":"audit5"},{"id":"audit6","label":"감사위원6","role":"auditor","pw":"audit6"},{"id":"audit7","label":"감사위원7","role":"auditor","pw":"audit7"}],
-  "마을사역위원회": [{"id":"village1","label":"영덕동마을쟁이 회계","role":"acc","pw":"village1"},{"id":"village2","label":"영덕동마을쟁이 부장","role":"chief","pw":"village2"},{"id":"village3","label":"영덕동마을쟁이 위원장","role":"chair","pw":"village3"}],
-  "친교위원회": [{"id":"fellow1","label":"체육부 회계","role":"acc","pw":"fellow1"},{"id":"fellow2","label":"체육부 부장","role":"chief","pw":"fellow2"},{"id":"fellow3","label":"체육부 위원장","role":"chair","pw":"fellow3"},{"id":"fellow4","label":"친교부 회계","role":"acc","pw":"fellow4"},{"id":"fellow5","label":"친교부 부장","role":"chief","pw":"fellow5"},{"id":"fellow6","label":"경조부 회계","role":"acc","pw":"fellow6"},{"id":"fellow7","label":"경조부 부장","role":"chief","pw":"fellow7"}],
-  "50기사위원회": [{"id":"anniv501","label":"50주년위원회 회계","role":"acc","pw":"anniv501"},{"id":"anniv502","label":"50주년위원회 위원장","role":"chair","pw":"anniv502"}],
+  "예배위원회": [{"id":"m1","label":"미디어 회계","role":"acc","pw":"m11004"},{"id":"m2","label":"미디어 부장","role":"chief","pw":"m21004"},{"id":"m3","label":"미디어 위원장","role":"chair","pw":"m31004"},{"id":"e1","label":"영어 회계","role":"acc","pw":"e11004"},{"id":"e2","label":"영어 부장","role":"chief","pw":"e21004"}],
+  "찬양위원회": [{"id":"g1","label":"갈릴리 회계","role":"acc","pw":"g11004"},{"id":"g2","label":"갈릴리 부장","role":"chief","pw":"g21004"},{"id":"h1","label":"할렐루야 회계","role":"acc","pw":"h11004"},{"id":"h2","label":"할렐루야 부장","role":"chief","pw":"h21004"},{"id":"ho1","label":"할렐루야_관현악부 회계","role":"acc","pw":"ho11004"},{"id":"ho2","label":"할렐루야_관현악부 부장","role":"chief","pw":"ho21004"},{"id":"s1","label":"시온 회계","role":"acc","pw":"s11004"},{"id":"s2","label":"시온 부장","role":"chief","pw":"s21004"},{"id":"so1","label":"시온_관현악부 회계","role":"acc","pw":"so11004"},{"id":"so2","label":"시온_관현악부 부장","role":"chief","pw":"so21004"},{"id":"j1","label":"중창부 회계","role":"acc","pw":"j11004"},{"id":"j2","label":"중창부 부장","role":"chief","pw":"j21004"},{"id":"c1","label":"위원회 회계","role":"acc","pw":"c11004"},{"id":"c2","label":"위원회 부장","role":"chief","pw":"c21004"}],
+  "세계선교위원회": [{"id":"v1","label":"비전트립부 회계","role":"acc","pw":"v11004"},{"id":"v2","label":"비전트립부 부장","role":"chief","pw":"v21004"},{"id":"v3","label":"비전트립부 위원장","role":"chair","pw":"v31004"},{"id":"sp1","label":"선교지원부 회계","role":"acc","pw":"sp11004"},{"id":"sp2","label":"선교지원부 부장","role":"chief","pw":"sp21004"},{"id":"sc2","label":"선교위원회 부장","role":"chief","pw":"sc21004"}],
+  "국내선교위원회": [{"id":"n2","label":"국내지원부 부장","role":"chief","pw":"n21004"},{"id":"e2","label":"전도부 부장","role":"chief","pw":"e21004"}],
+  "새가족위원회": [{"id":"n1","label":"새가족부 회계","role":"acc","pw":"n11004"},{"id":"n2","label":"새가족부 부장","role":"chief","pw":"n21004"},{"id":"n3","label":"새가족부 위원장","role":"chair","pw":"n31004"}],
+  "교육위원회": [{"id":"x1","label":"교육지원부 회계","role":"acc","pw":"x11004"},{"id":"x2","label":"교육지원부 부장","role":"chief","pw":"x21004"},{"id":"x3","label":"교육지원부 위원장","role":"chair","pw":"x31004"},{"id":"i1","label":"유아부 회계","role":"acc","pw":"i11004"},{"id":"i2","label":"유아부 부장","role":"chief","pw":"i21004"},{"id":"k1","label":"유치부 회계","role":"acc","pw":"k11004"},{"id":"k2","label":"유치부 부장","role":"chief","pw":"k21004"},{"id":"c11","label":"유년1부 회계","role":"acc","pw":"c111004"},{"id":"c12","label":"유년1부 부장","role":"chief","pw":"c121004"},{"id":"c21","label":"유년2부 회계","role":"acc","pw":"c211004"},{"id":"c22","label":"유년2부 부장","role":"chief","pw":"c221004"},{"id":"b11","label":"소년1부 회계","role":"acc","pw":"b111004"},{"id":"b12","label":"소년1부 부장","role":"chief","pw":"b121004"},{"id":"b21","label":"소년2부 회계","role":"acc","pw":"b211004"},{"id":"b22","label":"소년2부 부장","role":"chief","pw":"b221004"},{"id":"m1","label":"중등부 회계","role":"acc","pw":"m11004"},{"id":"m2","label":"중등부 부장","role":"chief","pw":"m21004"},{"id":"h1","label":"고등부 회계","role":"acc","pw":"h11004"},{"id":"h2","label":"고등부 부장","role":"chief","pw":"h21004"},{"id":"y1","label":"청년부 회계","role":"acc","pw":"y11004"},{"id":"y2","label":"청년부 부장","role":"chief","pw":"y21004"}],
+  "평생교육위원회": [{"id":"c1","label":"위원회 회계","role":"acc","pw":"c11004"},{"id":"c2","label":"위원회 부장","role":"chief","pw":"c21004"},{"id":"c3","label":"위원회 위원장","role":"chair","pw":"c31004"},{"id":"a1","label":"아기학교 회계","role":"acc","pw":"a11004"},{"id":"a2","label":"아기학교 부장","role":"chief","pw":"a21004"},{"id":"d2","label":"예꿈터 부장","role":"chief","pw":"d21004"},{"id":"j1","label":"조이맘 회계","role":"acc","pw":"j11004"},{"id":"j2","label":"조이맘 부장","role":"chief","pw":"j21004"}],
+  "관리위원회": [{"id":"p3","label":"재산관리부 위원장","role":"chair","pw":"p31004"}],
+  "봉사위원회": [{"id":"s3","label":"사회봉사부 위원장","role":"chair","pw":"s31004"}],
+  "재정위원회": [{"id":"f2","label":"재정부 부장","role":"chief","pw":"f21004"},{"id":"f3","label":"재정부 위원장","role":"chair","pw":"f31004"},{"id":"a2","label":"회계부 부장","role":"chief","pw":"a21004"}],
+  "차량관리위원회": [{"id":"c2","label":"차량관리부 부장","role":"chief","pw":"c21004"},{"id":"c3","label":"차량관리부 위원장","role":"chair","pw":"c31004"}],
+  "총무위원회": [{"id":"s2","label":"서무부 부장","role":"chief","pw":"s21004"},{"id":"s3","label":"서무부 위원장","role":"chair","pw":"s31004"},{"id":"p2","label":"기획부 부장","role":"chief","pw":"p21004"}],
+  "홍보위원회": [{"id":"p1","label":"홍보부 회계","role":"acc","pw":"p11004"},{"id":"p2","label":"홍보부 부장","role":"chief","pw":"p21004"},{"id":"p3","label":"홍보부 위원장","role":"chair","pw":"p31004"},{"id":"pub1","label":"문서출판부 회계","role":"acc","pw":"pub11004"},{"id":"pub2","label":"문서출판부 부장","role":"chief","pw":"pub21004"}],
+  "감사위원회": [{"id":"audit1","label":"감사위원1","role":"auditor","pw":"1111"},{"id":"audit2","label":"감사위원2","role":"auditor","pw":"2222"},{"id":"audit3","label":"감사위원3","role":"auditor","pw":"3333"},{"id":"audit4","label":"감사위원4","role":"auditor","pw":"4444"},{"id":"audit5","label":"감사위원5","role":"auditor","pw":"5555"},{"id":"audit6","label":"감사위원6","role":"auditor","pw":"6666"},{"id":"audit7","label":"감사위원7","role":"auditor","pw":"7777"}],
+  "마을사역위원회": [{"id":"v1","label":"영덕동마을쟁이 회계","role":"acc","pw":"v11004"},{"id":"v2","label":"영덕동마을쟁이 부장","role":"chief","pw":"v21004"},{"id":"v3","label":"영덕동마을쟁이 위원장","role":"chair","pw":"v31004"}],
+  "친교위원회": [{"id":"s1","label":"체육부 회계","role":"acc","pw":"s11004"},{"id":"s2","label":"체육부 부장","role":"chief","pw":"s21004"},{"id":"s3","label":"체육부 위원장","role":"chair","pw":"s31004"},{"id":"f1","label":"친교부 회계","role":"acc","pw":"f11004"},{"id":"f2","label":"친교부 부장","role":"chief","pw":"f21004"},{"id":"c1","label":"경조부 회계","role":"acc","pw":"c11004"},{"id":"c2","label":"경조부 부장","role":"chief","pw":"c21004"}],
+  "50기사위원회": [{"id":"a1","label":"50주년위원회 회계","role":"acc","pw":"a11004"},{"id":"a3","label":"50주년위원회 위원장","role":"chair","pw":"a31004"}],
   "전체": [{"id":"master","label":"시스템관리자","role":"master","pw":"master"},{"id":"sub","label":"부관리자","role":"sub_master","pw":"sub"},{"id":"pastor","label":"당회장","role":"pastor","pw":"pastor"}],
 };
 
@@ -2303,6 +2353,39 @@ function buildStep2(){
   });
 }
 
+function showLockMsg(msg){
+  const el=document.getElementById('lockMsg');
+  if(el){el.textContent=msg;el.style.display='block';}
+}
+function hideLockMsg(){
+  const el=document.getElementById('lockMsg');
+  if(el) el.style.display='none';
+}
+function checkLockState(comm){
+  const lockKey='lock_'+comm;
+  const lockUntil=parseInt(sessionStorage.getItem(lockKey+'_until')||'0');
+  const btn=document.getElementById('btnLogin');
+  if(lockUntil>Date.now()){
+    const rem=Math.ceil((lockUntil-Date.now())/1000);
+    const m=Math.floor(rem/60),s=rem%60;
+    showLockMsg(`🔒 로그인 ${m}분 ${s}초 후 다시 시도하세요`);
+    if(btn) btn.disabled=true;
+    setTimeout(()=>{
+      if(btn) btn.disabled=false;
+      hideLockMsg();
+      sessionStorage.removeItem(lockKey+'_until');
+    },lockUntil-Date.now());
+  } else {
+    hideLockMsg();
+    if(btn) btn.disabled=false;
+  }
+}
+function onAutoIdCheck(){
+  const chk=document.getElementById('chkAutoId');
+  const comm=window._loginComm||'전체';
+  if(!chk.checked) sessionStorage.removeItem('autoId_'+comm);
+}
+
 function goStep3(commName,ico){
   document.getElementById('step2').style.display='none';
   document.getElementById('step3').style.display='flex';
@@ -2310,9 +2393,21 @@ function goStep3(commName,ico){
   document.getElementById('s3ico').textContent=ico;
   document.getElementById('s3name').textContent=commName==='전체'?'마스터/당회장 계정':commName;
   document.getElementById('s3sub').textContent='아이디와 비밀번호를 입력하세요';
-  document.getElementById('s3id').value='';
+  // 자동ID 저장값 복원
+  const savedId = sessionStorage.getItem('autoId_'+commName);
+  const chk = document.getElementById('chkAutoId');
+  if(savedId){
+    document.getElementById('s3id').value = savedId;
+    if(chk) chk.checked = true;
+    document.getElementById('s3pw').focus();
+  } else {
+    document.getElementById('s3id').value = '';
+    if(chk) chk.checked = false;
+    document.getElementById('s3id').focus();
+  }
   document.getElementById('s3pw').value='';
-  document.getElementById('s3id').focus();
+  // 잠금 상태 복원
+  checkLockState(commName);
 
   // 역할 힌트
   const accs = COMM_ACCOUNTS[commName]||[];
@@ -2339,10 +2434,50 @@ function goStep2(){
 function step3Login(){
   const id=document.getElementById('s3id').value.trim();
   const pw=document.getElementById('s3pw').value.trim();
-  const u=USERS[id];
-  if(!u||u.pw!==pw){
-    alert('❌ 아이디 또는 비밀번호가 올바르지 않습니다');
+  const comm=window._loginComm||'전체';
+  // 잠금 체크
+  const lockKey='lock_'+comm;
+  const lockUntil=parseInt(sessionStorage.getItem(lockKey+'_until')||'0');
+  if(lockUntil>Date.now()){
+    const rem=Math.ceil((lockUntil-Date.now())/1000);
+    const m=Math.floor(rem/60), s=rem%60;
+    showLockMsg(`🔒 로그인 ${m}분 ${s}초 후 다시 시도하세요`);
     return;
+  }
+  const commUsers=USERS_BY_COMM[comm]||{};
+  let u=commUsers[id];
+  if(!u) u=(USERS_BY_COMM['전체']||{})[id];
+  if(!u||u.pw!==pw){
+    // 실패 카운트
+    let cnt=parseInt(sessionStorage.getItem(lockKey+'_cnt')||'0')+1;
+    sessionStorage.setItem(lockKey+'_cnt', cnt);
+    const left=5-cnt;
+    if(cnt>=5){
+      const until=Date.now()+3*60*1000; // 3분
+      sessionStorage.setItem(lockKey+'_until', until);
+      sessionStorage.setItem(lockKey+'_cnt','0');
+      showLockMsg('🔒 5회 오류! 3분 후 다시 시도하세요');
+      document.getElementById('btnLogin').disabled=true;
+      setTimeout(()=>{
+        document.getElementById('btnLogin').disabled=false;
+        hideLockMsg();
+        sessionStorage.removeItem(lockKey+'_until');
+      },3*60*1000);
+    } else {
+      showLockMsg(`❌ 아이디 또는 비밀번호 오류 (${cnt}/5회) — ${left}회 남음`);
+    }
+    return;
+  }
+  // 성공 - 카운트 초기화
+  sessionStorage.removeItem(lockKey+'_cnt');
+  sessionStorage.removeItem(lockKey+'_until');
+  hideLockMsg();
+  // 자동ID 저장/삭제
+  const chk=document.getElementById('chkAutoId');
+  if(chk&&chk.checked){
+    sessionStorage.setItem('autoId_'+comm, id);
+  } else {
+    sessionStorage.removeItem('autoId_'+comm);
   }
   CU={id,...u};
   document.getElementById('step3').style.display='none';
@@ -3026,12 +3161,7 @@ function buildApprovalPending(){
   const tbody=document.getElementById('approvalPending');
   tbody.innerHTML='';
 
-  // 기본 샘플 + 결재신청으로 추가된 항목 합치기
-  const baseItems=[
-    {who:"중등부회계",comm:"교육위원회",dept:"중등부",item:"수련회 - 여름 수련회",amt:175000,date:"02/22",proxy:false},
-    {who:"소년2부회계",comm:"교육위원회",dept:"소년2부",item:"행사 - 성탄발표회",amt:38000,date:"02/20",proxy:false},
-  ];
-  const items=[...(window.APPROVAL_PENDING||[]),...baseItems];
+  const items=[...(window.APPROVAL_PENDING||[])];
 
   if(['chair','chief','master','sub_master'].includes(role)){
     items.forEach((item,i)=>{
@@ -3056,10 +3186,7 @@ function buildApprovalPending(){
   const noteInput=(key)=>canNote
     ?`<input type="text" placeholder="특기사항 입력..." style="width:100%;padding:3px 6px;border:1px solid var(--border);border-radius:4px;font-size:11px;font-family:inherit;" onchange="window._doneNote=window._doneNote||{};window._doneNote['${key}']=this.value">`
     :`<span style="font-size:11px;color:var(--text3)">—</span>`;
-  doneBody.innerHTML=`
-    <tr><td>중등부회계</td><td>예배비 - 졸업예배</td><td class="tnum">18,000</td><td><span class="sb sb-ok">✓ 승인</span></td><td>${noteInput('done_0')}</td><td class="tc">02/09 14:32</td></tr>
-    <tr><td>중등부회계</td><td>교육비 - 신입생 환영</td><td class="tnum">51,500</td><td><span class="sb sb-ok">✓ 승인</span></td><td>${noteInput('done_1')}</td><td class="tc">02/09 14:35</td></tr>
-  `;
+  doneBody.innerHTML='<tr><td colspan="6" class="tc" style="color:var(--text3)">완료된 결재가 없습니다</td></tr>';
 }
 
 function doEditApproval(btn,idx){
@@ -3086,14 +3213,9 @@ function doProxy(btn){
 // ══ PASTOR ══
 function buildPastorList(){
   const tbody=document.getElementById('pastorBody');
-  const items=[
-    {comm:"교육위원회",dept:"중등부",item:"수련회",amt:175000,date:"02/15"},
-    {comm:"예배위원회",dept:"미디어사업부",item:"미디어사업",amt:120000,date:"02/18"},
-    {comm:"찬양위원회",dept:"갈릴리찬양부",item:"운영비",amt:38000,date:"02/20"},
-    {comm:"국내선교위원회",dept:"국내지원부",item:"국내선교지원비",amt:500000,date:"02/21"},
-    {comm:"총무위원회",dept:"서무부",item:"상회비",amt:412000,date:"02/22"},
-  ];
+  const items=window.PASTOR_LIST||[];
   tbody.innerHTML='';
+    if(!items.length){tbody.innerHTML='<tr><td colspan="7" class="tc" style="color:var(--text3)">결재 목록이 없습니다</td></tr>';return;}
   items.forEach((item,i)=>{
     const tr=document.createElement('tr');
     tr.innerHTML=`<td class="tc"><input type="checkbox" class="pastor-chk"></td>
