@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>교회 회계 장부 시스템 v3.2.5</title>
+<title>교회 회계 장부 시스템 v3.2.6</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Serif+KR:wght@400;600;700;900&display=swap');
 
@@ -451,7 +451,7 @@ tr:hover td{background:#fafaf7;}
       <span class="cross">✝️</span>
       <h1>교회 회계 장부 시스템</h1>
       <p>Church Financial Management System</p>
-      <span class="ver">v3.2.5</span>
+      <span class="ver">v3.2.6</span>
     </div>
     <div class="ig"><label>통합 아이디</label>
       <input type="text" id="s1id" placeholder="아이디 입력" value="church2025">
@@ -484,8 +484,8 @@ tr:hover td{background:#fafaf7;}
 </div>
 
 <!-- ══ STEP 3: 위원회 로그인 ══ -->
-<div id="step3" style="display:flex">
-  <div class="s3-box" style="display:none" id="s3box">
+<div id="step3" style="display:none">
+  <div class="s3-box" id="s3box">
     <button class="s3-back" onclick="goStep2()">← 위원회 선택으로 돌아가기</button>
     <div class="s3-comm-badge">
       <span class="ico" id="s3ico">🏛️</span>
@@ -522,7 +522,7 @@ tr:hover td{background:#fafaf7;}
 <div id="app">
   <div class="topbar">
     <button class="menu-btn" onclick="toggleSidebar()">☰</button>
-    <div class="topbar-title">✝️ 교회 회계 장부 v3.2.5</div>
+    <div class="topbar-title">✝️ 교회 회계 장부 v3.2.6</div>
     <div class="topbar-user">
       <strong id="tbName">-</strong>
       <span id="tbComm">-</span>
@@ -546,7 +546,8 @@ tr:hover td{background:#fafaf7;}
     <div class="ndiv"></div>
     <div class="ns">
       <div class="nsl">특별장부</div>
-      <button class="nb" onclick="sp('special',this)"><span class="ico">🎯</span>특별장부</button>
+      <button class="nb" onclick="sp('special',this)"><span class="ico">🎯</span>특별활동장부</button>
+      <button class="nb" id="nav-special50" onclick="sp('special50',this)"><span class="ico">🎊</span>50th기사위특별장부</button>
     </div>
     <div class="ndiv"></div>
     <div class="ns" id="nav-pastor" style="display:none">
@@ -904,7 +905,7 @@ tr:hover td{background:#fafaf7;}
     <!-- 🎯 특별장부 -->
     <div class="page" id="page-special">
       <div class="ph">
-        <div class="ph-left"><h2>🎯 특별장부</h2><p>교육위원회 특별장부 예산집행</p></div>
+        <div class="ph-left"><h2>🎯 특별활동장부</h2><p>위원회 특별활동 예산집행</p></div>
         <div class="ph-right no-print">
           <button class="btn bp" onclick="toggleSpecForm()">+ 지출 입력</button>
           <button class="btn bpr" onclick="showPrintModal('special')">🖨️ 인쇄</button>
@@ -960,6 +961,58 @@ tr:hover td{background:#fafaf7;}
         <div class="ts"><table>
           <thead><tr><th>날짜</th><th>항목</th><th>세부항목</th><th>적요</th><th>영수증</th><th>지출액</th><th>누계잔액</th><th>감사확인</th><th class="no-print">수정</th></tr></thead>
           <tbody id="specBody"></tbody>
+        </table></div>
+      </div>
+    </div>
+
+
+    <!-- 🎊 50th기사위 특별장부 -->
+    <div class="page" id="page-special50">
+      <div class="ph">
+        <div class="ph-left"><h2>🎊 50th기사위 특별장부</h2><p>50주년기념사업위원회 특별장부 예산집행</p></div>
+        <div class="ph-right no-print">
+          <button class="btn bp" onclick="toggleSpec50Form()">+ 지출 입력</button>
+          <button class="btn bpr" onclick="showPrintModal('special50')">🖨️ 인쇄</button>
+        </div>
+      </div>
+      <div class="fb no-print">
+        <label>팀</label>
+        <select id="sel50Dept" onchange="on50DeptChange()"><option value="">-- 팀 선택 --</option></select>
+        <label>항목</label>
+        <select id="sel50Event" onchange="build50Special()"><option value="">-- 항목/행사 선택 --</option></select>
+      </div>
+      <div class="sc" style="grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:16px">
+        <div class="scard cb"><div class="lbl">행사 예산</div><div class="val vb" id="s50Budget">0</div><div class="sub">원</div></div>
+        <div class="scard cr"><div class="lbl">행사 지출</div><div class="val vr" id="s50Exp">0</div><div class="sub">원</div></div>
+      </div>
+      <div class="fc no-print" id="spec50Form" style="display:none">
+        <div class="fch">✏️ 지출 입력</div>
+        <div class="fb2">
+          <div class="fgrid">
+            <div class="fg"><label>날짜 *</label><input type="date" id="sf50Date"></div>
+            <div class="fg"><label>항목 *</label>
+              <select id="sf50Cat" onchange="onSpec50CatChange()"><option value="">-- 항목 선택 --</option></select>
+              <input type="text" id="sf50CatDirect" placeholder="항목 직접 입력" style="display:none;margin-top:4px;width:100%;padding:6px 8px;border:1px solid var(--border);border-radius:6px;font-size:13px;font-family:inherit">
+            </div>
+            <div class="fg full"><label>세부항목</label>
+              <select id="sf50Detail"><option value="">-- 세부항목 선택 --</option></select>
+              <input type="text" id="sf50DetailDirect" placeholder="세부항목 직접 입력" style="display:none;margin-top:4px;width:100%;padding:6px 8px;border:1px solid var(--border);border-radius:6px;font-size:13px;font-family:inherit">
+            </div>
+            <div class="fg full"><label>적요 *</label><input type="text" id="sf50Memo" placeholder="내용 입력"></div>
+            <div class="fg"><label>지출 (원)</label><input type="number" id="sf50Exp" placeholder="0"></div>
+            <div class="fg"><label>영수증 번호</label><input type="text" id="sf50Rno" placeholder="자동생성"></div>
+          </div>
+        </div>
+        <div class="faction">
+          <button class="btn bp" onclick="submitSpec50()">💾 저장</button>
+          <button class="btn bo" onclick="document.getElementById('spec50Form').style.display='none'">취소</button>
+        </div>
+      </div>
+      <div class="tw">
+        <div class="th"><h3 id="spec50TableTitle">📋 지출내역</h3></div>
+        <div class="ts"><table>
+          <thead><tr><th>날짜</th><th>항목</th><th>세부항목</th><th>적요</th><th>지출액</th><th>누계잔액</th><th class="no-print">수정</th></tr></thead>
+          <tbody id="spec50Body"></tbody>
         </table></div>
       </div>
     </div>
@@ -1272,7 +1325,7 @@ tr:hover td{background:#fafaf7;}
 
 <script>
 // ══════════════════════════════════════════
-// 전체 데이터 구조 v3.2.5
+// 전체 데이터 구조 v3.2.6
 // ══════════════════════════════════════════
 
 // 예배위원회 SVG: 성경책+음표+기도손 합성
@@ -2299,7 +2352,7 @@ function buildStep2(){
   const sp1=document.createElement('div');
   sp1.innerHTML=`<div class="nsl" style="margin-bottom:10px;font-size:11px;color:#888;font-weight:800;letter-spacing:.8px">특별 계정</div>
   <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-bottom:20px">
-    <div class="special-tile" onclick="goStep3('전체','💎')" style="background:linear-gradient(135deg,#3b1a6e,#7c3aed)">
+    <div class="special-tile" onclick="goStep3('전체','💎')" style="background:linear-gradient(135deg,#3b1a6e 0%,#7c3aed 75%,rgba(255,255,255,0.18) 100%)">
       <span style="font-size:22px" style="filter:drop-shadow(0 0 6px #c084fc)">💎</span>
       <div class="info"><div class="name">마스터/부마스터</div><div class="sub">전체 시스템 관리</div></div>
     </div>
@@ -2500,6 +2553,9 @@ function setupApp(){
   const isAuditor=u.role==='auditor';
 
   document.getElementById('nav-admin').style.display=isMgr?'block':'none';
+  const is50=CU.committee==='50기사위원회';
+  const nav50=document.getElementById('nav-special50');
+  if(nav50) nav50.style.display=(is50||isMgr)?'':'none';
   document.getElementById('nav-pastor').style.display=isPastor||isMgr?'block':'none';
   document.getElementById('ndiv-pastor').style.display=isPastor||isMgr?'block':'none';
   document.getElementById('nav-audit').style.display=isAuditor||isMgr?'block':'none';
@@ -2529,6 +2585,8 @@ function setupApp(){
   buildAuditorList();
   setupSpecial();
   buildSpecial();
+  setup50Special();
+  build50Special();
   buildAuditPage();
 
   // ★ 로그인 후 위원회/부서 자동선택
@@ -3344,6 +3402,119 @@ function endAudit(){
 // ══ SPECIAL ══
 const SPECIAL_BIBLE=[];
 
+
+// ══ 50TH 특별장부 ══
+if(!window.SPEC50_LEDGER) window.SPEC50_LEDGER=[];
+
+function setup50Special(){
+  const deptSel=document.getElementById('sel50Dept');
+  if(!deptSel) return;
+  deptSel.innerHTML='<option value="">-- 팀 선택 --</option>';
+  const teams=Object.keys(DB50||{});
+  teams.forEach(team=>{
+    const o=document.createElement('option');
+    o.value=team; o.textContent=team;
+    if(CU&&CU.committee==='50기사위원회'&&CU.dept===team) o.selected=true;
+    deptSel.appendChild(o);
+  });
+  on50DeptChange();
+}
+
+function on50DeptChange(){
+  const dept=document.getElementById('sel50Dept').value;
+  const evSel=document.getElementById('sel50Event');
+  if(evSel){
+    evSel.innerHTML='<option value="">-- 항목/행사 선택 --</option>';
+    if(dept&&DB50&&DB50[dept]){
+      Object.keys(DB50[dept]).forEach(cat=>{
+        const o=document.createElement('option');o.value=cat;o.textContent=cat;evSel.appendChild(o);
+      });
+    }
+    const od=document.createElement('option');od.value='직접입력';od.textContent='✏️ 직접입력';evSel.appendChild(od);
+  }
+  // sf50Cat 채우기
+  const catSel=document.getElementById('sf50Cat');
+  if(catSel){
+    catSel.innerHTML='<option value="">-- 항목 선택 --</option>';
+    const od=document.createElement('option');od.value='직접입력';od.textContent='✏️ 직접입력';catSel.appendChild(od);
+    if(dept&&DB50&&DB50[dept]){
+      Object.keys(DB50[dept]).forEach(cat=>{
+        const o=document.createElement('option');o.value=cat;o.textContent=cat;catSel.appendChild(o);
+      });
+    }
+  }
+  build50Special();
+}
+
+function onSpec50CatChange(){
+  const dept=document.getElementById('sel50Dept').value;
+  const cat=document.getElementById('sf50Cat').value;
+  const directEl=document.getElementById('sf50CatDirect');
+  if(directEl) directEl.style.display=cat==='직접입력'?'block':'none';
+  const detSel=document.getElementById('sf50Detail');
+  if(detSel){
+    detSel.innerHTML='<option value="">-- 세부항목 선택 --</option>';
+    const od=document.createElement('option');od.value='직접입력';od.textContent='✏️ 직접입력';detSel.appendChild(od);
+    if(cat&&cat!=='직접입력'&&dept&&DB50&&DB50[dept]&&DB50[dept][cat]){
+      DB50[dept][cat].forEach(d=>{
+        const o=document.createElement('option');o.value=d;o.textContent=d;detSel.appendChild(o);
+      });
+    }
+  }
+}
+
+function toggleSpec50Form(){
+  const f=document.getElementById('spec50Form');
+  if(f) f.style.display=f.style.display==='none'?'block':'none';
+}
+
+function submitSpec50(){
+  const dept=document.getElementById('sel50Dept').value;
+  const event=document.getElementById('sel50Event').value;
+  const _cat=document.getElementById('sf50Cat').value;
+  const _catD=document.getElementById('sf50CatDirect');
+  const cat=(_cat==='직접입력'&&_catD&&_catD.value.trim())?_catD.value.trim():_cat;
+  const _det=document.getElementById('sf50Detail').value;
+  const _detD=document.getElementById('sf50DetailDirect');
+  const detail=(_det==='직접입력'&&_detD&&_detD.value.trim())?_detD.value.trim():_det;
+  const memo=document.getElementById('sf50Memo').value;
+  const exp=parseInt(document.getElementById('sf50Exp').value)||0;
+  const date=document.getElementById('sf50Date').value;
+  const rno=document.getElementById('sf50Rno').value||'-';
+  if(!cat||!memo){alert('항목과 적요를 입력해주세요');return;}
+  let fmtDate=date;
+  if(date&&date.includes('-')){const p=date.split('-');fmtDate=p[1]+'/'+p[2];}
+  window.SPEC50_LEDGER.push({date:fmtDate||'--',dept,event,cat,detail:detail||'-',memo,rno,expense:exp,audited:false});
+  document.getElementById('spec50Form').style.display='none';
+  build50Special();
+  showNotif('저장 완료 ✅','50th 특별장부에 반영되었습니다');
+}
+
+function build50Special(){
+  const dept=document.getElementById('sel50Dept')?document.getElementById('sel50Dept').value:'';
+  const event=document.getElementById('sel50Event')?document.getElementById('sel50Event').value:'';
+  document.getElementById('spec50TableTitle').textContent=`${dept} ${event} 지출내역`.trim();
+  const tbody=document.getElementById('spec50Body');if(!tbody)return;
+  tbody.innerHTML='';
+  let bal=0;
+  const rows=window.SPEC50_LEDGER.filter(r=>(!dept||r.dept===dept)&&(!event||event==='직접입력'||r.event===event));
+  if(!rows.length){
+    tbody.innerHTML='<tr><td colspan="7" class="tc" style="color:var(--text3)">지출내역이 없습니다</td></tr>';
+    document.getElementById('s50Exp').textContent='0';
+    document.getElementById('s50Budget').textContent='0';
+    return;
+  }
+  let totExp=0;
+  rows.forEach((r,i)=>{
+    bal-=r.expense; totExp+=r.expense;
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td class="tc">${r.date}</td><td>${r.cat}</td><td>${r.detail}</td><td>${r.memo}</td><td class="tnum" style="color:var(--red)">${r.expense?r.expense.toLocaleString():'-'}</td><td class="tnum" style="color:${bal>=0?'var(--green)':'var(--red)'}">${Math.abs(bal).toLocaleString()}${bal<0?' (초과)':''}</td><td><button class="btn bd btn-sm" onclick="window.SPEC50_LEDGER.splice(${window.SPEC50_LEDGER.indexOf(r)},1);build50Special()">삭제</button></td>`;
+    tbody.appendChild(tr);
+  });
+  document.getElementById('s50Exp').textContent=totExp.toLocaleString();
+  document.getElementById('s50Budget').textContent='0';
+}
+
 function setupSpecial(){
   const deptSel=document.getElementById('selSpDept');
   if(!deptSel) return;
@@ -3964,4 +4135,77 @@ function drawBarChart(canvasId, labels, values) {
     const x = pad.left + i * gap + gap * 0.2;
     const y = pad.top + cH - barH;
 
-  
+    const grad = ctx.createLinearGradient(x, y, x, pad.top + cH);
+    grad.addColorStop(0, '#4a35a0');
+    grad.addColorStop(1, '#7a65c0');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.roundRect ? ctx.roundRect(x, y, bW, barH, [4,4,0,0]) : ctx.rect(x, y, bW, barH);
+    ctx.fill();
+
+    // X축 라벨
+    ctx.fillStyle = '#555'; ctx.font = '10px sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText(label, x + bW/2, pad.top + cH + 16);
+
+    // 값 표시
+    if (values[i] > 0) {
+      ctx.fillStyle = '#2d1a6e'; ctx.font = 'bold 9px sans-serif'; ctx.textAlign = 'center';
+      ctx.fillText((values[i]/10000).toFixed(0)+'만', x + bW/2, y - 4);
+    }
+  });
+}
+
+function getLedgerData() {
+  // LEDGER 전역 변수에서 데이터 가져오기
+  return typeof LEDGER !== 'undefined' ? LEDGER : [];
+}
+
+function buildCharts() {
+  const data = getLedgerData();
+
+  // 연간 항목별 집계
+  const catMap = {};
+  data.filter(r => r.expense > 0).forEach(r => {
+    const cat = r.cat || '기타';
+    catMap[cat] = (catMap[cat] || 0) + r.expense;
+  });
+  const annualData = Object.entries(catMap)
+    .sort((a,b) => b[1]-a[1])
+    .map(([label, value]) => ({label, value}));
+  draw3DPie('pieAnnual', 'legendAnnual', annualData, 'annualTotal');
+
+  // 월별 추이
+  const months = ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+  const monthVals = months.map(m => 
+    data.filter(r => r.mon === m && r.expense > 0).reduce((s,r) => s + r.expense, 0)
+  );
+  drawBarChart('barMonthly', months, monthVals);
+
+  // 월간 차트도 갱신
+  buildMonthlyChart();
+}
+
+function buildMonthlyChart() {
+  const data = getLedgerData();
+  const mon = document.getElementById('chartMon') ? document.getElementById('chartMon').value : '전체';
+  const filtered = mon === '전체' ? data : data.filter(r => r.mon === mon);
+
+  const catMap = {};
+  filtered.filter(r => r.expense > 0).forEach(r => {
+    const cat = r.cat || '기타';
+    catMap[cat] = (catMap[cat] || 0) + r.expense;
+  });
+  const monthlyData = Object.entries(catMap)
+    .sort((a,b) => b[1]-a[1])
+    .map(([label, value]) => ({label, value}));
+  draw3DPie('pieMonthly', 'legendMonthly', monthlyData, 'monthlyTotal');
+}
+
+function printCharts() {
+  window.print();
+}
+
+</script>
+
+</body>
+</html>
