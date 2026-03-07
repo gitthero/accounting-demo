@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>교회 회계 장부 시스템 v3.2.8</title>
+<title>교회 회계 장부 시스템 v3.3.2</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Serif+KR:wght@400;600;700;900&display=swap');
 
@@ -244,24 +244,38 @@ tr:hover td{background:#fafaf7;}
 
 /* ══ VOUCHER (지출결의서) ══ */
 .voucher{background:var(--white);border:2px solid var(--navy);border-radius:var(--radius);
-  padding:28px;max-width:700px;margin:0 auto;}
-.voucher-title{text-align:center;margin-bottom:20px;}
-.voucher-title h2{font-family:'Noto Serif KR',serif;font-size:26px;font-weight:900;
-  letter-spacing:4px;border-bottom:3px solid var(--navy);padding-bottom:10px;display:inline-block;}
-.voucher-info{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;}
+  padding:22px 24px;max-width:720px;margin:0 auto;font-family:inherit;}
+.v-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;gap:12px;flex-wrap:nowrap;}
+.v-title-block{flex:1;min-width:200px;}
+.v-title{font-size:19px;font-weight:900;letter-spacing:5px;text-decoration:underline;margin-bottom:8px;white-space:nowrap;}
+.v-info p{font-size:11px;font-weight:700;margin:3px 0;letter-spacing:0.5px;}
+.v-sign-top{border-collapse:collapse;flex-shrink:0;}
+.v-sign-top th,.v-sign-top td{border:1.5px solid var(--navy);padding:4px 6px;text-align:center;font-size:11px;min-width:40px;max-width:50px;}
+.v-sign-top th{background:#f0f4fa;font-weight:700;}
+.v-table{width:100%;border-collapse:collapse;margin-bottom:8px;}
+.v-table th{border:1.5px solid var(--navy);padding:7px 8px;font-size:12px;background:#f0f4fa;text-align:center;font-weight:700;}
+.v-table td{border:1px solid var(--navy);padding:6px 8px;font-size:12px;text-align:left;}
+.v-select{border:none;width:100%;font-size:12px;outline:none;background:transparent;}
+.v-input{border:none;width:100%;font-size:12px;outline:none;background:transparent;}
+.v-row-input{border:none;width:100%;font-size:12px;outline:none;background:transparent;padding:2px 4px;}
+.v-amt-input{border:none;width:85px;font-size:12px;text-align:right;outline:none;background:transparent;padding:2px 4px;}
+.sign-cell{cursor:pointer;min-width:58px;min-height:38px;vertical-align:middle;text-align:center;}
+.sign-cell:hover{background:#f0fff4;}
+.sign-cell-lg{cursor:pointer;min-width:80px;min-height:52px;vertical-align:middle;text-align:center;}
+.sign-cell-lg:hover{background:#f0fff4;}
+.v-bottom{text-align:center;margin:14px 0 8px;}
+.v-phrase{font-size:14px;font-weight:700;letter-spacing:2px;margin-bottom:8px;}
+.v-date{font-size:13px;}
+.v-date-input{border:none;border-bottom:1px solid #999;text-align:center;font-size:13px;outline:none;background:transparent;}
+.v-sign-bottom-wrap{display:flex;justify-content:flex-end;margin-top:8px;}
+.v-sign-bottom{border-collapse:collapse;}
+.v-sign-bottom th,.v-sign-bottom td{border:1.5px solid var(--navy);padding:6px 8px;text-align:center;font-size:11px;min-width:56px;}
+.v-sign-bottom th{background:#f0f4fa;font-weight:700;}
+.v-sign-label{font-size:13px;font-weight:900;letter-spacing:3px;padding:8px 6px;}
+/* 구 스타일 호환 */
 .voucher-approval{border:2px solid var(--navy);}
-.voucher-approval table{margin:0;}
-.voucher-approval th{background:#f0ede8;font-size:11px;padding:6px 14px;border:1px solid var(--navy);}
-.voucher-approval td{font-size:11px;padding:20px 14px;border:1px solid var(--navy);text-align:center;}
-.voucher-table{width:100%;border-collapse:collapse;margin-bottom:14px;}
-.voucher-table th{border:2px solid var(--navy);padding:8px 10px;font-size:12px;
-  background:#f0ede8;text-align:center;}
-.voucher-table td{border:1px solid var(--navy);padding:8px 10px;font-size:12px;}
-.voucher-bottom{text-align:center;margin:16px 0;}
-.voucher-sign{display:flex;justify-content:flex-end;margin-top:16px;}
 .sign-table{border-collapse:collapse;}
-.sign-table th{border:2px solid var(--navy);padding:6px 16px;font-size:11px;background:#f0ede8;}
-.sign-table td{border:1px solid var(--navy);padding:20px 16px;font-size:11px;text-align:center;}
+.voucher-title{text-align:center;margin-bottom:20px;}
 
 /* ══ APPROVAL FLOW ══ */
 .flow{display:flex;align-items:center;gap:0;overflow-x:auto;padding:14px 0;margin-bottom:18px;}
@@ -451,7 +465,7 @@ tr:hover td{background:#fafaf7;}
       <span class="cross">✝️</span>
       <h1>교회 회계 장부 시스템</h1>
       <p>Church Financial Management System</p>
-      <span class="ver">v3.2.8</span>
+      <span class="ver">v3.3.2</span>
     </div>
     <div class="ig"><label>통합 아이디</label>
       <input type="text" id="s1id" placeholder="아이디 입력" value="church2025">
@@ -522,7 +536,7 @@ tr:hover td{background:#fafaf7;}
 <div id="app">
   <div class="topbar">
     <button class="menu-btn" onclick="toggleSidebar()">☰</button>
-    <div class="topbar-title">✝️ 교회 회계 장부 v3.2.8</div>
+    <div class="topbar-title">✝️ 교회 회계 장부 v3.3.2</div>
     <div class="topbar-user">
       <strong id="tbName">-</strong>
       <span id="tbComm">-</span>
@@ -784,87 +798,95 @@ tr:hover td{background:#fafaf7;}
 
       <!-- 결의서 작성 폼 -->
       <div class="fc" id="voucherForm" style="display:none">
-        <div class="fch">✏️ 지출결의서 작성</div>
+        <div class="fch">✏️ 지출결의서 작성
+          <button class="btn bd btn-sm no-print" onclick="addVoucherRow()" style="float:right;margin-top:-2px">+ 청구내역 추가</button>
+        </div>
         <div class="fb2">
-          <!-- 결의서 양식 -->
+          <!-- ★ 새 양식 - 샘플과 동일 구조 ★ -->
           <div class="voucher" id="voucherPreview">
-            <div class="voucher-title">
-              <h2>지 출 결 의 서</h2>
-            </div>
-            <div class="voucher-info">
-              <div>
-                <p style="font-size:13px;font-weight:700">위원회: <span id="vComm">-</span> 위원회</p>
-                <p style="font-size:13px;font-weight:700;margin-top:5px">부&nbsp;&nbsp;&nbsp;서: <span id="vDept">-</span></p>
+
+            <!-- 상단: 제목 + 결재란 -->
+            <div class="v-header">
+              <div class="v-title-block">
+                <h2 class="v-title">지 출 결 의 서</h2>
+                <div class="v-info">
+                  <p><strong>위원회 :</strong> <span id="vComm">-</span> 위원회</p>
+                  <p><strong>부 &nbsp;&nbsp;&nbsp;서 :</strong> <span id="vDept">-</span></p>
+                </div>
               </div>
-              <table class="voucher-approval">
-                <tr>
-                  <th>결</th><th>회&nbsp;&nbsp;계</th><th>부&nbsp;&nbsp;장</th><th>위원장</th>
-                </tr>
+              <table class="v-sign-top">
+                <tr><th>결</th><th>회 &nbsp; 계</th><th>부 &nbsp; 장</th><th>위 원 장</th></tr>
                 <tr>
                   <th>재</th>
-                  <td id="vsign1" onclick="clickSign('vsign1','회계')" style="cursor:pointer;min-width:60px" title="클릭하면 서명">클릭서명</td>
-                  <td id="vsign2" onclick="clickSign('vsign2','부장')" style="cursor:pointer;min-width:60px" title="클릭하면 서명">클릭서명</td>
-                  <td id="vsign3" onclick="clickSign('vsign3','위원장')" style="cursor:pointer;min-width:60px" title="클릭하면 서명">클릭서명</td>
+                  <td id="vsign1" onclick="clickVSign('vsign1','acc')" class="sign-cell" title="회계 서명">　</td>
+                  <td id="vsign2" onclick="clickVSign('vsign2','chief')" class="sign-cell" title="부장 서명">　</td>
+                  <td id="vsign3" onclick="clickVSign('vsign3','chair')" class="sign-cell" title="위원장 서명">　</td>
                 </tr>
               </table>
             </div>
 
             <!-- 예산현황표 -->
-            <table class="voucher-table" style="margin-bottom:14px">
+            <table class="v-table" style="margin-bottom:12px">
               <tr>
                 <th>예산항목</th><th>총 예산액</th>
-                <th>집행액<br>(금회포함누계)</th>
-                <th>현재잔액<br>(집행후잔액)</th><th>비&nbsp;&nbsp;고</th>
+                <th>집행액<br><span style="font-weight:400;font-size:10px">(금회포함누계)</span></th>
+                <th>현재잔액<br><span style="font-weight:400;font-size:10px">(집행후잔액)</span></th>
+                <th>비&nbsp;&nbsp;고</th>
               </tr>
               <tr>
-                <td><select id="vBudgetItem" onchange="onVBudgetChange()" style="border:none;width:100%;font-size:12px;outline:none;"></select></td>
+                <td><select id="vBudgetItem" onchange="onVBudgetChange()" class="v-select"></select></td>
                 <td class="tc" id="vTotalBudget">-</td>
                 <td class="tc" id="vExecuted">-</td>
                 <td class="tc" id="vBalance">-</td>
-                <td><input type="text" id="vNote1" placeholder="비고" style="border:none;width:100%;font-size:12px;outline:none;"></td>
+                <td><input type="text" id="vNote1" placeholder="비고" class="v-input"></td>
               </tr>
             </table>
 
             <!-- 청구내역표 -->
-            <table class="voucher-table">
-              <tr><th colspan="2">청&nbsp;&nbsp;구&nbsp;&nbsp;내&nbsp;&nbsp;역</th><th>금&nbsp;&nbsp;액</th><th>비&nbsp;&nbsp;고</th></tr>
-              <tr><td colspan="2"><input type="text" id="vi1" placeholder="내역 입력" style="border:none;width:100%;font-size:12px;outline:none;"></td>
-                <td><input type="number" id="va1" placeholder="0" style="border:none;width:90px;font-size:12px;text-align:right;outline:none;" oninput="calcVTotal()"></td>
-                <td><input type="text" id="vn1" placeholder="비고" style="border:none;width:100%;font-size:12px;outline:none;"></td></tr>
-              <tr><td colspan="2"><input type="text" id="vi2" placeholder="내역 입력" style="border:none;width:100%;font-size:12px;outline:none;"></td>
-                <td><input type="number" id="va2" placeholder="0" style="border:none;width:90px;font-size:12px;text-align:right;outline:none;" oninput="calcVTotal()"></td>
-                <td><input type="text" id="vn2" placeholder="비고" style="border:none;width:100%;font-size:12px;outline:none;"></td></tr>
-              <tr><td colspan="2"><input type="text" id="vi3" placeholder="내역 입력" style="border:none;width:100%;font-size:12px;outline:none;"></td>
-                <td><input type="number" id="va3" placeholder="0" style="border:none;width:90px;font-size:12px;text-align:right;outline:none;" oninput="calcVTotal()"></td>
-                <td><input type="text" id="vn3" placeholder="비고" style="border:none;width:100%;font-size:12px;outline:none;"></td></tr>
-              <tr><td colspan="2"><input type="text" id="vi4" placeholder="내역 입력" style="border:none;width:100%;font-size:12px;outline:none;"></td>
-                <td><input type="number" id="va4" placeholder="0" style="border:none;width:90px;font-size:12px;text-align:right;outline:none;" oninput="calcVTotal()"></td>
-                <td><input type="text" id="vn4" placeholder="비고" style="border:none;width:100%;font-size:12px;outline:none;"></td></tr>
-              <tr><td colspan="2"><input type="text" id="vi5" placeholder="내역 입력" style="border:none;width:100%;font-size:12px;outline:none;"></td>
-                <td><input type="number" id="va5" placeholder="0" style="border:none;width:90px;font-size:12px;text-align:right;outline:none;" oninput="calcVTotal()"></td>
-                <td><input type="text" id="vn5" placeholder="비고" style="border:none;width:100%;font-size:12px;outline:none;"></td></tr>
-              <tr><td colspan="2" style="text-align:center;font-weight:800;font-size:13px;">합&nbsp;&nbsp;&nbsp;&nbsp;계</td>
-                <td class="tc" id="vTotal" style="font-weight:800">0</td><td></td></tr>
+            <table class="v-table" id="voucherItemTable">
+              <tr>
+                <th colspan="2">청 &nbsp;&nbsp; 구 &nbsp;&nbsp; 내 &nbsp;&nbsp; 역</th>
+                <th>금 &nbsp;&nbsp; 액</th>
+                <th>비 &nbsp;&nbsp; 고</th>
+              </tr>
+              <tbody id="voucherRows">
+                <!-- 기본 5행 -->
+              </tbody>
+              <tr>
+                <td colspan="2" style="text-align:center;font-weight:800;font-size:13px;padding:10px">합 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 계</td>
+                <td class="tc" id="vTotal" style="font-weight:800;font-size:14px">0</td>
+                <td></td>
+              </tr>
             </table>
 
-            <div class="voucher-bottom">
-              <p style="font-size:14px;font-weight:700;">위와 같이 지출을 바라나이다.</p>
-              <p style="font-size:13px;margin-top:8px;">서기 2025년 &nbsp;
-              <input type="text" id="vMonth" placeholder="월" style="width:35px;border:none;border-bottom:1px solid #999;text-align:center;font-size:13px;outline:none;"> 월 &nbsp;
-              <input type="text" id="vDay" placeholder="일" style="width:35px;border:none;border-bottom:1px solid #999;text-align:center;font-size:13px;outline:none;"> 일</p>
+            <!-- 바닥 문구 + 날짜 -->
+            <div class="v-bottom">
+              <p class="v-phrase">위와 같이 지출을 바라나이다.</p>
+              <p class="v-date">서기 &nbsp;
+                <input type="text" id="vYear" placeholder="년도" class="v-date-input" style="width:45px">년 &nbsp;
+                <input type="text" id="vMonth" placeholder="월" class="v-date-input" style="width:30px">월 &nbsp;
+                <input type="text" id="vDay" placeholder="일" class="v-date-input" style="width:30px">일
+              </p>
             </div>
 
-            <div class="voucher-sign">
-              <table class="sign-table">
-                <tr><th>부<br>서<br>결<br>재</th><th>재 정 부 장</th><th>재 정 위 원 장</th><th>당 회 장</th></tr>
-                <tr><td></td>
-                  <td id="fsign1" style="min-width:80px"></td>
-                  <td id="fsign2" style="min-width:80px"></td>
-                  <td id="fsign3" style="min-width:80px"></td>
+            <!-- 하단: 부서결재란 -->
+            <div class="v-sign-bottom-wrap">
+              <table class="v-sign-bottom">
+                <tr>
+                  <th rowspan="2" class="v-sign-label">부<br>서<br>결<br>재</th>
+                  <th>재 정 부 장</th>
+                  <th>재 정 위 원 장</th>
+                  <th>당 &nbsp;&nbsp; 회 &nbsp;&nbsp; 장</th>
+                </tr>
+                <tr>
+                  <td id="fsign1" onclick="clickFSign('fsign1','chief')" class="sign-cell-lg" title="재정부장 서명">　</td>
+                  <td id="fsign2" onclick="clickFSign('fsign2','chair')" class="sign-cell-lg" title="재정위원장 서명">　</td>
+                  <td id="fsign3" onclick="clickFSign('fsign3','pastor')" class="sign-cell-lg" title="당회장 서명">　</td>
                 </tr>
               </table>
             </div>
-          </div>
+
+          </div><!-- /voucher -->
         </div>
         <div class="faction">
           <button class="btn bp" onclick="submitVoucher()">📨 결재 신청</button>
@@ -883,6 +905,7 @@ tr:hover td{background:#fafaf7;}
       </div>
     </div>
 
+    
     <!-- ✅ 전자결재함 -->
     <div class="page" id="page-approval">
       <div class="ph"><div class="ph-left"><h2>✅ 전자결재함</h2><p>내 결재 대기 및 처리현황</p></div></div>
@@ -919,9 +942,9 @@ tr:hover td{background:#fafaf7;}
       </div>
       <div class="sc" style="grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px">
         <div class="scard cb"><div class="lbl">행사 예산</div><div class="val vb" id="spBudget">0</div><div class="sub">원</div></div>
+        <div class="scard cg"><div class="lbl">행사 수입</div><div class="val vg" id="spIncome">0</div><div class="sub">원</div></div>
         <div class="scard cr"><div class="lbl">행사 지출</div><div class="val vr" id="spExp">0</div><div class="sub">원</div></div>
-        <div class="scard cg"><div class="lbl">행사 잔액</div><div class="val vg" id="spBal">0</div><div class="sub">원</div></div>
-        <div class="scard co"><div class="lbl">지출건수</div><div class="val vo" id="spCnt">0건</div><div class="sub">현재까지</div></div>
+        <div class="scard co"><div class="lbl">행사 잔액</div><div class="val vo" id="spBal">0</div><div class="sub">원</div></div>
       </div>
 
       <div class="fc no-print" id="specForm" style="display:none">
@@ -970,7 +993,7 @@ tr:hover td{background:#fafaf7;}
     <!-- 🎊 50th기사위 특별장부 -->
     <div class="page" id="page-special50">
       <div class="ph">
-        <div class="ph-left"><h2>🎊 50th기사위 특별장부</h2><p>50주년기념사업위원회 특별장부 예산집행</p></div>
+        <div class="ph-left"><h2>🎊 50th기사위 특별장부</h2><p>총무위원회_50th | 50주년기념사업팀 예산집행</p></div>
         <div class="ph-right no-print">
           <button class="btn bp" onclick="toggleSpec50Form()">+ 지출 입력</button>
           <button class="btn bpr" onclick="showPrintModal('special50')">🖨️ 인쇄</button>
@@ -980,14 +1003,17 @@ tr:hover td{background:#fafaf7;}
         <label>팀</label>
         <select id="sel50Dept" onchange="on50DeptChange()"><option value="">-- 팀 선택 --</option></select>
         <label>항목</label>
-        <select id="sel50Event" onchange="build50Special()"><option value="">-- 항목/행사 선택 --</option></select>
+        <select id="sel50Event" onchange="build50Special()"><option value="">-- 항목 선택 --</option></select>
       </div>
-      <div class="sc" style="grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:16px">
-        <div class="scard cb"><div class="lbl">행사 예산</div><div class="val vb" id="s50Budget">0</div><div class="sub">원</div></div>
-        <div class="scard cr"><div class="lbl">행사 지출</div><div class="val vr" id="s50Exp">0</div><div class="sub">원</div></div>
+      <div class="sc" style="grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px">
+        <div class="scard cb"><div class="lbl">행사예산</div><div class="val vb" id="s50Budget">0</div><div class="sub">원</div></div>
+        <div class="scard cg"><div class="lbl">행사수입</div><div class="val vg" id="s50Income">0</div><div class="sub">원</div></div>
+        <div class="scard cr"><div class="lbl">행사지출</div><div class="val vr" id="s50Exp">0</div><div class="sub">원</div></div>
+        <div class="scard co"><div class="lbl">행사잔액</div><div class="val vo" id="s50Bal">0</div><div class="sub">원</div></div>
       </div>
+
       <div class="fc no-print" id="spec50Form" style="display:none">
-        <div class="fch">✏️ 지출 입력</div>
+        <div class="fch">✏️ 50th 지출 입력</div>
         <div class="fb2">
           <div class="fgrid">
             <div class="fg"><label>날짜 *</label><input type="date" id="sf50Date"></div>
@@ -996,28 +1022,30 @@ tr:hover td{background:#fafaf7;}
               <input type="text" id="sf50CatDirect" placeholder="항목 직접 입력" style="display:none;margin-top:4px;width:100%;padding:6px 8px;border:1px solid var(--border);border-radius:6px;font-size:13px;font-family:inherit">
             </div>
             <div class="fg full"><label>세부항목</label>
-              <select id="sf50Detail"><option value="">-- 세부항목 선택 --</option></select>
+              <select id="sf50Detail" onchange="onSpec50DetailChange()"><option value="">-- 세부항목 선택 --</option></select>
               <input type="text" id="sf50DetailDirect" placeholder="세부항목 직접 입력" style="display:none;margin-top:4px;width:100%;padding:6px 8px;border:1px solid var(--border);border-radius:6px;font-size:13px;font-family:inherit">
             </div>
             <div class="fg full"><label>적요 *</label><input type="text" id="sf50Memo" placeholder="내용 입력"></div>
-            <div class="fg"><label>지출 (원)</label><input type="number" id="sf50Exp" placeholder="0"></div>
+            <div class="fg"><label>지출 (원) *</label><input type="number" id="sf50Exp" placeholder="0"></div>
             <div class="fg"><label>영수증 번호</label><input type="text" id="sf50Rno" placeholder="자동생성"></div>
           </div>
         </div>
         <div class="faction">
           <button class="btn bp" onclick="submitSpec50()">💾 저장</button>
-          <button class="btn bo" onclick="document.getElementById('spec50Form').style.display='none'">취소</button>
+          <button class="btn bo" onclick="cancelSpec50Form()">취소</button>
         </div>
       </div>
+
       <div class="tw">
         <div class="th"><h3 id="spec50TableTitle">📋 지출내역</h3></div>
         <div class="ts"><table>
-          <thead><tr><th>날짜</th><th>항목</th><th>세부항목</th><th>적요</th><th>지출액</th><th>누계잔액</th><th class="no-print">수정</th></tr></thead>
+          <thead><tr><th>날짜</th><th>항목</th><th>세부항목</th><th>적요</th><th>영수증</th><th>지출액</th><th>누계잔액</th><th>감사확인</th><th class="no-print">수정</th></tr></thead>
           <tbody id="spec50Body"></tbody>
         </table></div>
       </div>
     </div>
 
+    
     <!-- 👑 당회장 -->
     <div class="page" id="page-pastor">
       <div class="ph">
@@ -1326,7 +1354,7 @@ tr:hover td{background:#fafaf7;}
 
 <script>
 // ══════════════════════════════════════════
-// 전체 데이터 구조 v3.2.8
+// 전체 데이터 구조 v3.3.2
 // ══════════════════════════════════════════
 
 // 예배위원회 SVG: 성경책+음표+기도손 합성
@@ -2094,60 +2122,60 @@ const BUDGET = {
 };
 const DB50 = {
   "50주년기념사업팀": {
-    "행사비": ["50주년 기념 엠블럼 제작","50주년 기념 티저 포스터 제작"],
-    "서무비": ["멀티미디어 제작용 컴퓨터 & 서버(NAS) 구축"],
+    "행사비": ["50주년기념_엠블럼제작", "50주년기념_티저포스터제작"],
+    "서무비": ["멀티미디어제작용_컴퓨터_서버NAS구축"],
   },
-  "건축위원회": {
-    "행사비": ["교육관 준공 및 입당"],
+  "해외선교위원회_50주년기념사업팀": {
+    "홍보비": ["본관1층_로비아트월"],
   },
-  "건축위원회_50기사팀": {
-    "홍보비": ["신축 교육관 1층 로비_히스토리 월_조성"],
-  },
-  "관리위원회": {
-    "서무비": ["건물 및 H/W 정비"],
-  },
-  "교역자실": {
-    "행사비": ["전 교인 1인 1참여_더 낮은 곳으로"],
-  },
-  "교육위원회": {
-    "행사비": ["아주대 김경일 교수 초청_교육 컨퍼런스"],
-  },
-  "국내선교위원회": {
-    "행사비": ["국내 자매교회 결연 및 교류(조마오광_장호원_수원시온성)"],
+  "아카이브T/F팀": {
+    "홍보비": ["홍보용_리플렛제작_1차발간_교회_교육및건축편", "홍보용_리플렛 제작_2차발간_업그레이드", "교인들의이야기_영상 제작"],
+    "서무비": ["아카이브_자료수집_분류및저장"],
   },
   "담임목사": {
-    "선교비": ["50주년 기념 설교(예배, 교육, 선교, 봉사, 행정 시리즈 5회)"],
+    "선교비": ["50주년기념설교(예배_교육_선교_봉사_행정시리즈_5회)"],
   },
-  "마을사역위원회": {
-    "행사비": ["동행(미혼모 가정 초청 소풍, 안성 팜랜드)"],
+  "협력_해외선교위원회": {
+    "선교비": ["비젼트립(말레이시아_코타마루두_청년 대상)", "비젼트립(태국_상크라부리_전교인 대상)"],
   },
-  "아카이브 T/F팀": {
-    "홍보비": ["홍보용 리플렛 제작 1차 발간 (교회, 교육 및 건축편)","홍보용 리플렛 제작 2차 발간 (업그레이드)","교인들의 이야기 영상 제작"],
-    "서무비": ["아카이브자료 수집, 분류 및 저장"],
+  "교역자실": {
+    "행사비": ["전교인1인1참여_더낮은곳으로"],
   },
-  "예배위원회": {
-    "서무비": ["성경 필사"],
+  "협력_홍보위원회": {
+    "행사비": ["기념전시회"],
   },
-  "총무위원회": {
-    "서무비": ["정관 및 항존직 선거규정 개정, 항존직 선거, 임직식","교회 명칭 변경 추진(콘텐츠 정비)"],
+  "협력_총무위원회": {
+    "서무비": ["정관및항존직_선거규정개정_항존직선거_임직식", "교회명칭변경추진(콘텐츠정비)"],
   },
-  "평생교육위원회_50기사팀": {
-    "행사비": ["고대의 숨결 빛을 따라 걷다(이·요·이 성경 역사 탐방)"],
+  "협력_국내선교위원회": {
+    "행사비": ["국내자매교회결연및교류(조마오광_장호원_수원시온성)"],
   },
-  "해외선교위원회": {
-    "선교비": ["비젼트립('말레이시아 코타마루두(청년 대상)","비젼트립(태국 상크라부리(전교인 대상)"],
+  "협력_마을사역위원회": {
+    "행사비": ["동행(미혼모가정초청소풍_안성팜랜드)"],
   },
-  "해외선교위원회_50기사팀": {
-    "홍보비": ["본관 1층 로비 아트월"],
+  "협력_예배위원회": {
+    "서무비": ["성경필사"],
   },
-  "홍보위원회": {
-    "행사비": ["기념 전시회"],
+  "건축위원회_50주년기념사업팀": {
+    "홍보비": ["신축교육관1층로비_히스토리월_조성"],
   },
-  "홍보위원회_50기사업팀": {
-    "행사비": ["작가 초청 작품 전시회"],
+  "협력_건축위원회": {
+    "행사비": ["교육관_준공및입당"],
   },
-  "홍보위원회_아카이브 T/F팀": {
-    "서무비": ["50주년 기념 책자 발간"],
+  "협력_교육위원회": {
+    "행사비": ["아주대_김경일 교수 초청_교육 컨퍼런스"],
+  },
+  "홍보위원회_50주년기념사업팀": {
+    "행사비": ["작가_초청작품전시회"],
+  },
+  "평생교육위원회_50주년기념사업팀": {
+    "행사비": ["고대의숨결_빛을따라걷다(이_요_이_성경역사탐방)"],
+  },
+  "홍보위원회_아카이브T/F팀": {
+    "서무비": ["50주년기념_책자발간"],
+  },
+  "협력_관리위원회": {
+    "서무비": ["건물및H/W정비"],
   },
 };
 
@@ -2277,9 +2305,9 @@ const USERS_BY_COMM = {
     "c1":{"pw":"c11004","name":"경조부 회계","role":"acc","committee":"친교위원회","dept":"경조부"},
     "c2":{"pw":"c21004","name":"경조부 부장","role":"chief","committee":"친교위원회","dept":"경조부"},
   },
-  "50기사위원회": {
-    "a1":{"pw":"a11004","name":"50주년위원회 회계","role":"acc","committee":"50기사위원회","dept":"50주년위원회"},
-    "a3":{"pw":"a31004","name":"50주년위원회 위원장","role":"chair","committee":"50기사위원회","dept":"50주년위원회"},
+  "총무위원회_50th": {
+    "a1":{"pw":"a11004","name":"50주년기념사업팀 회계","role":"acc","committee":"총무위원회_50th","dept":"50주년기념사업팀"},
+    "a3":{"pw":"a31004","name":"50주년기념사업팀 위원장","role":"chair","committee":"총무위원회_50th","dept":"50주년기념사업팀"},
   },
   "전체": {
     "master":{"pw":"master","name":"시스템관리자","role":"master","committee":"전체","dept":"전체"},
@@ -2317,12 +2345,16 @@ const COMM_ACCOUNTS = {
   "감사위원회": [{"id":"audit1","label":"감사위원1","role":"auditor","pw":"1111"},{"id":"audit2","label":"감사위원2","role":"auditor","pw":"2222"},{"id":"audit3","label":"감사위원3","role":"auditor","pw":"3333"},{"id":"audit4","label":"감사위원4","role":"auditor","pw":"4444"},{"id":"audit5","label":"감사위원5","role":"auditor","pw":"5555"},{"id":"audit6","label":"감사위원6","role":"auditor","pw":"6666"},{"id":"audit7","label":"감사위원7","role":"auditor","pw":"7777"}],
   "마을사역위원회": [{"id":"v1","label":"영덕동마을쟁이 회계","role":"acc","pw":"v11004"},{"id":"v2","label":"영덕동마을쟁이 부장","role":"chief","pw":"v21004"},{"id":"v3","label":"영덕동마을쟁이 위원장","role":"chair","pw":"v31004"}],
   "친교위원회": [{"id":"s1","label":"체육부 회계","role":"acc","pw":"s11004"},{"id":"s2","label":"체육부 부장","role":"chief","pw":"s21004"},{"id":"s3","label":"체육부 위원장","role":"chair","pw":"s31004"},{"id":"f1","label":"친교부 회계","role":"acc","pw":"f11004"},{"id":"f2","label":"친교부 부장","role":"chief","pw":"f21004"},{"id":"c1","label":"경조부 회계","role":"acc","pw":"c11004"},{"id":"c2","label":"경조부 부장","role":"chief","pw":"c21004"}],
-  "50기사위원회": [{"id":"a1","label":"50주년위원회 회계","role":"acc","pw":"a11004"},{"id":"a3","label":"50주년위원회 위원장","role":"chair","pw":"a31004"}],
+  "총무위원회_50th": [{"id":"a1","label":"50주년기념사업팀 회계","role":"acc","pw":"a11004"},{"id":"a3","label":"50주년기념사업팀 위원장","role":"chair","pw":"a31004"}],
   "전체": [{"id":"master","label":"시스템관리자","role":"master","pw":"master"},{"id":"sub","label":"부관리자","role":"sub_master","pw":"sub"},{"id":"pastor","label":"당회장","role":"pastor","pw":"pastor"}],
 };
 
 // 장부 샘플 데이터
 const LEDGER = [];
+const SPEC_LEDGER = [];
+const SPEC50_LEDGER = [];
+let _editSpecIdx = -1;
+let _editSpec50Idx = -1;
 
 // 감사기간 상태
 let auditActive = false;
@@ -2378,7 +2410,7 @@ function buildStep2(){
     ["마을사역위원회","VLG"],["봉사위원회","❤️"],["새가족위원회","🤝"],
     ["세계선교위원회","🌏"],["예배위원회","🎵"],["차량관리위원회","🚌"],
     ["찬양위원회","PRA"],["총무위원회","OFF"],["친교위원회","🎉"],
-    ["평생교육위원회","🎓"],["홍보위원회","📢"],["50기사위원회","🎊"]
+    ["평생교육위원회","🎓"],["홍보위원회","📢"],["총무위원회_50th","🎊","50th 기념사업팀"]
   ];
 
   const sp2=document.createElement('div');
@@ -2387,7 +2419,7 @@ function buildStep2(){
   body.appendChild(sp2);
 
   const grid=sp2.querySelector('.comm-grid');
-  mainComms.forEach(([name,code])=>{
+  mainComms.forEach(([name,code,label])=>{
     const tile=document.createElement('div');
     tile.className='comm-tile';
     let icoHtml='';
@@ -2404,7 +2436,7 @@ function buildStep2(){
     } else {
       icoHtml=`<span class="ico">${code}</span>`;
     }
-    tile.innerHTML=`${icoHtml}<div class="name">${name}</div>`;
+    tile.innerHTML=`${icoHtml}<div class="name">${label||name}</div>`;
     tile.onclick=()=>goStep3(name,code.length>3?code:'🏛️');
     grid.appendChild(tile);
   });
@@ -2510,16 +2542,16 @@ function step3Login(){
     sessionStorage.setItem(lockKey+'_cnt', cnt);
     const left=5-cnt;
     if(cnt>=5){
-      const until=Date.now()+3*60*1000; // 3분
+      const until=Date.now()+1*60*1000; // 1분
       sessionStorage.setItem(lockKey+'_until', until);
       sessionStorage.setItem(lockKey+'_cnt','0');
-      showLockMsg('🔒 5회 오류! 3분 후 다시 시도하세요');
+      showLockMsg('🔒 5회 오류! 1분 후 다시 시도하세요');
       document.getElementById('btnLogin').disabled=true;
       setTimeout(()=>{
         document.getElementById('btnLogin').disabled=false;
         hideLockMsg();
         sessionStorage.removeItem(lockKey+'_until');
-      },3*60*1000);
+      },1*60*1000);
     } else {
       showLockMsg(`❌ 아이디 또는 비밀번호 오류 (${cnt}/5회) — ${left}회 남음`);
     }
@@ -2559,7 +2591,7 @@ function setupApp(){
   // 허용 그룹
   const isSpecialAcct=isMgr||isPastor;          // 특별계정 (master/sub/pastor)
   const isEdu=u.committee==='교육위원회';         // 교육위원회
-  const is50=u.committee==='50기사위원회';         // 50기사위원회
+  const is50=u.committee==='총무위원회_50th';         // 총무위원회_50th
   const isAudit50=isAuditor;                      // 감사위원회
   // 각 버튼 표시 제어
   const canSeeSpecial=isSpecialAcct||isEdu||isAudit50;   // 특별활동장부
@@ -2641,16 +2673,41 @@ function sp(name,btn){
   if(window.innerWidth<=768)document.getElementById('sidebar').classList.remove('open');
 }
 function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');}
-function clickSign(id,role){
+function clickVSign(id,requiredRole){
+  // 상단 결재란: 회계(acc)/부장(chief)/위원장(chair) 만 서명 가능
+  if(!CU)return;
+  const roleMap={acc:'회계',chief:'부장',chair:'위원장'};
+  if(CU.role!==requiredRole&&CU.role!=='master'&&CU.role!=='sub_master'){
+    showNotif('⚠️ 권한 없음',`${roleMap[requiredRole]||requiredRole}만 서명 가능합니다`);return;
+  }
   const el=document.getElementById(id);
   if(!el)return;
-  const name=CU?CU.name:'서명자';
+  const name=CU.name||CU.id;
   const now=new Date();
-  const timeStr=`${now.getMonth()+1}/${now.getDate()} ${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
-  el.innerHTML=`<span style="font-size:10px;color:var(--green);font-weight:800">${name}<br>${timeStr}</span>`;
+  const ts=`${now.getMonth()+1}/${now.getDate()} ${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
+  el.innerHTML=`<span style="font-size:10px;color:var(--green);font-weight:800;line-height:1.4">${name}<br><span style="color:#666;font-size:9px">${ts}</span></span>`;
   el.style.cursor='default';
-  showNotif(`${role} 전자서명 완료 ✅`,`${name} | ${timeStr}`);
+  showNotif(`${roleMap[requiredRole]||requiredRole} 전자서명 완료 ✅`,`${name} | ${ts}`);
 }
+function clickFSign(id,requiredRole){
+  // 하단 부서결재란: 재정부장(chief)/재정위원장(chair)/당회장(pastor)
+  if(!CU)return;
+  const roleMap={chief:'재정부장',chair:'재정위원장',pastor:'당회장'};
+  const isMgr=['master','sub_master'].includes(CU.role);
+  const isFinance=CU.committee==='재정위원회';
+  if(!isMgr&&CU.role!==requiredRole&&!(isFinance&&(requiredRole==='chief'||requiredRole==='chair'))&&CU.role!=='pastor'){
+    showNotif('⚠️ 권한 없음',`${roleMap[requiredRole]||requiredRole}만 서명 가능합니다`);return;
+  }
+  const el=document.getElementById(id);
+  if(!el)return;
+  const name=CU.name||CU.id;
+  const now=new Date();
+  const ts=`${now.getMonth()+1}/${now.getDate()} ${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
+  el.innerHTML=`<span style="font-size:10px;color:var(--blue-dark,#0369a1);font-weight:800;line-height:1.4">${name}<br><span style="color:#666;font-size:9px">${ts}</span></span>`;
+  el.style.cursor='default';
+  showNotif(`${roleMap[requiredRole]||requiredRole} 전자서명 완료 ✅`,`${name} | ${ts}`);
+}
+function clickSign(id,role){clickVSign(id,'acc');} // 구버전 호환
 
 // 전체 계정 목록 보기 (데모용)
 function showAllAccounts(){
@@ -3185,7 +3242,49 @@ function buildVoucherList(){
 
 function toggleVoucher(){
   const f=document.getElementById('voucherForm');
-  f.style.display=f.style.display==='none'?'block':'none';
+  const isHidden=f.style.display==='none';
+  f.style.display=isHidden?'block':'none';
+  if(isHidden){
+    // 위원회/부서 자동입력
+    if(CU){
+      const commEl=document.getElementById('vComm');
+      const deptEl=document.getElementById('vDept');
+      if(commEl) commEl.textContent=CU.committee||'-';
+      if(deptEl) deptEl.textContent=CU.dept||'-';
+    }
+    // 날짜 자동입력
+    const now=new Date();
+    const yEl=document.getElementById('vYear');
+    const mEl=document.getElementById('vMonth');
+    const dEl=document.getElementById('vDay');
+    if(yEl) yEl.value=now.getFullYear();
+    if(mEl) mEl.value=now.getMonth()+1;
+    if(dEl) dEl.value=now.getDate();
+    // 결재란 초기화
+    ['vsign1','vsign2','vsign3','fsign1','fsign2','fsign3'].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el){el.innerHTML='　';el.style.cursor='pointer';}
+    });
+    // 청구내역 기본 5행
+    initVoucherRows();
+  }
+}
+function initVoucherRows(){
+  const tbody=document.getElementById('voucherRows');
+  if(!tbody) return;
+  tbody.innerHTML='';
+  for(let i=0;i<5;i++) tbody.appendChild(makeVoucherRow());
+}
+function makeVoucherRow(){
+  const tr=document.createElement('tr');
+  tr.innerHTML=`<td colspan="2"><input type="text" class="v-row-input" placeholder="청구 내역 입력" style="width:100%"></td>
+    <td style="text-align:right"><input type="number" class="v-amt-input" placeholder="0" oninput="calcVTotal()"></td>
+    <td><input type="text" class="v-row-input" placeholder="비고" style="width:100%"></td>`;
+  return tr;
+}
+function addVoucherRow(){
+  const tbody=document.getElementById('voucherRows');
+  if(tbody) tbody.appendChild(makeVoucherRow());
 }
 
 function onVBudgetChange(){
@@ -3210,17 +3309,17 @@ function onVBudgetChange(){
 
 function calcVTotal(){
   let total=0;
-  for(let i=1;i<=5;i++){
-    total+=parseInt(document.getElementById('va'+i).value)||0;
-  }
-  document.getElementById('vTotal').textContent=total.toLocaleString();
+  const inputs=document.querySelectorAll('#voucherRows .v-amt-input');
+  inputs.forEach(inp=>{total+=parseInt(inp.value)||0;});
+  const el=document.getElementById('vTotal');
+  if(el) el.textContent=total.toLocaleString();
 }
 
 function submitVoucher(){
-  // 예산 초과 체크
-  const total=parseInt(document.getElementById('vTotal').textContent.replace(/,/g,''))||0;
-  const balTxt=document.getElementById('vBalance').textContent.replace(/,/g,'');
+  const total=parseInt((document.getElementById('vTotal').textContent||'0').replace(/,/g,''))||0;
+  const balTxt=(document.getElementById('vBalance').textContent||'').replace(/,/g,'');
   const bal=parseInt(balTxt)||999999;
+  if(total<=0){alert('청구금액을 1원 이상 입력해주세요');return;}
   if(total>bal){
     const ok=confirm(`⚠️ 예산 부족 경고!
 
@@ -3234,22 +3333,30 @@ function submitVoucher(){
   } else {
     showNotif('지출결의서 제출 완료! 📋','위원장에게 결재 요청이 발송되었습니다');
   }
-  // 결재대기 목록에 추가
-  const comm=document.getElementById('selComm').value;
-  const dept=document.getElementById('selDept').value;
+  const comm=CU?CU.committee:'';
+  const dept=CU?CU.dept:'';
   const item=document.getElementById('vBudgetItem')?document.getElementById('vBudgetItem').value:'';
   const today=new Date();
   const dateStr=(today.getMonth()+1).toString().padStart(2,'0')+'/'+(today.getDate()).toString().padStart(2,'0');
-  // VOUCHER_LIST에 추가
-  if(!window.VOUCHER_LIST)window.VOUCHER_LIST=[];
+  // 청구내역 수집
+  const rows=[];
+  document.querySelectorAll('#voucherRows tr').forEach(tr=>{
+    const inputs=tr.querySelectorAll('input');
+    if(inputs.length>=2){
+      const item=inputs[0].value.trim();
+      const amt=parseInt(inputs[1].value)||0;
+      const note=inputs[2]?inputs[2].value:'';
+      if(item||amt) rows.push({item,amt,note});
+    }
+  });
+  if(!window.VOUCHER_LIST) window.VOUCHER_LIST=[];
   VOUCHER_LIST.unshift({
     date:dateStr, comm:comm, dept:dept,
     item:item||'지출결의서',
     amt:total, step:'1.위원장 승인 대기', status:'pending', proxy:false,
-    detail:{vi1:'',va1:total,vi2:'',va2:0,note:''}
+    rows:rows
   });
-  // 결재대기 전역 배열에도 추가
-  if(!window.APPROVAL_PENDING)window.APPROVAL_PENDING=[];
+  if(!window.APPROVAL_PENDING) window.APPROVAL_PENDING=[];
   window.APPROVAL_PENDING.unshift({
     who:CU.name||CU.id, comm:comm, dept:dept,
     item:item||'지출결의서', amt:total, date:dateStr, proxy:false
@@ -3257,8 +3364,9 @@ function submitVoucher(){
   toggleVoucher();
   buildApprovalFlow();
   buildVoucherList();
-  if(document.getElementById('approvalPending'))buildApprovalPending();
+  if(document.getElementById('approvalPending')) buildApprovalPending();
 }
+
 
 // ══ APPROVAL ══
 function buildApprovalPending(){
@@ -3419,17 +3527,16 @@ const SPECIAL_BIBLE=[];
 
 
 // ══ 50TH 특별장부 ══
-if(!window.SPEC50_LEDGER) window.SPEC50_LEDGER=[];
 
 function setup50Special(){
   const deptSel=document.getElementById('sel50Dept');
   if(!deptSel) return;
   deptSel.innerHTML='<option value="">-- 팀 선택 --</option>';
-  const teams=Object.keys(DB50||{});
+  const teams=Object.keys(DB50||{}).sort();
   teams.forEach(team=>{
     const o=document.createElement('option');
     o.value=team; o.textContent=team;
-    if(CU&&CU.committee==='50기사위원회'&&CU.dept===team) o.selected=true;
+    if(CU&&CU.committee==='총무위원회_50th'&&CU.dept===team) o.selected=true;
     deptSel.appendChild(o);
   });
   on50DeptChange();
@@ -3437,17 +3544,18 @@ function setup50Special(){
 
 function on50DeptChange(){
   const dept=document.getElementById('sel50Dept').value;
+  // sel50Event(항목 필터) 채우기
   const evSel=document.getElementById('sel50Event');
   if(evSel){
-    evSel.innerHTML='<option value="">-- 항목/행사 선택 --</option>';
+    evSel.innerHTML='<option value="">-- 항목 선택 --</option>';
+    const od=document.createElement('option');od.value='직접입력';od.textContent='✏️ 직접입력';evSel.appendChild(od);
     if(dept&&DB50&&DB50[dept]){
       Object.keys(DB50[dept]).forEach(cat=>{
         const o=document.createElement('option');o.value=cat;o.textContent=cat;evSel.appendChild(o);
       });
     }
-    const od=document.createElement('option');od.value='직접입력';od.textContent='✏️ 직접입력';evSel.appendChild(od);
   }
-  // sf50Cat 채우기
+  // sf50Cat(입력폼 항목) 채우기
   const catSel=document.getElementById('sf50Cat');
   if(catSel){
     catSel.innerHTML='<option value="">-- 항목 선택 --</option>';
@@ -3457,6 +3565,8 @@ function on50DeptChange(){
         const o=document.createElement('option');o.value=cat;o.textContent=cat;catSel.appendChild(o);
       });
     }
+    const dc=document.getElementById('sf50CatDirect');
+    if(dc){dc.style.display='none';dc.value='';}
   }
   build50Special();
 }
@@ -3475,7 +3585,15 @@ function onSpec50CatChange(){
         const o=document.createElement('option');o.value=d;o.textContent=d;detSel.appendChild(o);
       });
     }
+    const dd=document.getElementById('sf50DetailDirect');
+    if(dd){dd.style.display='none';dd.value='';}
   }
+}
+
+function onSpec50DetailChange(){
+  const det=document.getElementById('sf50Detail').value;
+  const dd=document.getElementById('sf50DetailDirect');
+  if(dd) dd.style.display=det==='직접입력'?'block':'none';
 }
 
 function toggleSpec50Form(){
@@ -3483,9 +3601,28 @@ function toggleSpec50Form(){
   if(f) f.style.display=f.style.display==='none'?'block':'none';
 }
 
+function cancelSpec50Form(){
+  const f=document.getElementById('spec50Form');
+  if(f) f.style.display='none';
+  // 폼 초기화
+  ['sf50Date','sf50Memo','sf50Exp','sf50Rno'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.value='';
+  });
+  ['sf50Cat','sf50Detail'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.selectedIndex=0;
+  });
+  ['sf50CatDirect','sf50DetailDirect'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el){el.style.display='none';el.value='';}
+  });
+  _editSpec50Idx=-1;
+}
+
 function submitSpec50(){
   const dept=document.getElementById('sel50Dept').value;
-  const event=document.getElementById('sel50Event').value;
+  const date=document.getElementById('sf50Date').value;
   const _cat=document.getElementById('sf50Cat').value;
   const _catD=document.getElementById('sf50CatDirect');
   const cat=(_cat==='직접입력'&&_catD&&_catD.value.trim())?_catD.value.trim():_cat;
@@ -3494,41 +3631,64 @@ function submitSpec50(){
   const detail=(_det==='직접입력'&&_detD&&_detD.value.trim())?_detD.value.trim():_det;
   const memo=document.getElementById('sf50Memo').value;
   const exp=parseInt(document.getElementById('sf50Exp').value)||0;
-  const date=document.getElementById('sf50Date').value;
-  const rno=document.getElementById('sf50Rno').value||'-';
-  if(!cat||!memo){alert('항목과 적요를 입력해주세요');return;}
+  const rnoEl=document.getElementById('sf50Rno');
+  const rno=rnoEl&&rnoEl.value?rnoEl.value:String(SPEC50_LEDGER.length+1);
+  if(!dept){alert('팀을 선택해주세요');return;}
+  if(!cat||!memo||!exp){alert('항목, 적요, 지출액을 입력해주세요');return;}
   let fmtDate=date;
   if(date&&date.includes('-')){const p=date.split('-');fmtDate=p[1]+'/'+p[2];}
-  window.SPEC50_LEDGER.push({date:fmtDate||'--',dept,event,cat,detail:detail||'-',memo,rno,expense:exp,audited:false});
-  document.getElementById('spec50Form').style.display='none';
+  if(_editSpec50Idx>=0){
+    SPEC50_LEDGER[_editSpec50Idx]={...SPEC50_LEDGER[_editSpec50Idx],date:fmtDate||SPEC50_LEDGER[_editSpec50Idx].date,dept,cat,detail:detail||'-',memo,rno,expense:exp};
+    _editSpec50Idx=-1;
+    showNotif('수정 완료 ✅','50th 특별장부가 수정되었습니다');
+  } else {
+    SPEC50_LEDGER.push({date:fmtDate||'--',dept,cat,detail:detail||'-',memo,rno,expense:exp,audited:false});
+    showNotif('저장 완료 ✅','50th 특별장부에 등록되었습니다');
+  }
+  cancelSpec50Form();
   build50Special();
-  showNotif('저장 완료 ✅','50th 특별장부에 반영되었습니다');
 }
 
 function build50Special(){
   const dept=document.getElementById('sel50Dept')?document.getElementById('sel50Dept').value:'';
   const event=document.getElementById('sel50Event')?document.getElementById('sel50Event').value:'';
-  document.getElementById('spec50TableTitle').textContent=`${dept} ${event} 지출내역`.trim();
+  const title=dept?(event&&event!=='직접입력'?`${dept} - ${event}`:`${dept}`):'50th 특별장부';
+  document.getElementById('spec50TableTitle').textContent=`📋 ${title} 지출내역`;
   const tbody=document.getElementById('spec50Body');if(!tbody)return;
   tbody.innerHTML='';
-  let bal=0;
-  const rows=window.SPEC50_LEDGER.filter(r=>(!dept||r.dept===dept)&&(!event||event==='직접입력'||r.event===event));
+  const rows=SPEC50_LEDGER.filter(r=>{
+    if(dept&&r.dept!==dept) return false;
+    if(event&&event!=='직접입력'&&r.cat!==event) return false;
+    return true;
+  });
   if(!rows.length){
-    tbody.innerHTML='<tr><td colspan="7" class="tc" style="color:var(--text3)">지출내역이 없습니다</td></tr>';
-    document.getElementById('s50Exp').textContent='0';
-    document.getElementById('s50Budget').textContent='0';
+    tbody.innerHTML='<tr><td colspan="9" class="tc" style="color:var(--text3)">지출내역이 없습니다</td></tr>';
+    ['s50Exp','s50Bal','s50Budget'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent='0';});
+    const cnt=document.getElementById('s50Cnt');if(cnt)cnt.textContent='0건';
     return;
   }
-  let totExp=0;
+  let totExp=0, bal=0;
   rows.forEach((r,i)=>{
-    bal-=r.expense; totExp+=r.expense;
+    totExp+=(r.expense||0);
+    bal=-totExp;
     const tr=document.createElement('tr');
-    tr.innerHTML=`<td class="tc">${r.date}</td><td>${r.cat}</td><td>${r.detail}</td><td>${r.memo}</td><td class="tnum" style="color:var(--red)">${r.expense?r.expense.toLocaleString():'-'}</td><td class="tnum" style="color:${bal>=0?'var(--green)':'var(--red)'}">${Math.abs(bal).toLocaleString()}${bal<0?' (초과)':''}</td><td><button class="btn bd btn-sm" onclick="window.SPEC50_LEDGER.splice(${window.SPEC50_LEDGER.indexOf(r)},1);build50Special()">삭제</button></td>`;
+    const globalIdx=SPEC50_LEDGER.indexOf(r);
+    tr.innerHTML=`<td class="tc">${r.date}</td><td>${r.cat||'-'}</td><td>${r.detail||'-'}</td><td>${r.memo||'-'}</td><td class="tc">${r.rno||'-'}</td><td class="tnum" style="color:var(--red)">${(r.expense||0).toLocaleString()}</td><td class="tnum" style="color:${bal<=0?'var(--green)':'var(--red)'}">${Math.abs(totExp).toLocaleString()}</td><td class="tc">${r.audited?'✅':''}</td><td class="no-print"><button class="btn bd btn-sm" onclick="delSpec50(${globalIdx})">삭제</button></td>`;
     tbody.appendChild(tr);
   });
   document.getElementById('s50Exp').textContent=totExp.toLocaleString();
+  document.getElementById('s50Income').textContent='0';
+  document.getElementById('s50Bal').textContent=totExp>0?('-'+totExp.toLocaleString()):'0';
   document.getElementById('s50Budget').textContent='0';
 }
+
+function delSpec50(idx){
+  if(idx>=0&&idx<SPEC50_LEDGER.length){
+    SPEC50_LEDGER.splice(idx,1);
+    build50Special();
+  }
+}
+
 
 function setupSpecial(){
   const deptSel=document.getElementById('selSpDept');
@@ -3548,8 +3708,8 @@ function setupSpecial(){
 }
 
 function getSpComm(dept){
-  // 특별장부은 DB50 기준 (50기사위원회)
-  return '50기사위원회';
+  // 특별장부은 DB50 기준 (총무위원회_50th)
+  return '총무위원회_50th';
 }
 function onSpDeptChange(){
   const dept=document.getElementById('selSpDept').value;
@@ -3638,7 +3798,7 @@ function buildSpecial(){
     tbody.innerHTML='<tr><td colspan="9" class="tc" style="color:var(--text3)">지출내역이 없습니다</td></tr>';
     document.getElementById('spExp').textContent='0';
     document.getElementById('spBal').textContent='0';
-    document.getElementById('spCnt').textContent='0건';
+    const spInc0=document.getElementById('spIncome');if(spInc0)spInc0.textContent='0';
     return;
   }
   let totExp=0, bal=bdg;
@@ -3651,7 +3811,7 @@ function buildSpecial(){
   });
   document.getElementById('spExp').textContent=totExp.toLocaleString();
   document.getElementById('spBal').textContent=(bdg-totExp).toLocaleString();
-  document.getElementById('spCnt').textContent=rows.length+'건';
+  const spIncEl=document.getElementById('spIncome');if(spIncEl)spIncEl.textContent='0';
 }
 
 function buildBudget(){
