@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>교회 회계 장부 시스템 v3.3.5</title>
+<title>교회 회계 장부 시스템 v3.5.3</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Serif+KR:wght@400;600;700;900&display=swap');
 
@@ -244,17 +244,17 @@ tr:hover td{background:#fafaf7;}
 
 /* ══ VOUCHER (지출결의서) ══ */
 .voucher{background:var(--white);border:none;border-radius:0;
-  padding:22px 24px 57px;max-width:720px;margin:0 auto;font-family:inherit;}
+  padding:22px 24px 76px;max-width:720px;margin:0 auto;font-family:inherit;}
 .v-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;gap:8px;flex-wrap:nowrap;}
-.v-title-block{flex:0 0 50%;max-width:50%;}
-.v-title{font-size:38px;font-weight:900;letter-spacing:5px;margin-bottom:10px;white-space:nowrap;
-  text-decoration:underline;text-decoration-style:double;border-bottom:3px solid var(--navy);padding-bottom:4px;display:inline-block;}
+.v-title-block{flex:0 0 35%;max-width:35%;}
+.v-title{font-size:26px;font-weight:900;letter-spacing:2px;margin-bottom:10px;white-space:nowrap;
+  text-decoration:underline;text-decoration-style:solid;display:inline-block;}
 .v-info{max-width:80%;margin-top:6px;}
-.v-info p{font-size:22px;font-weight:700;margin:4px 0;letter-spacing:0.5px;}
-.v-sign-top{border-collapse:collapse;flex-shrink:0;width:50%;table-layout:fixed;}
+.v-info p{font-size:15px;font-weight:400;margin:4px 0;letter-spacing:0.5px;}
+.v-sign-top{border-collapse:collapse;flex-shrink:0;width:65%;table-layout:fixed;}
 .v-sign-top th,.v-sign-top td{border:1.5px solid var(--navy);padding:2px 4px;text-align:center;font-size:10px;min-width:22px;max-width:30px;width:28px;}
 .v-sign-top th{background:#f0f4fa;font-weight:700;}
-.v-sign-top td{border-bottom:2.5px solid var(--navy);min-height:34px;height:38px;}
+.v-sign-top td{border:1.5px solid var(--navy)!important;min-height:34px;height:38px;}
 .v-table{width:100%;border-collapse:collapse;margin-bottom:8px;border-bottom:2px solid var(--navy);}
 .v-table th{border:1.5px solid var(--navy);padding:7px 8px;font-size:12px;background:#f0f4fa;text-align:center;font-weight:700;}
 .v-table td{border:1px solid var(--navy);padding:6px 8px;font-size:12px;text-align:left;}
@@ -262,18 +262,18 @@ tr:hover td{background:#fafaf7;}
 .v-input{border:none;width:100%;font-size:12px;outline:none;background:transparent;}
 .v-row-input{border:none;width:100%;font-size:12px;outline:none;background:transparent;padding:2px 4px;}
 .v-amt-input{border:none;width:85px;font-size:12px;text-align:right;outline:none;background:transparent;padding:2px 4px;}
-.sign-cell{cursor:pointer;min-width:58px;min-height:38px;vertical-align:middle;text-align:center;}
+.sign-cell{cursor:pointer;min-width:22px;min-height:34px;vertical-align:middle;text-align:center;border:1.5px solid var(--navy)!important;}
 .sign-cell:hover{background:#f0fff4;}
-.sign-cell-lg{cursor:pointer;min-width:80px;min-height:52px;vertical-align:middle;text-align:center;}
+.sign-cell-lg{cursor:pointer;min-width:32px;min-height:38px;vertical-align:middle;text-align:center;border:1.5px solid var(--navy)!important;}
 .sign-cell-lg:hover{background:#f0fff4;}
 .v-bottom{text-align:center;margin:14px 0 8px;}
 .v-phrase{font-size:14px;font-weight:700;letter-spacing:2px;margin-bottom:8px;}
 .v-date{font-size:13px;}
 .v-date-input{border:none;border-bottom:1px solid #999;text-align:center;font-size:13px;outline:none;background:transparent;}
-.v-sign-bottom-wrap{display:flex;justify-content:flex-end;margin-top:8px;width:50%;margin-left:50%;}
+.v-sign-bottom-wrap{display:flex;justify-content:flex-end;margin-top:8px;width:65%;margin-left:35%;}
 .v-sign-bottom{border-collapse:collapse;}
 .v-sign-bottom th,.v-sign-bottom td{border:1.5px solid var(--navy);padding:3px 5px;text-align:center;font-size:10px;min-width:32px;width:38px;}
-.v-sign-bottom td.sign-cell-lg{border-bottom:2.5px solid var(--navy);min-height:38px;height:44px;}
+.v-sign-bottom td.sign-cell-lg{border:1.5px solid var(--navy)!important;min-height:38px;height:44px;}
 .v-sign-bottom th{background:#f0f4fa;font-weight:700;}
 .v-sign-label{font-size:13px;font-weight:900;letter-spacing:3px;padding:8px 6px;}
 /* 구 스타일 호환 */
@@ -469,7 +469,7 @@ tr:hover td{background:#fafaf7;}
       <span class="cross">✝️</span>
       <h1>교회 회계 장부 시스템</h1>
       <p>Church Financial Management System</p>
-      <span class="ver">v3.3.5</span>
+      <span class="ver">v3.5.3</span>
     </div>
     <div class="ig"><label>통합 아이디</label>
       <input type="text" id="s1id" placeholder="아이디 입력" value="church2025">
@@ -540,7 +540,7 @@ tr:hover td{background:#fafaf7;}
 <div id="app">
   <div class="topbar">
     <button class="menu-btn" onclick="toggleSidebar()">☰</button>
-    <div class="topbar-title">✝️ 교회 회계 장부 v3.3.5</div>
+    <div class="topbar-title">✝️ 교회 회계 장부 v3.5.3</div>
     <div class="topbar-user">
       <strong id="tbName">-</strong>
       <span id="tbComm">-</span>
@@ -578,6 +578,11 @@ tr:hover td{background:#fafaf7;}
       <button class="nb" onclick="sp('audit',this)"><span class="ico">🔍</span>감사 확인</button>
     </div>
     <div class="ndiv" id="ndiv-audit" style="display:none"></div>
+    <div class="ns" id="nav-dashboard" style="display:none">
+      <div class="nsl">종합현황</div>
+      <button class="nb" onclick="sp('dashboard',this);buildDashboard();"><span class="ico">📊</span>전체 종합 대시보드</button>
+    </div>
+    <div class="ndiv" id="ndiv-dashboard" style="display:none"></div>
     <div class="ns" id="nav-admin" style="display:none">
       <div class="nsl">관리자</div>
       <button class="nb" onclick="sp('budget',this)"><span class="ico">💰</span>예산 관리</button>
@@ -767,11 +772,11 @@ tr:hover td{background:#fafaf7;}
         <div class="ph-left"><h2>📈 통합 현황</h2><p>전체 위원회 예산집행 통합현황</p></div>
         <div class="ph-right no-print"><button class="btn bpr" onclick="showPrintModal('integrated')">🖨️ 인쇄</button></div>
       </div>
-      <div class="sc">
-        <div class="scard cb"><div class="lbl">전체 예산</div><div class="val vb">470,000,000</div><div class="sub">원</div></div>
-        <div class="scard cr"><div class="lbl">전체 지출</div><div class="val vr">89,250,000</div><div class="sub">원 (19%)</div><div class="prog"><div class="pf pfr" style="width:19%"></div></div></div>
-        <div class="scard cg"><div class="lbl">전체 잔액</div><div class="val vg">380,750,000</div><div class="sub">원</div></div>
-        <div class="scard co"><div class="lbl">결재대기</div><div class="val vo">7</div><div class="sub">건 전체</div></div>
+      <div class="sc" id="intCards">
+        <div class="scard cb"><div class="lbl">전체 예산</div><div class="val vb" id="intTotalBudget">-</div><div class="sub">원</div></div>
+        <div class="scard cr"><div class="lbl">전체 지출</div><div class="val vr" id="intTotalExp">-</div><div class="sub" id="intTotalExpSub">원</div><div class="prog"><div class="pf pfr" id="intTotalProg" style="width:0%"></div></div></div>
+        <div class="scard cg"><div class="lbl">전체 잔액</div><div class="val vg" id="intTotalBal">-</div><div class="sub">원</div></div>
+        <div class="scard co"><div class="lbl">결재대기</div><div class="val vo" id="intPending">-</div><div class="sub">건</div></div>
       </div>
       <div class="tw">
         <div class="th"><h3>위원회별 예산집행 현황</h3></div>
@@ -802,7 +807,7 @@ tr:hover td{background:#fafaf7;}
 
       <!-- 결의서 작성 폼 -->
       <div class="fc" id="voucherForm" style="display:none">
-        <div class="fch">✏️ 지출결의서 작성
+        <div class="fch"><span id="vFormTitle">✏️ 지출결의서 작성</span>
           <button class="btn bd btn-sm no-print" onclick="addVoucherRow()" style="float:right;margin-top:-2px">+ 청구내역 추가</button>
         </div>
         <div class="fb2">
@@ -814,13 +819,13 @@ tr:hover td{background:#fafaf7;}
               <div class="v-title-block">
                 <h2 class="v-title">지 출 결 의 서</h2>
                 <div class="v-info">
-                  <p><strong>위원회 :</strong> <span id="vComm">-</span> 위원회</p>
+                  <p><strong>위원회 :</strong> <span id="vComm">-</span></p>
                   <p style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">
                     <strong>부 &nbsp;&nbsp;&nbsp;서 :</strong>
-                    <select id="vDeptSel" onchange="onVDeptChange()" style="font-size:16px;padding:2px 4px;border:1px solid #ccc;border-radius:3px;max-width:180px;">
+                    <select id="vDeptSel" onchange="onVDeptChange()" style="font-size:15px;padding:2px 4px;border:1px solid #ccc;border-radius:3px;max-width:180px;">
                       <option value="">-- 부서 선택 --</option>
                     </select>
-                    <input type="text" id="vDeptDirect" placeholder="직접 입력" style="display:none;font-size:16px;padding:2px 4px;border:none;border-bottom:1px solid #999;width:150px;outline:none;">
+                    <input type="text" id="vDeptDirect" placeholder="직접 입력" style="display:none;font-size:15px;padding:2px 4px;border:none;border-bottom:1px solid #999;width:150px;outline:none;">
                     <span id="vDept" style="display:none">-</span>
                   </p>
                 </div>
@@ -846,7 +851,11 @@ tr:hover td{background:#fafaf7;}
                 <th>비&nbsp;&nbsp;고</th>
               </tr>
               <tr>
-                <td><select id="vBudgetItem" onchange="onVBudgetChange()" class="v-select"></select></td>
+                <td>
+                  <select id="vBudgetItem" onchange="onVBudgetChange()" class="v-select"></select>
+                  <input type="text" id="vBudgetDirect" placeholder="항목 직접 입력"
+                    style="display:none;width:100%;font-size:12px;border:none;border-bottom:1px solid #999;outline:none;background:transparent;padding:2px 0;margin-top:2px;">
+                </td>
                 <td class="tc" id="vTotalBudget">-</td>
                 <td class="tc" id="vExecuted">-</td>
                 <td class="tc" id="vBalance">-</td>
@@ -1067,9 +1076,10 @@ tr:hover td{background:#fafaf7;}
         </div>
       </div>
       <div class="sc">
-        <div class="scard co"><div class="lbl">⏳ 승인 대기</div><div class="val vo" id="pastorPending">5</div><div class="sub">건</div></div>
-        <div class="scard cg"><div class="lbl">✅ 승인 완료</div><div class="val vg" id="pastorDone">38</div><div class="sub">건</div></div>
-        <div class="scard cb"><div class="lbl">💰 대기 금액</div><div class="val vb">1,245,000</div><div class="sub">원</div></div>
+        <div class="scard co"><div class="lbl">⏳ 승인 대기</div><div class="val vo" id="pastorPending">0</div><div class="sub">건</div></div>
+        <div class="scard cg"><div class="lbl">✅ 승인 완료</div><div class="val vg" id="pastorDone">0</div><div class="sub">건</div></div>
+        <div class="scard cb"><div class="lbl">💰 대기 금액</div><div class="val vb" id="pastorAmt">0</div><div class="sub">원</div></div>
+        <div class="scard cr"><div class="lbl">❌ 반려</div><div class="val vr" id="pastorReject">0</div><div class="sub">건</div></div>
       </div>
       <div class="tw">
         <div class="th"><h3>⏳ 승인 대기 목록</h3></div>
@@ -1078,15 +1088,45 @@ tr:hover td{background:#fafaf7;}
           <tbody id="pastorBody"></tbody>
         </table></div>
       </div>
+      <!-- 반려 목록 테이블 -->
+      <div class="tw" id="rejectSection" style="display:none">
+        <div class="th"><h3>❌ 반려 목록</h3></div>
+        <div class="ts"><table>
+          <thead><tr><th>위원회</th><th>부서</th><th>예산항목</th><th>금액</th><th>집행일</th><th>반려사유</th><th>반려일시</th></tr></thead>
+          <tbody id="rejectBody"></tbody>
+        </table></div>
+      </div>
     </div>
 
     <!-- 🔍 감사 -->
     <div class="page" id="page-audit">
       <div class="ph"><div class="ph-left"><h2>🔍 감사 확인</h2><p id="auditSub">담당 위원회 감사 확인</p></div></div>
-      <div class="sc">
-        <div class="scard cp"><div class="lbl">감사 기간</div><div class="val vp" id="auditPeriod">비활성</div><div class="sub">현재 상태</div></div>
-        <div class="scard cg"><div class="lbl">확인 완료</div><div class="val vg" id="auditDone">0</div><div class="sub">행</div></div>
-        <div class="scard co"><div class="lbl">미확인</div><div class="val vo" id="auditPend">0</div><div class="sub">행</div></div>
+      <!-- 감사 카드 3개 + 종합감사의견 -->
+      <div style="display:flex;gap:10px;align-items:stretch;margin-bottom:16px;flex-wrap:wrap;">
+        <div class="scard cp" style="flex:1;min-width:100px;padding:10px 12px;">
+          <div class="lbl" style="font-size:11px">감사 기간</div>
+          <div class="val vp" id="auditPeriod" style="font-size:16px;margin:4px 0">비활성</div>
+          <div class="sub" style="font-size:10px">현재 상태</div>
+        </div>
+        <div class="scard cg" style="flex:1;min-width:100px;padding:10px 12px;">
+          <div class="lbl" style="font-size:11px">확인 완료</div>
+          <div class="val vg" id="auditDone" style="font-size:16px;margin:4px 0">0</div>
+          <div class="sub" style="font-size:10px">행</div>
+        </div>
+        <div class="scard co" style="flex:1;min-width:100px;padding:10px 12px;">
+          <div class="lbl" style="font-size:11px">미확인</div>
+          <div class="val vo" id="auditPend" style="font-size:16px;margin:4px 0">0</div>
+          <div class="sub" style="font-size:10px">행</div>
+        </div>
+        <!-- 종합감사의견 가로 박스 -->
+        <div class="scard" style="flex:3;min-width:240px;padding:12px 16px;background:var(--white);border:1.5px solid var(--border);">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+            <span style="font-size:13px;font-weight:700;color:var(--navy)">📝 종합감사의견</span>
+            <button class="btn bo btn-sm" style="font-size:11px;padding:2px 10px" onclick="saveAuditOpinion()">저장</button>
+          </div>
+          <textarea id="auditOpinion" rows="2" placeholder="종합 감사 의견을 입력하세요..."
+            style="width:100%;box-sizing:border-box;font-size:12px;border:1px solid var(--border);border-radius:6px;padding:6px 8px;resize:vertical;color:var(--text1);background:var(--bg);"></textarea>
+        </div>
       </div>
       <div class="tw">
         <div class="th"><h3>감사 현황</h3></div>
@@ -1102,7 +1142,17 @@ tr:hover td{background:#fafaf7;}
     <!-- 💰 예산관리 -->
     <div class="page" id="page-budget">
       <div class="ph">
-        <div class="ph-left"><h2>💰 예산 관리</h2><p>2025년도 위원회/부서/항목별 예산</p></div>
+        <div class="ph-left"><h2>💰 예산 관리</h2>
+          <p>
+            <select id="budgetYear" onchange="buildBudgetTable()" style="font-size:13px;padding:3px 8px;border:1px solid var(--border);border-radius:6px;background:var(--white);">
+              <option value="2026" selected>2026년</option>
+              <option value="2027">2027년</option>
+              <option value="2028">2028년</option>
+              <option value="2029">2029년</option>
+              <option value="2030">2030년</option>
+            </select>도 위원회/부서/항목별 예산
+          </p>
+        </div>
         <div class="ph-right no-print">
           <label class="btn bg" style="cursor:pointer">📂 엑셀 일괄입력
             <input type="file" accept=".xlsx,.xls,.csv" style="display:none" onchange="excelImport(this)">
@@ -1123,7 +1173,7 @@ tr:hover td{background:#fafaf7;}
     <div class="page" id="page-users">
       <div class="ph">
         <div class="ph-left"><h2>👥 사용자/권한 관리</h2><p>위원회별 계정 및 권한 설정</p></div>
-        <div class="ph-right no-print"><button class="btn bp">+ 사용자 추가</button></div>
+        <div class="ph-right no-print"><button class="btn bp" onclick="openAddUserModal()">+ 사용자 추가</button></div>
       </div>
       <div class="tw">
         <div class="th"><h3>권한 레벨 안내</h3></div>
@@ -1151,18 +1201,28 @@ tr:hover td{background:#fafaf7;}
 
     <!-- 📆 감사기간 설정 -->
     <div class="page" id="page-audit-period">
-      <div class="ph"><div class="ph-left"><h2>📆 감사기간 설정</h2><p>연 2회 감사기간 관리 (2월/7월)</p></div></div>
+      <div class="ph"><div class="ph-left"><h2>📆 감사기간 설정</h2><p>연 2회 감사기간 관리 (2026~2030)</p></div></div>
       <div class="fc">
         <div class="fch">감사기간 설정</div>
         <div class="fb2">
           <div class="fgrid">
             <div class="fg"><label>감사 회차</label>
               <select id="auditTerm">
+                <option>2026년 2월 (상반기)</option>
+                <option>2026년 7월 (하반기)</option>
                 <option>2025년 2월 (상반기)</option>
                 <option>2025년 7월 (하반기)</option>
+                <option>2027년 2월 (상반기)</option>
+                <option>2027년 7월 (하반기)</option>
+                <option>2028년 2월 (상반기)</option>
+                <option>2028년 7월 (하반기)</option>
+                <option>2029년 2월 (상반기)</option>
+                <option>2029년 7월 (하반기)</option>
+                <option>2030년 2월 (상반기)</option>
+                <option>2030년 7월 (하반기)</option>
               </select>
             </div>
-            <div class="fg"><label>시작일</label><input type="date" id="auditStart" value="2025-02-25"></div>
+            <div class="fg"><label>시작일</label><input type="date" id="auditStart" value="2026-02-25"></div>
             <div class="fg"><label>종료일</label><input type="date" id="auditEnd" value="2025-02-25"></div>
           </div>
           <p style="font-size:12px;color:var(--text3);margin-top:12px;">
@@ -1196,7 +1256,10 @@ tr:hover td{background:#fafaf7;}
         <div class="fb2">
           <div class="fgrid">
             <div class="fg"><label>자동 로그아웃</label><select><option>30분</option><option>1시간</option></select></div>
-            <div class="fg"><label>로그인 실패 잠금</label><select><option>5회 실패시 잠금</option><option>3회</option></select></div>
+            <div class="fg"><label>로그인 실패 잠금</label><select id="lockLimit" style="padding:6px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;">
+              <option value="5" selected>5회 실패시 자동잠금</option>
+              <option value="3">3회 실패시 자동잠금</option>
+            </select></div>
             <div class="fg"><label>시스템 명칭</label><input type="text" value="교회 회계 장부 시스템"></div>
             <div class="fg"><label>연도</label><input type="text" value="2025"></div>
           </div>
@@ -1214,17 +1277,26 @@ tr:hover td{background:#fafaf7;}
       <p id="chartSubTitle">연간 · 월간 항목별 지출현황</p>
     </div>
     <div class="ph-right no-print">
-      <select id="chartYear" onchange="buildCharts()" style="padding:6px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.15);color:#fff;font-size:13px;">
-        <option value="2025">2025년</option>
-        <option value="2024">2024년</option>
-      </select>
       <button class="btn" onclick="printCharts()" style="background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.4);margin-left:8px;">🖨️ 인쇄</button>
     </div>
   </div>
 
+  <!-- 연도 선택 필터바 (흰 배경 영역) -->
+  <div class="no-print" style="display:flex;align-items:center;gap:10px;margin-bottom:16px;background:var(--white);border:1px solid var(--border);border-radius:10px;padding:10px 16px;box-shadow:0 2px 8px rgba(0,0,0,.06);">
+    <label style="font-size:12px;font-weight:800;color:var(--text2);">📅 연도 선택</label>
+    <select id="chartYear" onchange="buildCharts()" style="padding:6px 10px;border-radius:7px;border:1.5px solid var(--border);background:var(--white);color:var(--text1);font-size:13px;font-weight:700;min-width:100px;cursor:pointer;">
+      <option value="2026" selected>2026년</option>
+      <option value="2027">2027년</option>
+      <option value="2028">2028년</option>
+      <option value="2029">2029년</option>
+      <option value="2030">2030년</option>
+    </select>
+    <span style="font-size:11px;color:var(--text3);">선택한 연도의 지출현황을 표시합니다</span>
+  </div>
+
   <!-- 연간 항목별 원그래프 -->
   <div class="scard" style="padding:22px;margin-bottom:18px;">
-    <h3 style="font-size:15px;font-weight:800;color:#2d1a6e;margin-bottom:16px;">📅 연간 항목별 지출현황</h3>
+    <h3 style="font-size:15px;font-weight:800;color:#2d1a6e;margin-bottom:16px;">📅 연간 항목별 지출현황 <span style="font-size:12px;font-weight:400;color:#888">(단위: 만원)</span></h3>
     <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start;">
       <div style="flex:0 0 340px;">
         <canvas id="pieAnnual" width="320" height="320"></canvas>
@@ -1259,13 +1331,135 @@ tr:hover td{background:#fafaf7;}
 
   <!-- 월별 지출 추이 바차트 -->
   <div class="scard" style="padding:22px;">
-    <h3 style="font-size:15px;font-weight:800;color:#2d1a6e;margin-bottom:16px;">📈 월별 지출 추이</h3>
+    <h3 style="font-size:15px;font-weight:800;color:#2d1a6e;margin-bottom:16px;">📈 월별 지출 추이 <span style="font-size:12px;font-weight:400;color:#888">(단위: 만원)</span></h3>
     <canvas id="barMonthly" width="800" height="300"></canvas>
   </div>
+
 </div>
+
+
+    <!-- 📊 종합 대시보드 (master/sub/pastor 전용) -->
+    <div class="page" id="page-dashboard">
+      <div class="ph">
+        <h2 class="pt">📊 전체 위원회 종합 대시보드</h2>
+        <div class="pa">
+          <button class="btn bp" onclick="buildDashboard()">🔄 새로고침</button>
+        </div>
+      </div>
+      <div class="sc" style="grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px" id="dashSummaryCards"></div>
+      <div class="tw" style="margin-bottom:20px">
+        <div class="th"><h3>📋 위원회별 예산집행 현황</h3></div>
+        <div class="ts">
+          <table style="width:100%;border-collapse:collapse" id="dashCommTable">
+            <thead><tr style="background:#f0f4fa">
+              <th style="padding:8px;border:1px solid var(--border);font-size:12px">위원회</th>
+              <th style="padding:8px;border:1px solid var(--border);font-size:12px">총 예산</th>
+              <th style="padding:8px;border:1px solid var(--border);font-size:12px">집행액</th>
+              <th style="padding:8px;border:1px solid var(--border);font-size:12px">잔액</th>
+              <th style="padding:8px;border:1px solid var(--border);font-size:12px">집행률</th>
+              <th style="padding:8px;border:1px solid var(--border);font-size:12px">결의서</th>
+              <th style="padding:8px;border:1px solid var(--border);font-size:12px">상태</th>
+            </tr></thead>
+            <tbody id="dashCommBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="tw" style="margin-bottom:20px">
+        <div class="th"><h3>📂 위원회별 지출내역 상세</h3></div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;padding:10px 14px;border-bottom:1px solid var(--border)" id="dashTabs"></div>
+        <div class="ts" id="dashLedgerWrap">
+          <div style="text-align:center;padding:30px;color:var(--text3)">위에서 위원회를 선택하세요</div>
+        </div>
+      </div>
+      <div class="tw">
+        <div class="th"><h3>📋 전체 결의서 현황</h3></div>
+        <div class="ts">
+          <table style="width:100%;border-collapse:collapse">
+            <thead><tr style="background:#f0f4fa">
+              <th style="padding:7px;border:1px solid var(--border);font-size:11px">날짜</th>
+              <th style="padding:7px;border:1px solid var(--border);font-size:11px">위원회</th>
+              <th style="padding:7px;border:1px solid var(--border);font-size:11px">부서</th>
+              <th style="padding:7px;border:1px solid var(--border);font-size:11px">항목</th>
+              <th style="padding:7px;border:1px solid var(--border);font-size:11px">금액</th>
+              <th style="padding:7px;border:1px solid var(--border);font-size:11px">진행상태</th>
+            </tr></thead>
+            <tbody id="dashVoucherBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
 
 </div><!-- /main -->
 </div><!-- /app -->
+
+<!-- 전체계정목록 모달 -->
+<div class="modal-bg" id="accountsModal" style="display:none;align-items:flex-start;overflow-y:auto;padding:16px 8px;" onclick="if(event.target===this)closeAccountsModal()">
+  <div class="modal" style="max-width:750px;width:95%;" onclick="event.stopPropagation()">
+    <div class="modal-head" style="position:sticky;top:0;z-index:10;">
+      <h3>🔑 전체 계정 목록</h3>
+      <button class="modal-close" onclick="closeAccountsModal()">×</button>
+    </div>
+    <div class="modal-body" style="padding:16px;">
+      <p style="font-size:11px;color:var(--red);margin-bottom:12px;">⚠️ 보안정보 - 관리자 전용</p>
+      <div style="overflow-x:auto;">
+        <table style="width:100%;border-collapse:collapse;min-width:500px;">
+          <thead>
+            <tr style="background:#f0f4fa;">
+              <th style="padding:7px 8px;border:1px solid var(--border);font-size:11px;">위원회</th>
+              <th style="padding:7px 8px;border:1px solid var(--border);font-size:11px;">부서</th>
+              <th style="padding:7px 8px;border:1px solid var(--border);font-size:11px;">역할</th>
+              <th style="padding:7px 8px;border:1px solid var(--border);font-size:11px;">아이디</th>
+              <th style="padding:7px 8px;border:1px solid var(--border);font-size:11px;">비밀번호</th>
+              <th style="padding:7px 8px;border:1px solid var(--border);font-size:11px;">이름</th>
+            </tr>
+          </thead>
+          <tbody id="accountsModalBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 사용자 추가 모달 -->
+<div class="modal-bg" id="addUserModal" style="display:none;align-items:center;" onclick="if(event.target===this)closeAddUserModal()">
+  <div class="modal" style="max-width:480px;width:95%;" onclick="event.stopPropagation()">
+    <div class="modal-head">
+      <h3>👤 사용자 추가</h3>
+      <button class="modal-close" onclick="closeAddUserModal()">×</button>
+    </div>
+    <div class="modal-body" style="padding:20px;">
+      <div class="fgrid" style="grid-template-columns:1fr 1fr;gap:12px;">
+        <div class="fg"><label>위원회</label>
+          <select id="addUserComm" style="width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:7px;font-size:13px;" onchange="updateAddUserDept()"></select>
+        </div>
+        <div class="fg"><label>부서</label>
+          <select id="addUserDept" style="width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:7px;font-size:13px;"></select>
+        </div>
+        <div class="fg"><label>역할</label>
+          <select id="addUserRole" style="width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:7px;font-size:13px;">
+            <option value="acc">회계</option>
+            <option value="chief">부장</option>
+            <option value="chair">위원장</option>
+            <option value="auditor">감사위원</option>
+          </select>
+        </div>
+        <div class="fg"><label>이름</label>
+          <input type="text" id="addUserName" placeholder="예: 홍길동" style="width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:7px;font-size:13px;box-sizing:border-box;">
+        </div>
+        <div class="fg"><label>아이디</label>
+          <input type="text" id="addUserId" placeholder="예: abc11004" style="width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:7px;font-size:13px;box-sizing:border-box;">
+        </div>
+        <div class="fg"><label>비밀번호</label>
+          <input type="text" id="addUserPw" placeholder="예: abc11004" style="width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:7px;font-size:13px;box-sizing:border-box;">
+        </div>
+      </div>
+      <div style="margin-top:16px;display:flex;gap:8px;justify-content:flex-end;">
+        <button class="btn bd" onclick="closeAddUserModal()">취소</button>
+        <button class="btn bp" onclick="submitAddUser()">✅ 추가</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- 인쇄 미리보기 모달 -->
 <div class="modal-bg" id="voucherModal" style="display:none;align-items:flex-start;overflow-y:auto;padding:16px 8px;" onclick="if(event.target===this)closeVoucherModal()">
@@ -1366,7 +1560,7 @@ tr:hover td{background:#fafaf7;}
 
 <script>
 // ══════════════════════════════════════════
-// 전체 데이터 구조 v3.3.5
+// 전체 데이터 구조 v3.5.3
 // ══════════════════════════════════════════
 
 // 예배위원회 SVG: 성경책+음표+기도손 합성
@@ -1383,7 +1577,6 @@ const SVG_OFFICE=`<svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/
 const COMMITTEES = {
   "관리위원회":  {ico:"⚙️",svg:SVG_MGMT,sub:"4개 부서"},
   "국내선교위원회":{ico:"🏘️",sub:"2개 부서"},
-  "教育위원회":  {ico:"📚",sub:"10개 부서",key:"교육위원회"},
   "교육위원회":  {ico:"📚",sub:"10개 부서"},
   "마을사역위원회":{ico:"🏘️",svg:SVG_VILLAGE,sub:"3개 부서"},
   "봉사위원회":  {ico:"❤️",sub:"3개 부서"},
@@ -2616,6 +2809,9 @@ function setupApp(){
   // 둘 다 안 보이면 섹션 전체 숨김
   if(navSecEl) navSecEl.style.display=(canSeeSpecial||canSee50)?'block':'none';
   document.getElementById('nav-pastor').style.display=isPastor||isMgr?'block':'none';
+  document.getElementById('nav-dashboard').style.display=isMgr||isPastor?'block':'none';
+  const ndivDash=document.getElementById('ndiv-dashboard');
+  if(ndivDash) ndivDash.style.display=isMgr||isPastor?'block':'none';
   document.getElementById('ndiv-pastor').style.display=isPastor||isMgr?'block':'none';
   document.getElementById('nav-audit').style.display=isAuditor||isMgr?'block':'none';
   document.getElementById('ndiv-audit').style.display=isAuditor||isMgr?'block':'none';
@@ -2725,16 +2921,28 @@ function clickSign(id,role){clickVSign(id,role);}
 
 // 전체 계정 목록 보기 (데모용)
 function showAllAccounts(){
-  let html='<div style="font-size:12px;line-height:1.8;max-height:400px;overflow-y:auto">';
-  html+='<table style="width:100%;border-collapse:collapse;font-size:11px">';
-  html+='<tr style="background:#ece9e2"><th style="padding:5px;border:1px solid #ccc">위원회</th><th style="padding:5px;border:1px solid #ccc">역할</th><th style="padding:5px;border:1px solid #ccc">아이디</th><th style="padding:5px;border:1px solid #ccc">비밀번호</th></tr>';
+  // 팝업 대신 모달창으로 표시
+  let rows='';
+  const roleNames={master:'마스터',sub_master:'부마스터',pastor:'당회장',acc:'회계',chief:'부장',chair:'위원장',auditor:'감사'};
   Object.entries(USERS).forEach(([id,u])=>{
-    html+=`<tr><td style="padding:4px 6px;border:1px solid #eee">${u.committee}</td><td style="padding:4px 6px;border:1px solid #eee">${u.title||u.role}</td><td style="padding:4px 6px;border:1px solid #eee;font-weight:800;color:#1a3a5c">${id}</td><td style="padding:4px 6px;border:1px solid #eee;color:#c0392b">${u.pw}</td></tr>`;
+    rows+=`<tr>
+      <td style="padding:5px 8px;border:1px solid var(--border);font-size:11px">${u.committee}</td>
+      <td style="padding:5px 8px;border:1px solid var(--border);font-size:11px">${u.dept||'-'}</td>
+      <td style="padding:5px 8px;border:1px solid var(--border);font-size:11px">${roleNames[u.role]||u.role}</td>
+      <td style="padding:5px 8px;border:1px solid var(--border);font-size:11px;font-weight:800;color:var(--blue-dark,#1a3a5c)">${id}</td>
+      <td style="padding:5px 8px;border:1px solid var(--border);font-size:11px;color:var(--red)">${u.pw}</td>
+      <td style="padding:5px 8px;border:1px solid var(--border);font-size:11px">${u.name||'-'}</td>
+    </tr>`;
   });
-  html+='</table></div>';
-  const w=window.open('','전체계정목록','width=600,height=500,scrollbars=yes');
-  w.document.write(`<html><head><title>전체 계정 목록 (데모)</title></head><body>${html}</body></html>`);
-  w.document.close();
+  const modal=document.getElementById('accountsModal');
+  if(modal){
+    document.getElementById('accountsModalBody').innerHTML=rows;
+    modal.style.display='flex';
+  }
+}
+function closeAccountsModal(){
+  const m=document.getElementById('accountsModal');
+  if(m) m.style.display='none';
 }
 
 function doLogout(){
@@ -2834,6 +3042,7 @@ function onDeptChange(){
   const vsel=document.getElementById('vBudgetItem');
   if(vsel){
     vsel.innerHTML='<option value="">-- 예산항목 선택 --</option>';
+    const vdi=document.createElement('option');vdi.value='직접입력';vdi.textContent='✏️ 직접입력';vsel.appendChild(vdi);
     if(DB[comm]&&DB[comm][dept]){
       Object.keys(DB[comm][dept]).forEach(cat=>{
         DB[comm][dept][cat].forEach(detail=>{
@@ -2841,7 +3050,7 @@ function onDeptChange(){
           o.value=cat+'::'+detail;
           const key=cat+'::'+detail;
           const bdg=BUDGET&&BUDGET[comm]&&BUDGET[comm][dept]&&BUDGET[comm][dept][key]||0;
-          o.textContent=`${cat} - ${detail}${bdg?' (예산:'+bdg.toLocaleString()+'원)':''}`;
+          o.textContent=`${cat} - ${detail}`;
           vsel.appendChild(o);
         });
       });
@@ -2940,7 +3149,10 @@ function buildMemoList(){
 function renderLedger(){
   const mon=document.getElementById('selMon').value;
   const carry=parseInt(document.getElementById('carryAmt').value)||0;
-  let data=mon==='전체'?LEDGER:LEDGER.filter(r=>r.mon===mon);
+  // 위원회별 격리 (master/sub_master는 전체)
+  const isMgr2=['master','sub_master'].includes(CU&&CU.role);
+  const filteredByComm=isMgr2?LEDGER:LEDGER.filter(r=>!r.comm||r.comm===CU.committee);
+  let data=mon==='전체'?filteredByComm:filteredByComm.filter(r=>r.mon===mon);
   const tbody=document.getElementById('ledgerBody');
   tbody.innerHTML='';
   let bal=carry,totInc=carry,totExp=0;
@@ -2958,17 +3170,6 @@ function renderLedger(){
     const tr=document.createElement('tr');
     if(row.audited)tr.className='audited';
 
-    // 수정 라디오 버튼 셀
-    const editTd=document.createElement('td');
-    editTd.className='tc no-print';
-    const radio=document.createElement('input');
-    radio.type='radio';
-    radio.name='editRow';
-    radio.title='클릭하면 수정 폼에 불러옵니다';
-    radio.style.cssText='cursor:pointer;width:16px;height:16px;accent-color:var(--blue);';
-    (function(ri){radio.onchange=function(){if(this.checked)loadExpForm(ri);};})(i);
-    editTd.appendChild(radio);
-
     tr.innerHTML=`
       <td class="tc">${row.date}</td>
       <td>${row.cat}</td>
@@ -2980,6 +3181,28 @@ function renderLedger(){
       <td class="tnum" style="color:${bal<0?'var(--red)':'var(--green);font-weight:700'}">${bal.toLocaleString()}</td>
       <td class="tc">${auditCell}</td>
     `;
+    // 수정 라디오 버튼 셀 (tr.innerHTML 이후에 appendChild)
+    const editTd=document.createElement('td');
+    editTd.className='tc no-print';
+    const ec=row.editCount||0;
+    if(ec>=2){
+      // 수정 불가 표시
+      editTd.innerHTML='<span style="font-size:10px;color:var(--text3)">수정완료</span>';
+    } else {
+      const radio=document.createElement('input');
+      radio.type='radio';
+      radio.name='editRow';
+      radio.title='클릭하면 수정 폼에 불러옵니다';
+      radio.style.cssText='cursor:pointer;width:16px;height:16px;accent-color:var(--blue);';
+      (function(ri){radio.onchange=function(){if(this.checked)loadExpForm(ri);};})(i);
+      editTd.appendChild(radio);
+      if(ec>0){
+        const badge=document.createElement('span');
+        badge.textContent=ec+'/2';
+        badge.style.cssText='font-size:9px;color:var(--orange,#f97316);margin-left:2px;';
+        editTd.appendChild(badge);
+      }
+    }
     tr.appendChild(editTd);
     tbody.appendChild(tr);
   });
@@ -3043,6 +3266,11 @@ function renderLedger(){
 function loadExpForm(idx){
   const row=LEDGER[idx];
   if(!row)return;
+  const ec=row.editCount||0;
+  if(ec>=2){
+    showNotif('⚠️ 수정 불가','수정은 최대 2회까지 가능합니다 (현재 '+ec+'회 완료)');
+    return;
+  }
   _editIdx=idx;
   // 날짜 변환 MM/DD → YYYY-MM-DD
   const yr='2025';
@@ -3181,17 +3409,49 @@ function buildAnnual(comm,dept){
 
 // ══ INTEGRATED ══
 function buildIntegrated(){
-  const tbody=document.getElementById('intBody');tbody.innerHTML='';
+  const tbody=document.getElementById('intBody');
+  if(!tbody) return;
+  tbody.innerHTML='';
   const comms=Object.keys(COMMITTEES);
-  const pcts=[19,12,8,5,3,7,15,22,6,11,9,4,2,18,10,14,7,8];
-  comms.forEach((c,i)=>{
-    const budget=10000000;const spent=Math.round(budget*pcts[i]/100);
+  let grandBudget=0, grandExp=0;
+
+  comms.forEach(c=>{
+    // 위원회 총 예산 (BUDGET에서 합산)
+    let budget=0;
+    if(BUDGET && BUDGET[c]){
+      Object.values(BUDGET[c]).forEach(depts=>{
+        Object.values(depts||{}).forEach(v=>{ budget+=v; });
+      });
+    }
+    // 실 지출 (LEDGER에서 해당 위원회 집계)
+    const spent = LEDGER.filter(r=>r.comm===c).reduce((s,r)=>s+(r.expense||0),0);
+    const bal = budget - spent;
+    const pct = budget>0 ? Math.round(spent/budget*100) : 0;
+    grandBudget+=budget; grandExp+=spent;
+
     const tr=document.createElement('tr');
-    tr.innerHTML=`<td>${COMMITTEES[c].ico} ${c}</td><td class="tnum">${budget.toLocaleString()}</td><td class="tnum" style="color:var(--red)">${spent.toLocaleString()}</td><td class="tnum" style="color:var(--green)">${(budget-spent).toLocaleString()}</td>
-      <td><div class="prog" style="width:80px;display:inline-block"><div class="pf ${pcts[i]>70?'pfr':'pfb'}" style="width:${pcts[i]}%"></div></div> ${pcts[i]}%</td>
-      <td>${pcts[i]>90?'<span class="sb sb-no">위험</span>':pcts[i]>70?'<span class="sb sb-wait">주의</span>':'<span class="sb sb-ok">정상</span>'}</td>`;
+    const ico=COMMITTEES[c]?COMMITTEES[c].ico:'';
+    tr.innerHTML=`<td>${ico} ${c}</td>
+      <td class="tnum">${budget.toLocaleString()}</td>
+      <td class="tnum" style="color:var(--red)">${spent.toLocaleString()}</td>
+      <td class="tnum" style="color:${bal<0?'var(--red)':'var(--green)'};font-weight:700">${bal.toLocaleString()}</td>
+      <td><div class="prog" style="width:80px;display:inline-block"><div class="pf ${pct>90?'pfr':pct>70?'pfr':'pfb'}" style="width:${Math.min(pct,100)}%"></div></div> <span style="font-size:11px">${pct}%</span></td>
+      <td>${pct>90?'<span class="sb sb-no">위험</span>':pct>70?'<span class="sb sb-wait">주의</span>':'<span class="sb sb-ok">정상</span>'}</td>`;
     tbody.appendChild(tr);
   });
+
+  // 카드 업데이트
+  const grandBal = grandBudget - grandExp;
+  const grandPct = grandBudget>0?Math.round(grandExp/grandBudget*100):0;
+  const pending = VOUCHER_LIST.filter(v=>v.status!=='done').length;
+  const setEl=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
+  setEl('intTotalBudget', grandBudget.toLocaleString());
+  setEl('intTotalExp', grandExp.toLocaleString());
+  setEl('intTotalExpSub', `원 (${grandPct}%)`);
+  setEl('intTotalBal', grandBal.toLocaleString());
+  setEl('intPending', pending);
+  const pg=document.getElementById('intTotalProg');
+  if(pg) pg.style.width=Math.min(grandPct,100)+'%';
 }
 
 // ══ VOUCHER ══
@@ -3245,7 +3505,13 @@ function buildVoucherList(){
       <td class="tc"><span class="sb ${stepCls}" style="font-size:11px">${v.step}</span></td>
       <td class="tc"><span class="sb ${statCls}">${statTxt}</span></td>
       <td class="tc">${v.proxy?'<span class="sb sb-purple">전결</span>':'-'}</td>
-      <td class="tc no-print">${canEdit?`<input type="radio" name="voucherEdit" style="cursor:pointer;width:16px;height:16px;accent-color:var(--blue);" title="클릭하면 결의서 팝업" onchange="showVoucherPopup(${i})">`:'—'}</td>
+      <td class="tc no-print">${(()=>{
+        const vc=v.editCount||0;
+        if(!canEdit) return '—';
+        if(vc>=2) return '<span style="font-size:10px;color:var(--text3)">수정완료</span>';
+        const badge=vc>0?`<span style="font-size:9px;color:var(--orange,#f97316);margin-left:2px">${vc}/2</span>`:'';
+        return `<input type="radio" name="voucherEdit" style="cursor:pointer;width:16px;height:16px;accent-color:var(--blue);" title="클릭하면 결의서 수정" onchange="openVoucherForm(${i})">${badge}`;
+      })()}</td>
       <td class="tc"><button class="btn bo btn-sm" onclick="showVoucherDetail(${i})">상세</button></td>`;
     tbody.appendChild(tr);
   });
@@ -3254,11 +3520,28 @@ function buildVoucherList(){
   }
 }
 
-function toggleVoucher(){
+let _vEditIdx=-1; // -1=신규, >=0=수정모드 인덱스
+
+function toggleVoucher(){openVoucherForm(-1);}
+
+function openVoucherForm(editIdx){
+  _vEditIdx=editIdx;
   const f=document.getElementById('voucherForm');
-  const isHidden=f.style.display==='none';
-  f.style.display=isHidden?'block':'none';
-  if(isHidden){
+  const isOpen=f.style.display==='block';
+  // -999: 강제 닫기 (제출 후)
+  if(editIdx===-999){f.style.display='none';_vEditIdx=-1;return;}
+  // 수정 횟수 2회 초과 체크
+  if(editIdx>=0&&VOUCHER_LIST[editIdx]){
+    const vc=VOUCHER_LIST[editIdx].editCount||0;
+    if(vc>=2){showNotif('⚠️ 수정 불가','결의서 수정은 최대 2회까지 가능합니다 (현재 '+vc+'회 완료)');return;}
+  }
+  // 이미 열려있고 신규모드면 닫기
+  if(isOpen&&editIdx===-1){f.style.display='none';return;}
+  f.style.display='block';
+  // 폼 상단 모드 표시
+  const titleEl=document.getElementById('vFormTitle');
+  if(titleEl) titleEl.textContent=editIdx>=0?'✏️ 지출결의서 수정':'📋 지출결의서 작성';
+  {
     // 위원회 자동입력
     if(CU){
       const commEl=document.getElementById('vComm');
@@ -3270,7 +3553,15 @@ function toggleVoucher(){
       vDeptSel.innerHTML='<option value="">-- 부서 선택 --</option>';
       const od=document.createElement('option');od.value='직접입력';od.textContent='✏️ 직접입력';vDeptSel.appendChild(od);
       const comm=CU.committee;
-      if(comm&&DB&&DB[comm]){
+      // 총무위원회_50th는 DB50 팀 목록 사용
+      const is50th=comm==='총무위원회_50th';
+      if(is50th&&DB50){
+        Object.keys(DB50).forEach(dept=>{
+          const o=document.createElement('option');o.value=dept;o.textContent=dept;
+          if(dept===CU.dept) o.selected=true;
+          vDeptSel.appendChild(o);
+        });
+      } else if(comm&&DB&&DB[comm]){
         Object.keys(DB[comm]).forEach(dept=>{
           const o=document.createElement('option');o.value=dept;o.textContent=dept;
           if(dept===CU.dept) o.selected=true;
@@ -3295,8 +3586,59 @@ function toggleVoucher(){
       const el=document.getElementById(id);
       if(el){el.innerHTML='　';el.style.cursor='pointer';}
     });
-    // 청구내역 기본 5행
-    initVoucherRows();
+
+    // ── 수정 모드: 기존 결의서 내용 불러오기 ──
+    if(editIdx>=0){
+      const v=VOUCHER_LIST[editIdx];
+      if(v){
+        // 부서 선택 복원
+        const vDeptSel2=document.getElementById('vDeptSel');
+        if(vDeptSel2){
+          let found=false;
+          for(let o of vDeptSel2.options){if(o.value===v.dept){o.selected=true;found=true;break;}}
+          if(!found){
+            const no=document.createElement('option');no.value=v.dept;no.textContent=v.dept;no.selected=true;
+            vDeptSel2.appendChild(no);
+          }
+          onVDeptChange(); // 이 시점에 vBudgetItem 옵션이 채워짐
+        }
+        // 예산항목 복원 (onVDeptChange 실행 이후에 세팅)
+        setTimeout(()=>{
+          const vBudgetItem=document.getElementById('vBudgetItem');
+          if(vBudgetItem && v.item) vBudgetItem.value=v.item;
+        },50);
+        // 청구내역 복원 (initVoucherRows 대신 직접 복원)
+        const tbody=document.getElementById('voucherRows');
+        if(tbody&&v.rows&&v.rows.length>0){
+          tbody.innerHTML='';
+          v.rows.forEach(r=>{
+            const tr=makeVoucherRow();
+            const inputs=tr.querySelectorAll('input');
+            if(inputs[0]) inputs[0].value=r.item||'';
+            if(inputs[1]) inputs[1].value=r.amt||0;
+            if(inputs[2]) inputs[2].value=r.note||'';
+            tbody.appendChild(tr);
+          });
+          calcVTotal();
+        } else {
+          initVoucherRows(); // 저장된 행 없으면 기본 5행
+        }
+        // 날짜 복원
+        if(v.date){
+          const parts=v.date.split('/');
+          const mEl=document.getElementById('vMonth');
+          const dEl=document.getElementById('vDay');
+          if(mEl&&parts[0]) mEl.value=parseInt(parts[0]);
+          if(dEl&&parts[1]) dEl.value=parseInt(parts[1]);
+        }
+        // 수정 안내
+        showNotif('✏️ 수정 모드','기존 결의서 내용을 불러왔습니다. 수정 후 [제출]을 눌러주세요');
+        f.scrollIntoView({behavior:'smooth',block:'start'});
+      }
+    } else {
+      // 신규모드: 기본 5행
+      initVoucherRows();
+    }
   }
 }
 function initVoucherRows(){
@@ -3309,8 +3651,19 @@ function makeVoucherRow(){
   const tr=document.createElement('tr');
   tr.innerHTML=`<td colspan="2"><input type="text" class="v-row-input" placeholder="청구 내역 입력" style="width:100%"></td>
     <td style="text-align:right"><input type="number" class="v-amt-input" placeholder="0" oninput="calcVTotal()"></td>
-    <td><input type="text" class="v-row-input" placeholder="비고" style="width:100%"></td>`;
+    <td style="display:flex;align-items:center;gap:4px">
+      <input type="text" class="v-row-input" placeholder="비고" style="flex:1">
+      <button type="button" onclick="delVoucherRow(this)" style="border:none;background:var(--red);color:#fff;border-radius:4px;padding:1px 6px;font-size:11px;cursor:pointer;flex-shrink:0">✕</button>
+    </td>`;
   return tr;
+}
+function delVoucherRow(btn){
+  const tr=btn.closest('tr');
+  if(!tr) return;
+  const tbody=document.getElementById('voucherRows');
+  if(tbody&&tbody.rows.length<=1){alert('최소 1행은 유지해야 합니다');return;}
+  tr.remove();
+  calcVTotal();
 }
 function addVoucherRow(){
   const tbody=document.getElementById('voucherRows');
@@ -3319,15 +3672,30 @@ function addVoucherRow(){
 
 function onVBudgetChange(){
   const val=document.getElementById('vBudgetItem').value;
+  // 직접입력 토글
+  const directIn=document.getElementById('vBudgetDirect');
+  if(directIn){
+    if(val==='직접입력'){
+      directIn.style.display='block';
+      directIn.focus();
+    } else {
+      directIn.style.display='none';
+      directIn.value='';
+    }
+  }
   const comm=document.getElementById('selComm').value;
   const dept=document.getElementById('selDept').value;
-  if(!val||!comm||!dept){return;}
+  if(!val||val==='직접입력'||!comm||!dept){return;}
   const key=val; // cat::detail
   const budgetAmt=BUDGET&&BUDGET[comm]&&BUDGET[comm][dept]&&BUDGET[comm][dept][key]||0;
-  const executed=320000; // 실제는 DB에서 조회
+  // LEDGER에서 해당 위원회/항목의 실제 집행액 합산
+  const myComm=CU?CU.committee:'';
+  const executed=LEDGER
+    .filter(r=>(r.comm===myComm||!r.comm)&&r.cat===val.split('::')[0])
+    .reduce((s,r)=>s+(r.expense||0),0);
   const balance=budgetAmt-executed;
   document.getElementById('vTotalBudget').textContent=budgetAmt.toLocaleString()+'원';
-  document.getElementById('vExecuted').textContent=executed.toLocaleString()+'원';
+  document.getElementById('vExecuted').textContent='(누계) '+executed.toLocaleString()+'원';
   document.getElementById('vBalance').textContent=balance.toLocaleString()+'원';
   if(balance<0){
     document.getElementById('vBalance').style.color='var(--red)';
@@ -3355,6 +3723,150 @@ function getVDept(){
   if(!sel) return '';
   if(sel.value==='직접입력') return directEl?directEl.value.trim():'';
   return sel.value;
+}
+
+
+// ══ 종합 대시보드 (master/sub/pastor 전용) ══
+function buildDashboard(){
+  if(!CU) return;
+  const COMM_LIST = Object.keys(BUDGET);
+
+  // ── 요약 카드 ──
+  let totalBudget=0, totalExp=0, totalVouchers=0, pendingV=0;
+  COMM_LIST.forEach(comm=>{
+    Object.values(BUDGET[comm]||{}).forEach(dept=>{
+      Object.values(dept||{}).forEach(v=>totalBudget+=v);
+    });
+  });
+  totalExp = LEDGER.reduce((s,r)=>s+(r.expense||0),0);
+  totalVouchers = VOUCHER_LIST.length;
+  pendingV = VOUCHER_LIST.filter(v=>v.status==='pending').length;
+
+  const cards = document.getElementById('dashSummaryCards');
+  if(cards) cards.innerHTML = `
+    <div class="scard cb"><div class="lbl">전체 예산</div><div class="val vb">${totalBudget.toLocaleString()}</div><div class="sub">원</div></div>
+    <div class="scard cr"><div class="lbl">총 집행액</div><div class="val vr">${totalExp.toLocaleString()}</div><div class="sub">원</div></div>
+    <div class="scard cg"><div class="lbl">총 잔액</div><div class="val vg">${(totalBudget-totalExp).toLocaleString()}</div><div class="sub">원</div></div>
+    <div class="scard co"><div class="lbl">결의서 진행중</div><div class="val vo">${pendingV}건</div><div class="sub">전체 ${totalVouchers}건</div></div>`;
+
+  // ── 위원회별 예산현황 테이블 ──
+  const tbody = document.getElementById('dashCommBody');
+  if(tbody){
+    tbody.innerHTML='';
+    COMM_LIST.forEach(comm=>{
+      let bgt=0;
+      Object.values(BUDGET[comm]||{}).forEach(dept=>Object.values(dept||{}).forEach(v=>bgt+=v));
+      const exp = LEDGER.filter(r=>r.comm===comm).reduce((s,r)=>s+(r.expense||0),0);
+      const bal = bgt - exp;
+      const rate = bgt>0?Math.round(exp/bgt*100):0;
+      const vCnt = VOUCHER_LIST.filter(v=>v.comm===comm).length;
+      const rateColor = rate>=90?'var(--red)':rate>=70?'var(--orange,#f97316)':'var(--green)';
+      const tr=document.createElement('tr');
+      tr.innerHTML=`
+        <td style="padding:7px 10px;border:1px solid var(--border);font-size:12px;font-weight:700">${comm}</td>
+        <td style="padding:7px;border:1px solid var(--border);font-size:12px;text-align:right">${bgt.toLocaleString()}</td>
+        <td style="padding:7px;border:1px solid var(--border);font-size:12px;text-align:right;color:var(--red)">${exp.toLocaleString()}</td>
+        <td style="padding:7px;border:1px solid var(--border);font-size:12px;text-align:right;color:${bal<0?'var(--red)':'var(--green)'};font-weight:700">${bal.toLocaleString()}</td>
+        <td style="padding:7px;border:1px solid var(--border);font-size:12px;text-align:center">
+          <div style="background:#eee;border-radius:4px;height:8px;width:80px;display:inline-block;vertical-align:middle;margin-right:4px">
+            <div style="background:${rateColor};height:8px;border-radius:4px;width:${Math.min(rate,100)}%"></div>
+          </div>
+          <span style="color:${rateColor};font-weight:700">${rate}%</span>
+        </td>
+        <td style="padding:7px;border:1px solid var(--border);font-size:12px;text-align:center">${vCnt}건</td>
+        <td style="padding:7px;border:1px solid var(--border);font-size:12px;text-align:center">
+          <span class="sb ${rate>=90?'sb-red sb-ok':rate>=70?'sb-orange':'sb-ok'}" style="font-size:10px">${rate>=90?'⚠️초과위험':rate>=70?'주의':'정상'}</span>
+        </td>`;
+      tbody.appendChild(tr);
+    });
+    // 합계행
+    const totalRate = totalBudget>0?Math.round(totalExp/totalBudget*100):0;
+    const tfoot=document.createElement('tr');
+    tfoot.style.cssText='background:#f0f4fa;font-weight:700';
+    tfoot.innerHTML=`
+      <td style="padding:8px 10px;border:1px solid var(--border);font-size:12px">합 계</td>
+      <td style="padding:8px;border:1px solid var(--border);font-size:12px;text-align:right">${totalBudget.toLocaleString()}</td>
+      <td style="padding:8px;border:1px solid var(--border);font-size:12px;text-align:right;color:var(--red)">${totalExp.toLocaleString()}</td>
+      <td style="padding:8px;border:1px solid var(--border);font-size:12px;text-align:right;color:${(totalBudget-totalExp)<0?'var(--red)':'var(--green)'}">${(totalBudget-totalExp).toLocaleString()}</td>
+      <td style="padding:8px;border:1px solid var(--border);font-size:12px;text-align:center;color:var(--blue);font-weight:700">${totalRate}%</td>
+      <td style="padding:8px;border:1px solid var(--border);font-size:12px;text-align:center">${totalVouchers}건</td>
+      <td style="padding:8px;border:1px solid var(--border)"></td>`;
+    tbody.appendChild(tfoot);
+  }
+
+  // ── 위원회별 탭 ──
+  const tabsEl = document.getElementById('dashTabs');
+  if(tabsEl){
+    tabsEl.innerHTML='';
+    COMM_LIST.forEach((comm,i)=>{
+      const btn=document.createElement('button');
+      btn.className='btn bo btn-sm';
+      btn.style.cssText='font-size:11px;padding:3px 10px';
+      btn.textContent=comm;
+      btn.onclick=()=>showDashCommLedger(comm, btn);
+      tabsEl.appendChild(btn);
+    });
+  }
+
+  // ── 결의서 전체 목록 ──
+  const vbody = document.getElementById('dashVoucherBody');
+  if(vbody){
+    vbody.innerHTML='';
+    if(VOUCHER_LIST.length===0){
+      vbody.innerHTML='<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--text3)">결의서 없음</td></tr>';
+    } else {
+      VOUCHER_LIST.forEach(v=>{
+        const tr=document.createElement('tr');
+        const sc=v.status==='done'?'sb-ok':'sb-wait';
+        tr.innerHTML=`
+          <td style="padding:6px 8px;border:1px solid var(--border);font-size:11px">${v.date}</td>
+          <td style="padding:6px 8px;border:1px solid var(--border);font-size:11px;font-weight:700">${v.comm}</td>
+          <td style="padding:6px 8px;border:1px solid var(--border);font-size:11px">${v.dept||'-'}</td>
+          <td style="padding:6px 8px;border:1px solid var(--border);font-size:11px">${v.item||'-'}</td>
+          <td style="padding:6px 8px;border:1px solid var(--border);font-size:11px;text-align:right">${(v.amt||0).toLocaleString()}</td>
+          <td style="padding:6px 8px;border:1px solid var(--border);font-size:11px;text-align:center"><span class="sb ${sc}" style="font-size:10px">${v.step||'-'}</span></td>`;
+        vbody.appendChild(tr);
+      });
+    }
+  }
+}
+
+function showDashCommLedger(comm, btn){
+  // 탭 활성화
+  document.querySelectorAll('#dashTabs button').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  const wrap = document.getElementById('dashLedgerWrap');
+  if(!wrap) return;
+  const rows = LEDGER.filter(r=>r.comm===comm);
+  if(rows.length===0){
+    wrap.innerHTML=`<div style="text-align:center;padding:30px;color:var(--text3)">${comm} 지출내역 없음</div>`;
+    return;
+  }
+  let html2=`<table style="width:100%;border-collapse:collapse">
+    <thead><tr style="background:#f0f4fa">
+      <th style="padding:7px;border:1px solid var(--border);font-size:11px">날짜</th>
+      <th style="padding:7px;border:1px solid var(--border);font-size:11px">항목</th>
+      <th style="padding:7px;border:1px solid var(--border);font-size:11px">세부</th>
+      <th style="padding:7px;border:1px solid var(--border);font-size:11px">적요</th>
+      <th style="padding:7px;border:1px solid var(--border);font-size:11px">수입</th>
+      <th style="padding:7px;border:1px solid var(--border);font-size:11px">지출</th>
+    </tr></thead><tbody>`;
+  rows.forEach(r=>{
+    html2+=`<tr>
+      <td style="padding:6px;border:1px solid var(--border);font-size:11px">${r.date}</td>
+      <td style="padding:6px;border:1px solid var(--border);font-size:11px">${r.cat}</td>
+      <td style="padding:6px;border:1px solid var(--border);font-size:11px">${r.detail||'-'}</td>
+      <td style="padding:6px;border:1px solid var(--border);font-size:11px">${r.memo}</td>
+      <td style="padding:6px;border:1px solid var(--border);font-size:11px;text-align:right;color:var(--blue)">${r.income?r.income.toLocaleString():'-'}</td>
+      <td style="padding:6px;border:1px solid var(--border);font-size:11px;text-align:right;color:var(--red)">${r.expense?r.expense.toLocaleString():'-'}</td>
+    </tr>`;
+  });
+  const totExp=rows.reduce((s,r)=>s+(r.expense||0),0);
+  html2+=`<tr style="background:#f9f9f9;font-weight:700">
+    <td colspan="5" style="padding:7px;border:1px solid var(--border);font-size:12px;text-align:right">합 계</td>
+    <td style="padding:7px;border:1px solid var(--border);font-size:12px;text-align:right;color:var(--red)">${totExp.toLocaleString()}</td>
+  </tr></tbody></table>`;
+  wrap.innerHTML=html2;
 }
 
 function calcVTotal(){
@@ -3385,7 +3897,11 @@ function submitVoucher(){
   }
   const comm=CU?CU.committee:'';
   const dept=getVDept()||(CU?CU.dept:'');
-  const item=document.getElementById('vBudgetItem')?document.getElementById('vBudgetItem').value:'';
+  const item=document.getElementById('vBudgetItem')?
+    (document.getElementById('vBudgetItem').value==='직접입력'
+      ?(document.getElementById('vBudgetDirect')?document.getElementById('vBudgetDirect').value:'')
+      :document.getElementById('vBudgetItem').value)
+    :'';
   const today=new Date();
   const dateStr=(today.getMonth()+1).toString().padStart(2,'0')+'/'+(today.getDate()).toString().padStart(2,'0');
   // 청구내역 수집
@@ -3400,18 +3916,31 @@ function submitVoucher(){
     }
   });
   if(!window.VOUCHER_LIST) window.VOUCHER_LIST=[];
-  VOUCHER_LIST.unshift({
+  const vEntry={
     date:dateStr, comm:comm, dept:dept,
     item:item||'지출결의서',
     amt:total, step:'1.위원장 승인 대기', status:'pending', proxy:false,
     rows:rows
-  });
-  if(!window.APPROVAL_PENDING) window.APPROVAL_PENDING=[];
-  window.APPROVAL_PENDING.unshift({
-    who:CU.name||CU.id, comm:comm, dept:dept,
-    item:item||'지출결의서', amt:total, date:dateStr, proxy:false
-  });
-  toggleVoucher();
+  };
+  if(_vEditIdx>=0&&VOUCHER_LIST[_vEditIdx]){
+    // 수정 모드: 기존 항목 덮어쓰기
+    const prevV=VOUCHER_LIST[_vEditIdx];
+    const prevEditCount=prevV?((prevV.editCount||0)+1):0;
+    if(prevEditCount>2){showNotif('⚠️ 수정 불가','결의서 수정은 최대 2회까지 가능합니다');return;}
+    VOUCHER_LIST[_vEditIdx]=Object.assign({},vEntry,{editCount:prevEditCount});
+    showNotif('결의서 수정 완료! ✅','기존 결의서가 업데이트 되었습니다');
+  } else {
+    // 신규 제출
+    if(!window.VOUCHER_LIST) window.VOUCHER_LIST=[];
+    VOUCHER_LIST.unshift(vEntry);
+    if(!window.APPROVAL_PENDING) window.APPROVAL_PENDING=[];
+    window.APPROVAL_PENDING.unshift({
+      who:CU.name||CU.id, comm:comm, dept:dept,
+      item:item||'지출결의서', amt:total, date:dateStr, proxy:false
+    });
+  }
+  _vEditIdx=-1;
+  openVoucherForm(-999); // 강제 닫기
   buildApprovalFlow();
   buildVoucherList();
   if(document.getElementById('approvalPending')) buildApprovalPending();
@@ -3463,6 +3992,54 @@ function doApprove(btn,action){
   showNotif(`${who} - ${action} 완료 ${action==='승인'?'✅':'❌'}`,`${CU.name} 전자서명 기록 (${new Date().toLocaleTimeString()})`);
 }
 
+// ══ 사용자 추가 모달 ══
+function openAddUserModal(){
+  const m=document.getElementById('addUserModal');
+  if(!m) return;
+  // 위원회 드롭목록 채우기
+  const commSel=document.getElementById('addUserComm');
+  commSel.innerHTML='';
+  Object.keys(DB).forEach(c=>{
+    const o=document.createElement('option');
+    o.value=c; o.textContent=c; commSel.appendChild(o);
+  });
+  updateAddUserDept();
+  m.style.display='flex';
+}
+function updateAddUserDept(){
+  const comm=document.getElementById('addUserComm').value;
+  const deptSel=document.getElementById('addUserDept');
+  deptSel.innerHTML='';
+  if(DB[comm]) Object.keys(DB[comm]).forEach(d=>{
+    const o=document.createElement('option');
+    o.value=d; o.textContent=d; deptSel.appendChild(o);
+  });
+}
+function closeAddUserModal(){
+  const m=document.getElementById('addUserModal');
+  if(m) m.style.display='none';
+}
+function submitAddUser(){
+  const comm=document.getElementById('addUserComm').value;
+  const dept=document.getElementById('addUserDept').value;
+  const role=document.getElementById('addUserRole').value;
+  const name=document.getElementById('addUserName').value.trim();
+  const id=document.getElementById('addUserId').value.trim();
+  const pw=document.getElementById('addUserPw').value.trim();
+  if(!name||!id||!pw){showNotif('입력 오류','이름, 아이디, 비밀번호를 모두 입력하세요');return;}
+  if(USERS[id]){showNotif('중복 아이디','이미 존재하는 아이디입니다');return;}
+  USERS[id]={pw,name,role,committee:comm,dept,title:name};
+  if(!USERS_BY_COMM[comm]) USERS_BY_COMM[comm]={};
+  USERS_BY_COMM[comm][id]={pw,name,role,committee:comm,dept};
+  closeAddUserModal();
+  showNotif(`사용자 추가 완료 ✅`,`${name} (${id}) 추가됨`);
+}
+
+
+function saveAuditOpinion(){
+  const ta=document.getElementById('auditOpinion');
+  if(ta) { window._auditOpinion=ta.value; showNotif('종합감사의견 저장 ✅',''); }
+}
 function doProxy(btn){
   const row=btn.closest('tr');
   const reason=prompt('전결 사유를 입력하세요:');
@@ -3476,16 +4053,28 @@ function doProxy(btn){
 // ══ PASTOR ══
 function buildPastorList(){
   const tbody=document.getElementById('pastorBody');
-  const items=window.PASTOR_LIST||[];
+  // VOUCHER_LIST 실DB 기반
+  const items=(typeof VOUCHER_LIST!=='undefined'?VOUCHER_LIST:[]).concat(window.PASTOR_LIST||[]);
   tbody.innerHTML='';
-    if(!items.length){tbody.innerHTML='<tr><td colspan="7" class="tc" style="color:var(--text3)">결재 목록이 없습니다</td></tr>';return;}
+  // 카드 업데이트
+  const pending=items.filter(v=>v.status!=='done').length;
+  const done=items.filter(v=>v.status==='done').length;
+  const pendingAmt=items.filter(v=>v.status!=='done').reduce((s,v)=>s+(v.amt||0),0);
+  const setEl=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
+  setEl('pastorPending',pending); setEl('pastorDone',done);
+  setEl('pastorAmt',pendingAmt.toLocaleString());
+  setEl('pbadge',pending||'');
+  if(!items.length){tbody.innerHTML='<tr><td colspan="8" class="tc" style="color:var(--text3)">결재 목록이 없습니다</td></tr>';return;}
   items.forEach((item,i)=>{
     const tr=document.createElement('tr');
     tr.innerHTML=`<td class="tc"><input type="checkbox" class="pastor-chk"></td>
       <td>${item.comm}</td><td>${item.dept}</td><td>${item.item}</td>
       <td class="tnum">${item.amt.toLocaleString()}</td><td class="tc">${item.date}</td>
       <td class="tc"><span class="sb sb-draft" style="cursor:pointer">📋 #${i+1}</span></td>
-      <td><button class="btn bs btn-sm" onclick="pastorApprove(this)">👑 사후승인</button></td>`;
+      <td style="white-space:nowrap">
+        <button class="btn bs btn-sm" onclick="pastorApprove(this)" style="margin-right:4px">👑 사후승인</button>
+        <button class="btn bd btn-sm" onclick="pastorReject(this)">❌ 반려</button>
+      </td>`;
     tbody.appendChild(tr);
   });
 }
@@ -3493,13 +4082,48 @@ function buildPastorList(){
 function pastorApprove(btn){
   const row=btn.closest('tr');
   row.cells[7].innerHTML='<span class="sb sb-ok">✅ 승인완료</span>';
-  btn.remove();
   const pending=parseInt(document.getElementById('pastorPending').textContent);
   const done=parseInt(document.getElementById('pastorDone').textContent);
   document.getElementById('pastorPending').textContent=Math.max(0,pending-1);
   document.getElementById('pastorDone').textContent=done+1;
-  document.getElementById('pbadge').textContent=Math.max(0,pending-1);
+  const pb=document.getElementById('pbadge');
+  if(pb) pb.textContent=Math.max(0,pending-1)||'';
   showNotif('사후승인 완료 👑','재정부회계에게 승인완료 알림 발송');
+}
+
+function pastorReject(btn){
+  const reason=prompt('반려 사유를 입력하세요:');
+  if(!reason||!reason.trim()){return;}
+  const row=btn.closest('tr');
+  const cells=row.cells;
+  // 반려목록에 추가
+  const now=new Date();
+  const ts=`${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+  const tbody=document.getElementById('rejectBody');
+  if(tbody){
+    const tr=document.createElement('tr');
+    tr.innerHTML=`
+      <td style="font-size:12px">${cells[1]?cells[1].textContent:'-'}</td>
+      <td style="font-size:12px">${cells[2]?cells[2].textContent:'-'}</td>
+      <td style="font-size:12px">${cells[3]?cells[3].textContent:'-'}</td>
+      <td class="tnum" style="font-size:12px">${cells[4]?cells[4].textContent:'-'}</td>
+      <td class="tc" style="font-size:12px">${cells[5]?cells[5].textContent:'-'}</td>
+      <td style="font-size:12px;color:var(--red);font-weight:700">${reason}</td>
+      <td class="tc" style="font-size:11px;color:var(--text3)">${ts}</td>`;
+    tbody.appendChild(tr);
+  }
+  // 반려 섹션 표시
+  const sec=document.getElementById('rejectSection');
+  if(sec) sec.style.display='block';
+  // 카드 업데이트
+  const rejectEl=document.getElementById('pastorReject');
+  if(rejectEl) rejectEl.textContent=parseInt(rejectEl.textContent||0)+1;
+  const pending=parseInt(document.getElementById('pastorPending').textContent);
+  document.getElementById('pastorPending').textContent=Math.max(0,pending-1);
+  const pb=document.getElementById('pbadge');
+  if(pb) pb.textContent=Math.max(0,pending-1)||'';
+  row.remove();
+  showNotif('반려 처리 완료 ❌',`반려사유: ${reason}`);
 }
 
 function batchApprove(){
@@ -3864,6 +4488,10 @@ function buildSpecial(){
   const spIncEl=document.getElementById('spIncome');if(spIncEl)spIncEl.textContent='0';
 }
 
+function buildBudgetTable(){
+  // budgetYear select 값 활용 (향후 연도별 예산 분리 시 확장)
+  buildBudget();
+}
 function buildBudget(){
   const tbody=document.getElementById('budgetBody');tbody.innerHTML='';
   Object.entries(DB).forEach(([comm,depts])=>{
@@ -3959,6 +4587,9 @@ function doPrint(){
 
 // ══ VOUCHER DETAIL ══
 function showVoucherPopup(idx){
+  // 새 양식 폼에 내용 불러와서 수정
+  openVoucherForm(idx);
+  return;
   const v=VOUCHER_LIST[idx];if(!v)return;
   const vpComm=document.getElementById('vpComm');if(vpComm)vpComm.textContent=v.comm;
   const vpDept=document.getElementById('vpDept');if(vpDept)vpDept.textContent=v.dept;
@@ -4092,9 +4723,16 @@ function submitExp(){
       date:fmtDate||'--', mon:rowMon,
       cat:cat, detail:detail||'-', memo:memo,
       rno:rno, income:inc, expense:exp,
-      status:'draft', audited:false, note:''
+      status:'draft', audited:false, note:'',
+      comm:CU?CU.committee:'', dept:CU?CU.dept:'',
+      editCount:0
     };
-    LEDGER.push(row);
+    if(_editIdx>=0&&LEDGER[_editIdx]){
+      // 수정 저장: editCount 유지 (loadExpForm에서 이미 증가됨)
+      LEDGER[_editIdx]=Object.assign(LEDGER[_editIdx],row,{editCount:(LEDGER[_editIdx].editCount||0)+1});
+    } else {
+      LEDGER.push(row);
+    }
     clearExpForm();
     const sf=document.getElementById('expForm');
     if(sf)sf.style.display='none';
