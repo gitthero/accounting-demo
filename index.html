@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>교회 회계 장부 시스템 v3.2.3</title>
+<title>교회 회계 장부 시스템 v3.2.5</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Serif+KR:wght@400;600;700;900&display=swap');
 
@@ -451,7 +451,7 @@ tr:hover td{background:#fafaf7;}
       <span class="cross">✝️</span>
       <h1>교회 회계 장부 시스템</h1>
       <p>Church Financial Management System</p>
-      <span class="ver">v3.2.3</span>
+      <span class="ver">v3.2.5</span>
     </div>
     <div class="ig"><label>통합 아이디</label>
       <input type="text" id="s1id" placeholder="아이디 입력" value="church2025">
@@ -522,7 +522,7 @@ tr:hover td{background:#fafaf7;}
 <div id="app">
   <div class="topbar">
     <button class="menu-btn" onclick="toggleSidebar()">☰</button>
-    <div class="topbar-title">✝️ 교회 회계 장부 v3.2.3</div>
+    <div class="topbar-title">✝️ 교회 회계 장부 v3.2.5</div>
     <div class="topbar-user">
       <strong id="tbName">-</strong>
       <span id="tbComm">-</span>
@@ -545,8 +545,8 @@ tr:hover td{background:#fafaf7;}
     </div>
     <div class="ndiv"></div>
     <div class="ns">
-      <div class="nsl">특별활동</div>
-      <button class="nb" onclick="sp('special',this)"><span class="ico">🎯</span>특별활동 장부</button>
+      <div class="nsl">특별장부</div>
+      <button class="nb" onclick="sp('special',this)"><span class="ico">🎯</span>특별장부</button>
     </div>
     <div class="ndiv"></div>
     <div class="ns" id="nav-pastor" style="display:none">
@@ -600,7 +600,7 @@ tr:hover td{background:#fafaf7;}
         <select id="selDept" onchange="onDeptChange()" style="max-width:260px"></select>
         <select id="selMon" onchange="renderLedger()">
           <option>전체</option>
-          <option>1월</option><option selected>2월</option>
+          <option>1월</option><option>2월</option>
           <option>3월</option><option>4월</option><option>5월</option>
           <option>6월</option><option>7월</option><option>8월</option>
           <option>9월</option><option>10월</option><option>11월</option><option>12월</option>
@@ -655,9 +655,11 @@ tr:hover td{background:#fafaf7;}
             <div class="fg"><label>날짜 *</label><input type="date" id="fDate"></div>
             <div class="fg"><label>항목 *</label>
               <select id="fCat" onchange="onCatChange()"><option value="">-- 항목 선택 --</option></select>
+              <input type="text" id="fCatDirect" placeholder="항목 직접 입력" style="display:none;margin-top:4px;width:100%;padding:6px 8px;border:1px solid var(--border);border-radius:6px;font-size:13px;font-family:inherit">
             </div>
             <div class="fg full"><label>세부항목 *</label>
-              <select id="fDetail"><option value="">-- 세부항목 선택 --</option></select>
+              <select id="fDetail" onchange="onDetailChange()"><option value="">-- 세부항목 선택 --</option></select>
+              <input type="text" id="fDetailDirect" placeholder="세부항목 직접 입력" style="display:none;margin-top:4px;width:100%;padding:6px 8px;border:1px solid var(--border);border-radius:6px;font-size:13px;font-family:inherit">
             </div>
             <div class="fg full"><label>적요 (상세내용) *</label>
               <input type="text" id="fMemo" placeholder="예) 찬양팀 간식비, 임원 MT 교통비">
@@ -899,10 +901,10 @@ tr:hover td{background:#fafaf7;}
       </div>
     </div>
 
-    <!-- 🎯 특별활동 -->
+    <!-- 🎯 특별장부 -->
     <div class="page" id="page-special">
       <div class="ph">
-        <div class="ph-left"><h2>🎯 특별활동 장부</h2><p>교육위원회 특별활동 예산집행</p></div>
+        <div class="ph-left"><h2>🎯 특별장부</h2><p>교육위원회 특별장부 예산집행</p></div>
         <div class="ph-right no-print">
           <button class="btn bp" onclick="toggleSpecForm()">+ 지출 입력</button>
           <button class="btn bpr" onclick="showPrintModal('special')">🖨️ 인쇄</button>
@@ -922,7 +924,7 @@ tr:hover td{background:#fafaf7;}
       </div>
 
       <div class="fc no-print" id="specForm" style="display:none">
-        <div class="fch">✏️ 특별활동 지출 입력</div>
+        <div class="fch">✏️ 특별장부 지출 입력</div>
         <div class="fb2">
           <div class="fgrid">
             <div class="fg"><label>날짜 *</label><input type="date" id="sfDate"></div>
@@ -930,6 +932,7 @@ tr:hover td{background:#fafaf7;}
               <select id="sfCat" onchange="onSpCatChange()">
                 <option value="">-- 항목 선택 --</option>
               </select>
+              <input type="text" id="sfCatDirect" placeholder="항목 직접 입력" style="display:none;margin-top:4px;width:100%;padding:6px 8px;border:1px solid var(--border);border-radius:6px;font-size:13px;font-family:inherit">
             </div>
             <div class="fg full"><label>세부항목 *</label>
               <select id="sfDetail">
@@ -953,7 +956,7 @@ tr:hover td{background:#fafaf7;}
       </div>
 
       <div class="tw">
-        <div class="th"><h3 id="specTableTitle">특별활동 지출내역</h3></div>
+        <div class="th"><h3 id="specTableTitle">특별장부 지출내역</h3></div>
         <div class="ts"><table>
           <thead><tr><th>날짜</th><th>항목</th><th>세부항목</th><th>적요</th><th>영수증</th><th>지출액</th><th>누계잔액</th><th>감사확인</th><th class="no-print">수정</th></tr></thead>
           <tbody id="specBody"></tbody>
@@ -1269,7 +1272,7 @@ tr:hover td{background:#fafaf7;}
 
 <script>
 // ══════════════════════════════════════════
-// 전체 데이터 구조 v3.2.3
+// 전체 데이터 구조 v3.2.5
 // ══════════════════════════════════════════
 
 // 예배위원회 SVG: 성경책+음표+기도손 합성
@@ -2308,7 +2311,7 @@ function buildStep2(){
       <span style="font-size:22px">💰</span>
       <div class="info"><div class="name">재정위원회</div><div class="sub">재정 결재 관리</div></div>
     </div>
-    <div class="special-tile" onclick="goStep3('감사위원회','🔍')" style="background:linear-gradient(135deg,#1a5c2e,#2d8a4e)">
+    <div class="special-tile" onclick="goStep3('감사위원회','🔍')" style="background:linear-gradient(135deg,#1a2e5c,#2d4a8a)">
       <span style="font-size:22px">🔍</span>
       <div class="info"><div class="name">감사위원회</div><div class="sub">정기감사 확인</div></div>
     </div>
@@ -2541,6 +2544,15 @@ function setupApp(){
     }
   }
 
+  // selMon 현재 월 자동 선택
+  const nowMon=(new Date().getMonth()+1)+'월';
+  const selMon=document.getElementById('selMon');
+  if(selMon){
+    for(let i=0;i<selMon.options.length;i++){
+      if(selMon.options[i].text===nowMon){selMon.selectedIndex=i;break;}
+    }
+    renderLedger();
+  }
   // 기본 화면 설정
   if(isPastor){sp('pastor',document.querySelector('[onclick*="pastor"]'));}
   else if(isAuditor){sp('audit',document.querySelector('[onclick*="audit"]'));}
@@ -2658,6 +2670,8 @@ function onDeptChange(){
   const catSel=document.getElementById('fCat');
   if(catSel){
     catSel.innerHTML='<option value="">-- 항목 선택 --</option>';
+    // 직접입력 맨 위
+    const odi=document.createElement('option');odi.value='직접입력';odi.textContent='✏️ 직접입력';catSel.appendChild(odi);
     if(DB[comm]&&DB[comm][dept]){
       Object.keys(DB[comm][dept]).forEach(cat=>{
         const o=document.createElement('option');
@@ -2665,6 +2679,11 @@ function onDeptChange(){
       });
     }
     const oi=document.createElement('option');oi.value='수입';oi.textContent='💰 수입(예산청구)';catSel.appendChild(oi);
+    // 직접입력 input 초기화
+    const fcd=document.getElementById('fCatDirect');
+    if(fcd){fcd.style.display='none';fcd.value='';}
+    const fdd=document.getElementById('fDetailDirect');
+    if(fdd){fdd.style.display='none';fdd.value='';}
   }
 
   // 지출결의서 드롭다운 (예산금액 포함)
@@ -2710,21 +2729,34 @@ function onDeptChange(){
   buildMonthly();
 }
 
+
+function onDetailChange(){
+  const det=document.getElementById('fDetail').value;
+  const fdd=document.getElementById('fDetailDirect');
+  if(fdd) fdd.style.display=(det==='직접입력')?'block':'none';
+}
 function onCatChange(){
   const comm=document.getElementById('selComm').value;
   const dept=document.getElementById('selDept').value;
   const cat=document.getElementById('fCat').value;
+  // fCat 직접입력 input 노출
+  const fcd=document.getElementById('fCatDirect');
+  if(fcd) fcd.style.display=(cat==='직접입력')?'block':'none';
+  // fDetail 채우기
   const detSel=document.getElementById('fDetail');
   detSel.innerHTML='<option value="">-- 세부항목 선택 --</option>';
-  // 직접입력 먼저
+  // 직접입력 맨 위
   const od=document.createElement('option');od.value='직접입력';od.textContent='✏️ 직접입력';detSel.appendChild(od);
-  if(DB[comm]&&DB[comm][dept]&&DB[comm][dept][cat]){
+  if(cat!=='직접입력'&&DB[comm]&&DB[comm][dept]&&DB[comm][dept][cat]){
     DB[comm][dept][cat].forEach(d=>{
       const o=document.createElement('option');
       o.value=d; o.textContent=d;
       detSel.appendChild(o);
     });
   }
+  // fDetail 직접입력 input 초기화
+  const fdd=document.getElementById('fDetailDirect');
+  if(fdd){fdd.style.display='none';fdd.value='';}
 }
 
 // ══ 적요 선택 핸들러 ══
@@ -2987,8 +3019,8 @@ function buildAnnual(comm,dept){
   const tbody=document.getElementById('annualBody');tbody.innerHTML='';
   let totI=0,totCols=Array(cats.length).fill(0);
   months.forEach((m,i)=>{
-    const inc=i===0?3000000:0;
-    const cols=cats.map((_,j)=>i===1&&j<4?[320000,197250,475000,35000][j]||0:0);
+    const inc=0;
+    const cols=cats.map(()=>0);
     const sub=cols.reduce((a,b)=>a+b,0);
     totI+=inc;cols.forEach((v,j)=>totCols[j]+=v);
     const tr=document.createElement('tr');
@@ -3023,10 +3055,10 @@ function buildApprovalFlow(){
   const steps=[
     {name:"회계",sub:"작성/제출",ico:"📝"},
     {name:"위원장",sub:"1차 승인",ico:"✅"},
-    {name:"재정부회계",sub:"접수확인",ico:"📥"},
+    {name:"재정부회계",sub:"접수확인",ico:"📝"},
     {name:"재정부장",sub:"검토승인",ico:"👔"},
     {name:"재정위원장",sub:"최종승인",ico:"🏛️"},
-    {name:"재정부회계",sub:"은행이체→알림",ico:"🏦"},
+    {name:"재정부회계",sub:"은행이체→알림",ico:"📝"},
     {name:"당회장",sub:"사후승인",ico:"⛪"},
   ];
   const flow=document.getElementById('approvalFlow');
@@ -3329,7 +3361,7 @@ function setupSpecial(){
 }
 
 function getSpComm(dept){
-  // 특별활동은 DB50 기준 (50기사위원회)
+  // 특별장부은 DB50 기준 (50기사위원회)
   return '50기사위원회';
 }
 function onSpDeptChange(){
@@ -3368,6 +3400,9 @@ function onSpDeptChange(){
 function onSpCatChange(){
   const dept=document.getElementById('selSpDept').value;
   const cat=document.getElementById('sfCat').value;
+  // 직접입력 텍스트 노출
+  const directEl=document.getElementById('sfCatDirect');
+  if(directEl) directEl.style.display=cat==='직접입력'?'block':'none';
   const detSel=document.getElementById('sfDetail');
   detSel.innerHTML='<option value="">-- 세부항목 선택 --</option>';
   const od=document.createElement('option');
@@ -3390,7 +3425,7 @@ function buildSpecial(){
   const event=document.getElementById('selEvent')?document.getElementById('selEvent').value:'';
   document.getElementById('specTableTitle').textContent=`${dept} ${event} 지출내역`;
   const tbody=document.getElementById('specBody');tbody.innerHTML='';
-  let bal=5000000;
+  let bal=0;
   const isAuditEnabled=auditActive&&(CU?CU.role==='auditor'||['master','sub_master'].includes(CU.role):false);
   SPEC_LEDGER.forEach((row,i)=>{
     bal-=row.expense;
@@ -3617,8 +3652,12 @@ function onReceiptChg(){
 
 function submitExp(){
   const date=document.getElementById('fDate').value;
-  const cat=document.getElementById('fCat').value;
-  const detail=document.getElementById('fDetail').value;
+  const _fCat=document.getElementById('fCat').value;
+  const _fCatD=document.getElementById('fCatDirect');
+  const cat=(_fCat==='직접입력'&&_fCatD&&_fCatD.value.trim())?_fCatD.value.trim():_fCat;
+  const _fDet=document.getElementById('fDetail').value;
+  const _fDetD=document.getElementById('fDetailDirect');
+  const detail=(_fDet==='직접입력'&&_fDetD&&_fDetD.value.trim())?_fDetD.value.trim():_fDet;
   const memo=document.getElementById('fMemo').value;
   const inc=parseInt(document.getElementById('fInc').value)||0;
   const exp=parseInt(document.getElementById('fExp').value)||0;
@@ -3693,7 +3732,7 @@ function submitSpec(){
     showNotif('수정 완료 ✅','특별장부가 수정되었습니다');
   } else {
     SPEC_LEDGER.push({date:fmtDate||'--',cat:cat,detail:detail||'-',memo:memo,rno:String(SPEC_LEDGER.length+1),expense:exp,audited:false});
-    showNotif('저장 완료 ✅','특별활동 지출이 등록되었습니다');
+    showNotif('저장 완료 ✅','특별장부 지출이 등록되었습니다');
   }
   clearSpecForm();
   const sf=document.getElementById('specForm');if(sf)sf.style.display='none';
@@ -3925,77 +3964,4 @@ function drawBarChart(canvasId, labels, values) {
     const x = pad.left + i * gap + gap * 0.2;
     const y = pad.top + cH - barH;
 
-    const grad = ctx.createLinearGradient(x, y, x, pad.top + cH);
-    grad.addColorStop(0, '#4a35a0');
-    grad.addColorStop(1, '#7a65c0');
-    ctx.fillStyle = grad;
-    ctx.beginPath();
-    ctx.roundRect ? ctx.roundRect(x, y, bW, barH, [4,4,0,0]) : ctx.rect(x, y, bW, barH);
-    ctx.fill();
-
-    // X축 라벨
-    ctx.fillStyle = '#555'; ctx.font = '10px sans-serif'; ctx.textAlign = 'center';
-    ctx.fillText(label, x + bW/2, pad.top + cH + 16);
-
-    // 값 표시
-    if (values[i] > 0) {
-      ctx.fillStyle = '#2d1a6e'; ctx.font = 'bold 9px sans-serif'; ctx.textAlign = 'center';
-      ctx.fillText((values[i]/10000).toFixed(0)+'만', x + bW/2, y - 4);
-    }
-  });
-}
-
-function getLedgerData() {
-  // LEDGER 전역 변수에서 데이터 가져오기
-  return typeof LEDGER !== 'undefined' ? LEDGER : [];
-}
-
-function buildCharts() {
-  const data = getLedgerData();
-
-  // 연간 항목별 집계
-  const catMap = {};
-  data.filter(r => r.expense > 0).forEach(r => {
-    const cat = r.cat || '기타';
-    catMap[cat] = (catMap[cat] || 0) + r.expense;
-  });
-  const annualData = Object.entries(catMap)
-    .sort((a,b) => b[1]-a[1])
-    .map(([label, value]) => ({label, value}));
-  draw3DPie('pieAnnual', 'legendAnnual', annualData, 'annualTotal');
-
-  // 월별 추이
-  const months = ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
-  const monthVals = months.map(m => 
-    data.filter(r => r.mon === m && r.expense > 0).reduce((s,r) => s + r.expense, 0)
-  );
-  drawBarChart('barMonthly', months, monthVals);
-
-  // 월간 차트도 갱신
-  buildMonthlyChart();
-}
-
-function buildMonthlyChart() {
-  const data = getLedgerData();
-  const mon = document.getElementById('chartMon') ? document.getElementById('chartMon').value : '전체';
-  const filtered = mon === '전체' ? data : data.filter(r => r.mon === mon);
-
-  const catMap = {};
-  filtered.filter(r => r.expense > 0).forEach(r => {
-    const cat = r.cat || '기타';
-    catMap[cat] = (catMap[cat] || 0) + r.expense;
-  });
-  const monthlyData = Object.entries(catMap)
-    .sort((a,b) => b[1]-a[1])
-    .map(([label, value]) => ({label, value}));
-  draw3DPie('pieMonthly', 'legendMonthly', monthlyData, 'monthlyTotal');
-}
-
-function printCharts() {
-  window.print();
-}
-
-</script>
-
-</body>
-</html>
+  
