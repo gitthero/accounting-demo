@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>교회 회계 장부 시스템 v3.2.7</title>
+<title>교회 회계 장부 시스템 v3.2.8</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Serif+KR:wght@400;600;700;900&display=swap');
 
@@ -451,7 +451,7 @@ tr:hover td{background:#fafaf7;}
       <span class="cross">✝️</span>
       <h1>교회 회계 장부 시스템</h1>
       <p>Church Financial Management System</p>
-      <span class="ver">v3.2.7</span>
+      <span class="ver">v3.2.8</span>
     </div>
     <div class="ig"><label>통합 아이디</label>
       <input type="text" id="s1id" placeholder="아이디 입력" value="church2025">
@@ -522,7 +522,7 @@ tr:hover td{background:#fafaf7;}
 <div id="app">
   <div class="topbar">
     <button class="menu-btn" onclick="toggleSidebar()">☰</button>
-    <div class="topbar-title">✝️ 교회 회계 장부 v3.2.7</div>
+    <div class="topbar-title">✝️ 교회 회계 장부 v3.2.8</div>
     <div class="topbar-user">
       <strong id="tbName">-</strong>
       <span id="tbComm">-</span>
@@ -544,9 +544,9 @@ tr:hover td{background:#fafaf7;}
       <button class="nb" onclick="sp('approval',this)"><span class="ico">✅</span>전자결재함<span class="badge" id="abadge" style="display:none">2</span></button>
     </div>
     <div class="ndiv"></div>
-    <div class="ns">
+    <div class="ns" id="nav-special-section">
       <div class="nsl">특별장부</div>
-      <button class="nb" onclick="sp('special',this)"><span class="ico">🎯</span>특별활동장부</button>
+      <button class="nb" id="nav-special" onclick="sp('special',this)"><span class="ico">🎯</span>특별활동장부</button>
       <button class="nb" id="nav-special50" onclick="sp('special50',this)"><span class="ico">🎊</span>50th기사위특별장부</button>
     </div>
     <div class="ndiv"></div>
@@ -1326,7 +1326,7 @@ tr:hover td{background:#fafaf7;}
 
 <script>
 // ══════════════════════════════════════════
-// 전체 데이터 구조 v3.2.7
+// 전체 데이터 구조 v3.2.8
 // ══════════════════════════════════════════
 
 // 예배위원회 SVG: 성경책+음표+기도손 합성
@@ -2554,9 +2554,23 @@ function setupApp(){
   const isAuditor=u.role==='auditor';
 
   document.getElementById('nav-admin').style.display=isMgr?'block':'none';
-  const is50=CU.committee==='50기사위원회';
+
+  // 특별장부 접근 제한
+  // 허용 그룹
+  const isSpecialAcct=isMgr||isPastor;          // 특별계정 (master/sub/pastor)
+  const isEdu=u.committee==='교육위원회';         // 교육위원회
+  const is50=u.committee==='50기사위원회';         // 50기사위원회
+  const isAudit50=isAuditor;                      // 감사위원회
+  // 각 버튼 표시 제어
+  const canSeeSpecial=isSpecialAcct||isEdu||isAudit50;   // 특별활동장부
+  const canSee50=isSpecialAcct||is50||isAudit50;          // 50th기사위장부
+  const navSpecEl=document.getElementById('nav-special');
   const nav50=document.getElementById('nav-special50');
-  if(nav50) nav50.style.display=(is50||isMgr)?'':'none';
+  const navSecEl=document.getElementById('nav-special-section');
+  if(navSpecEl) navSpecEl.style.display=canSeeSpecial?'':'none';
+  if(nav50) nav50.style.display=canSee50?'':'none';
+  // 둘 다 안 보이면 섹션 전체 숨김
+  if(navSecEl) navSecEl.style.display=(canSeeSpecial||canSee50)?'block':'none';
   document.getElementById('nav-pastor').style.display=isPastor||isMgr?'block':'none';
   document.getElementById('ndiv-pastor').style.display=isPastor||isMgr?'block':'none';
   document.getElementById('nav-audit').style.display=isAuditor||isMgr?'block':'none';
