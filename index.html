@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>교회 회계 장부 시스템 v3.5.3</title>
+<title>교회 회계 장부 시스템 v3.5.4</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Serif+KR:wght@400;600;700;900&display=swap');
 
@@ -302,7 +302,8 @@ tr:hover td{background:#fafaf7;}
   .topbar,.sidebar,.ph-right,.fb,.no-print,
   .nb,.ndiv,.ns{display:none!important;}
   .main{margin-left:0!important;padding-top:0!important;}
-  .page{padding:8px!important;}
+  .page{display:none!important;padding:8px!important;}
+  .page.active{display:block!important;}
   .print-header{display:block!important;}
   @page{size:B5 landscape;margin:10mm;}
   @page.portrait{size:B5 portrait;}
@@ -469,7 +470,7 @@ tr:hover td{background:#fafaf7;}
       <span class="cross">✝️</span>
       <h1>교회 회계 장부 시스템</h1>
       <p>Church Financial Management System</p>
-      <span class="ver">v3.5.3</span>
+      <span class="ver">v3.5.4</span>
     </div>
     <div class="ig"><label>통합 아이디</label>
       <input type="text" id="s1id" placeholder="아이디 입력" value="church2025">
@@ -540,7 +541,7 @@ tr:hover td{background:#fafaf7;}
 <div id="app">
   <div class="topbar">
     <button class="menu-btn" onclick="toggleSidebar()">☰</button>
-    <div class="topbar-title">✝️ 교회 회계 장부 v3.5.3</div>
+    <div class="topbar-title">✝️ 교회 회계 장부 v3.5.4</div>
     <div class="topbar-user">
       <strong id="tbName">-</strong>
       <span id="tbComm">-</span>
@@ -601,7 +602,7 @@ tr:hover td{background:#fafaf7;}
 
     <!-- 📒 지출 입력장부 -->
     <div class="page active" id="page-ledger">
-      <div class="print-header"><h2 id="printTitle">2025년도 예산집행현황</h2><p>(단위: 원) B5</p></div>
+      <div class="print-header"><h2 id="printTitle">2026년도 예산집행현황</h2><p>(단위: 원) B5</p></div>
       <div class="ph">
         <div class="ph-left"><h2>📒 지출 입력장부</h2></div>
         <div class="ph-right no-print">
@@ -711,7 +712,7 @@ tr:hover td{background:#fafaf7;}
         <div class="ts"><table>
           <thead><tr>
             <th>날짜</th><th>항목</th><th>세부항목</th><th>적요</th>
-            <th>영수증</th><th>수입</th><th>지출</th><th>잔액</th>
+            <th>영수증</th><th>수입</th><th>지출</th><th>누계잔액</th>
             <th>감사확인</th><th class="no-print">수정</th>
           </tr></thead>
           <tbody id="ledgerBody"></tbody>
@@ -721,7 +722,7 @@ tr:hover td{background:#fafaf7;}
 
     <!-- 📅 월간현황 -->
     <div class="page" id="page-monthly">
-      <div class="print-header"><h2 id="monthlyPrintTitle">2025년 월간 현황</h2><p>(단위: 원)</p></div>
+      <div class="print-header"><h2 id="monthlyPrintTitle">2026년 월간 현황</h2><p>(단위: 원)</p></div>
       <div class="ph">
         <div class="ph-left"><h2>📅 월간 현황</h2><p id="monthlySub">월간 항목별 현황</p></div>
         <div class="ph-right no-print">
@@ -991,8 +992,9 @@ tr:hover td{background:#fafaf7;}
             <div class="fg"><label>지출액 (원) *</label><input type="number" id="sfExp" placeholder="0"></div>
             <div class="fg"><label>영수증 번호</label><input type="text" id="sfRno" placeholder="자동생성"></div>
             <div class="fg"><label>📷 영수증 촬영/첨부</label>
-              <input type="file" id="sfReceipt" accept="image/*" capture="environment" style="display:none">
+              <input type="file" id="sfReceipt" accept="image/*" capture="environment" style="display:none" onchange="onSpReceiptChg()">
               <button type="button" class="btn bo" style="width:100%" onclick="document.getElementById('sfReceipt').click()">📷 촬영/파일선택</button>
+              <span id="spRcvPreview" style="display:none;font-size:11px;color:var(--green);margin-top:4px;display:block"></span>
             </div>
           </div>
         </div>
@@ -1560,7 +1562,7 @@ tr:hover td{background:#fafaf7;}
 
 <script>
 // ══════════════════════════════════════════
-// 전체 데이터 구조 v3.5.3
+// 전체 데이터 구조 v3.5.4
 // ══════════════════════════════════════════
 
 // 예배위원회 SVG: 성경책+음표+기도손 합성
@@ -2555,7 +2557,18 @@ const COMM_ACCOUNTS = {
 };
 
 // 장부 샘플 데이터
-const LEDGER = [];
+const LEDGER = [
+  // ── 교육위원회 / 교사부 ──
+  {date:'01/05',mon:'1월',cat:'예배비',detail:'절기예배 외',memo:'신년예배 준비',rno:'1',income:0,expense:150000,status:'approved',audited:false,note:'',comm:'교육위원회',dept:'교사부',editCount:0,receipt:'신년예배영수증.jpg'},
+  {date:'02/10',mon:'2월',cat:'교육비',detail:'매월 교육활동',memo:'2월 교사교육',rno:'2',income:0,expense:80000,status:'approved',audited:false,note:'',comm:'교육위원회',dept:'교사부',editCount:0,receipt:''},
+  {date:'03/05',mon:'3월',cat:'서무비',detail:'서무용품',memo:'사무용품 구입',rno:'3',income:0,expense:45000,status:'pending',audited:false,note:'',comm:'교육위원회',dept:'교사부',editCount:0,receipt:''},
+  // ── 선교위원회 / 국내선교부 ──
+  {date:'01/15',mon:'1월',cat:'선교비',detail:'국내선교 지원',memo:'1월 선교비 지출',rno:'4',income:0,expense:300000,status:'approved',audited:false,note:'',comm:'선교위원회',dept:'국내선교부',editCount:0,receipt:'선교비영수증.jpg'},
+  {date:'02/20',mon:'2월',cat:'교통비',detail:'방문선교 교통',memo:'선교지 방문 교통비',rno:'5',income:0,expense:55000,status:'approved',audited:false,note:'',comm:'선교위원회',dept:'국내선교부',editCount:0,receipt:''},
+  // ── 봉사위원회 / 구제부 ──
+  {date:'01/20',mon:'1월',cat:'구제비',detail:'긴급구제',memo:'어려운 가정 지원',rno:'6',income:0,expense:200000,status:'approved',audited:true,note:'',comm:'봉사위원회',dept:'구제부',editCount:0,receipt:'구제영수증.jpg'},
+  {date:'02/14',mon:'2월',cat:'행사비',detail:'봉사행사',memo:'지역사회 봉사행사',rno:'7',income:0,expense:120000,status:'pending',audited:false,note:'',comm:'봉사위원회',dept:'구제부',editCount:0,receipt:''},
+];
 const SPEC_LEDGER = [];
 const SPEC50_LEDGER = [];
 let _editSpecIdx = -1;
@@ -3175,7 +3188,7 @@ function renderLedger(){
       <td>${row.cat}</td>
       <td style="font-size:11px">${row.detail||'-'}</td>
       <td>${row.memo}</td>
-      <td class="tc">${row.rno!=='-'?`<span class="sb sb-draft" style="cursor:pointer" onclick="showRec('R-${row.rno.padStart(4,'0')}','${row.date}','${row.cat}','${row.memo}','${row.expense}')">🧾 #${row.rno}</span>`:'-'}</td>
+      <td class="tc">${row.rno!=='-'?`<span class="sb sb-draft" style="cursor:pointer" onclick="showRec('R-${row.rno.padStart(4,'0')}','${row.date}','${row.cat}','${row.memo}','${row.expense}')">🧾 #${row.rno}</span>`:'-'}${row.receipt?`<br><span style="font-size:10px;color:var(--green)">📎 ${row.receipt}</span>`:''}</td>
       <td class="tnum">${row.income?row.income.toLocaleString():'-'}</td>
       <td class="tnum">${row.expense?'<span style="color:var(--red)">-'+row.expense.toLocaleString()+'</span>':'-'}</td>
       <td class="tnum" style="color:${bal<0?'var(--red)':'var(--green);font-weight:700'}">${bal.toLocaleString()}</td>
@@ -4445,6 +4458,40 @@ function delSpec(idx){
     buildSpecial();
   }
 }
+function editSpec(idx){
+  if(idx<0||idx>=SPEC_LEDGER.length) return;
+  _editSpecIdx=idx;
+  const r=SPEC_LEDGER[idx];
+  // 폼 열기
+  const sf=document.getElementById('specForm');
+  if(sf) sf.style.display='block';
+  // 값 채우기
+  const deptSel=document.getElementById('selSpDept');
+  if(deptSel&&r.dept){deptSel.value=r.dept;onSpDeptChange();}
+  setTimeout(()=>{
+    const catSel=document.getElementById('sfCat');
+    if(catSel&&r.cat) catSel.value=r.cat;
+    const detSel=document.getElementById('sfDetail');
+    if(detSel&&r.detail) detSel.value=r.detail;
+    const memoEl=document.getElementById('sfMemo');
+    if(memoEl) memoEl.value=r.memo||'';
+    const expEl=document.getElementById('sfExp');
+    if(expEl) expEl.value=r.expense||0;
+    const rnoEl=document.getElementById('sfRno');
+    if(rnoEl) rnoEl.value=r.rno||'';
+    // 날짜 복원
+    if(r.date&&r.date.includes('/')){
+      const parts=r.date.split('/');
+      const dateEl=document.getElementById('sfDate');
+      const now=new Date();
+      if(dateEl) dateEl.value=`${now.getFullYear()}-${parts[0].padStart(2,'0')}-${parts[1].padStart(2,'0')}`;
+    }
+    const prev=document.getElementById('spRcvPreview');
+    if(prev&&r.receipt){prev.style.display='block';prev.textContent='📎 '+r.receipt+' (기존첨부)';}
+  },100);
+  showNotif('✏️ 수정 모드','특별장부 내용을 불러왔습니다');
+  sf&&sf.scrollIntoView({behavior:'smooth',block:'start'});
+}
 function buildSpecial(){
   const dept=document.getElementById('selSpDept')?document.getElementById('selSpDept').value:'';
   const event=document.getElementById('selEvent')?document.getElementById('selEvent').value:'';
@@ -4480,7 +4527,7 @@ function buildSpecial(){
     totExp+=r.expense||0;
     bal=bdg-totExp;
     const tr=document.createElement('tr');
-    tr.innerHTML=`<td class="tc">${r.date}</td><td>${r.cat||'-'}</td><td>${r.detail||'-'}</td><td>${r.memo||'-'}</td><td class="tc">${r.rno||'-'}</td><td class="tnum" style="color:var(--red)">${(r.expense||0).toLocaleString()}</td><td class="tnum" style="color:${bal>=0?'var(--green)':'var(--red)'}">${Math.abs(bal).toLocaleString()}${bal<0?' (초과)':''}</td><td class="tc">${r.audited?'✅':''}</td><td class="no-print"><button class="btn bd btn-sm" onclick="delSpec(${SPEC_LEDGER.indexOf(r)})">삭제</button></td>`;
+    tr.innerHTML=`<td class="tc">${r.date}</td><td>${r.cat||'-'}</td><td>${r.detail||'-'}</td><td>${r.memo||'-'}</td><td class="tc">${r.rno||'-'}${r.receipt?'<br><span style="font-size:10px;color:var(--green)">📎 '+r.receipt+'</span>':''}</td><td class="tnum" style="color:var(--red)">${(r.expense||0).toLocaleString()}</td><td class="tnum" style="color:${bal>=0?'var(--green)':'var(--red)'}">${Math.abs(bal).toLocaleString()}${bal<0?' (초과)':''}</td><td class="tc">${r.audited?'✅':''}</td><td class="no-print"><button class="btn bs btn-sm" style="margin-right:3px" onclick="editSpec(${SPEC_LEDGER.indexOf(r)})">수정</button><button class="btn bd btn-sm" onclick="delSpec(${SPEC_LEDGER.indexOf(r)})">삭제</button></td>`;
     tbody.appendChild(tr);
   });
   document.getElementById('spExp').textContent=totExp.toLocaleString();
@@ -4680,6 +4727,13 @@ function onReceiptChg(){
     document.getElementById('rcvPreview').textContent='📎 '+f.files[0].name+' 첨부완료';
   }
 }
+function onSpReceiptChg(){
+  const f=document.getElementById('sfReceipt');
+  if(f&&f.files.length>0){
+    const prev=document.getElementById('spRcvPreview');
+    if(prev){prev.style.display='block';prev.textContent='📎 '+f.files[0].name+' 첨부완료';}
+  }
+}
 
 function submitExp(){
   const date=document.getElementById('fDate').value;
@@ -4693,6 +4747,8 @@ function submitExp(){
   const inc=parseInt(document.getElementById('fInc').value)||0;
   const exp=parseInt(document.getElementById('fExp').value)||0;
   const rno=document.getElementById('fRno').value||'-';
+  const receiptFile=document.getElementById('fReceipt');
+  const receiptName=(receiptFile&&receiptFile.files.length>0)?receiptFile.files[0].name:'';
   if(!cat||!memo){alert('항목과 적요를 입력해주세요');return;}
   // 날짜 포맷 MM/DD
   let fmtDate=date;
@@ -4709,7 +4765,8 @@ function submitExp(){
       date:fmtDate||LEDGER[_editIdx].date,
       mon:rowMon,
       cat:cat, detail:detail||'-', memo:memo,
-      rno:rno, income:inc, expense:exp
+      rno:rno, income:inc, expense:exp,
+      receipt:receiptName||LEDGER[_editIdx].receipt||''
     };
     _editIdx=-1;
     clearExpForm();
@@ -4725,7 +4782,7 @@ function submitExp(){
       rno:rno, income:inc, expense:exp,
       status:'draft', audited:false, note:'',
       comm:CU?CU.committee:'', dept:CU?CU.dept:'',
-      editCount:0
+      editCount:0, receipt:receiptName
     };
     if(_editIdx>=0&&LEDGER[_editIdx]){
       // 수정 저장: editCount 유지 (loadExpForm에서 이미 증가됨)
@@ -4767,16 +4824,18 @@ function submitSpec(){
   const exp=parseInt(document.getElementById('sfExp').value)||0;
   const rnoEl=document.getElementById('sfRno');
   const rno=rnoEl&&rnoEl.value?rnoEl.value:String(SPEC_LEDGER.length+1);
+  const spReceiptFile=document.getElementById('sfReceipt');
+  const spReceiptName=(spReceiptFile&&spReceiptFile.files.length>0)?spReceiptFile.files[0].name:'';
   if(!dept){alert('부서를 선택해주세요');return;}
   if(!cat||!memo||!exp){alert('항목, 적요, 지출액을 입력해주세요');return;}
   let fmtDate=date;
   if(date&&date.includes('-')){const p=date.split('-');fmtDate=p[1]+'/'+p[2];}
   if(_editSpecIdx>=0){
-    SPEC_LEDGER[_editSpecIdx]={...SPEC_LEDGER[_editSpecIdx],date:fmtDate||SPEC_LEDGER[_editSpecIdx].date,dept,cat,detail,memo,rno,expense:exp};
+    SPEC_LEDGER[_editSpecIdx]={...SPEC_LEDGER[_editSpecIdx],date:fmtDate||SPEC_LEDGER[_editSpecIdx].date,dept,cat,detail,memo,rno,expense:exp,receipt:spReceiptName||SPEC_LEDGER[_editSpecIdx].receipt||''};
     _editSpecIdx=-1;
     showNotif('수정 완료 ✅','특별활동장부가 수정되었습니다');
   } else {
-    SPEC_LEDGER.push({date:fmtDate||'--',dept,cat,detail,memo,rno,expense:exp,audited:false});
+    SPEC_LEDGER.push({date:fmtDate||'--',dept,cat,detail,memo,rno,expense:exp,audited:false,receipt:spReceiptName});
     showNotif('저장 완료 ✅','특별활동장부 지출이 등록되었습니다');
   }
   clearSpecForm();
